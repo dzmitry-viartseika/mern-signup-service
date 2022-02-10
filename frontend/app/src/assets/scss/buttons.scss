@@ -1,0 +1,188 @@
+.ub-btn {
+  text-align: center;
+  font: $font-size-base $font-global-medium;
+  height: 40px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $borderRadius;
+  transition: background-color .15s ease-in, border-color .15s ease-in, color .15s ease-in;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &_primary {
+    background: $color-dodger-blue;
+    color: $color-white;
+
+    &:hover {
+      background: $color-cornflower-blue;
+    }
+
+    &.ub-btn_disabled {
+      color: rgba($color-white, .4);
+    }
+  }
+
+  &_border {
+    color: $color-white;
+    border: 1px solid $color-white;
+    border-radius: $borderRadius;
+    transition: color .15s ease-in, background-color .15s ease-in;
+
+    &:hover {
+      background-color: $color-white;
+      color: $color-black;
+    }
+  }
+
+  &_cancel {
+    background: transparent;
+    color: $color-dodger-blue;
+    transition: background-color .15s ease-in;
+
+    &:hover {
+      background: rgba($color-dodger-blue, .08);
+    }
+  }
+
+  &_disabled {
+    pointer-events: none;
+  }
+}
+
+.button-action {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 1px dashed $color-dodger-blue;
+  border-radius: $borderRadius;
+  min-height: 40px;
+  max-height: 40px;
+  cursor: pointer;
+  transition: background-color .15s ease-out, opacity .03s ease-in;
+  user-select: none;
+
+
+  & + .button-action {
+    margin-top: 8px;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 11px 0 7px;
+  }
+
+  &__left {
+  }
+
+  &__right {
+    width: 100%;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    transition: all .2s ease-in;
+
+    &_center {
+      margin-bottom: 0;
+    }
+  }
+
+  &__bottom {
+    display: flex;
+  }
+
+  &__name, &__percent {
+    font: $font-size-md $font-global;
+    color: $color-dodger-blue;
+  }
+
+  &__icon {
+
+    i {
+      font-size: $font-size-dd !important;
+    }
+  }
+
+  span {
+    font: $font-size-base $font-global-medium;
+    color: $color-dodger-blue;
+  }
+
+  i {
+    font-size: $font-size-sm;
+    color: $color-dodger-blue;
+    margin-right: 4px;
+  }
+
+  &_hover {
+    background: rgba($color-dodger-blue, .08)!important;
+  }
+
+  &_disabled {
+    border-color: $color-silver-chalice;
+    pointer-events: none;
+    opacity: 0;
+
+    span, i {
+      color: $color-silver-chalice!important;
+    }
+  }
+
+  &_upload {
+
+    .button-action__upload {
+      i {
+        font-size: $font-size-xlg;
+        margin-right: 12px;
+      }
+    }
+  }
+
+  .upload-file {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &-progress {
+    height: 4px;
+    background: rgba($color-dodger-blue, .08);
+    border-radius: $borderRadius;
+    transition: all .2s ease-in;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    &__line {
+      background: $color-dodger-blue;
+      border-radius: $borderRadius;
+      transition: all .2s ease-in;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100px;
+      height: 100%;
+      animation: file-upload 3s linear infinite;
+    }
+  }
+
+  &_white {
+    background: $color-white;
+  }
+
+  &_offset {
+    margin: 25px 0;
+  }
+}

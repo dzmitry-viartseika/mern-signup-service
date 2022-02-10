@@ -7,14 +7,21 @@
       <div class="app-registration__form">
         <text-input
           :value.sync="userEmail"
+          placeholder-text="Введите вашу почту"
           label-text="Почта"
         />
         <text-input
           :value.sync="userPassword"
           label-text="Пароль"
+          placeholder-text="Введите ваш пароль"
         />
-        <button @click="signUp">Регистрация</button>
       </div>
+      <button
+        class="ub-btn ub-btn_primary"
+        @click="signUp"
+      >
+        Регистрация
+      </button>
       <div class="app-registration__footer">
         Уже есть аккаунт?
         <a href="/sign-in">Войти</a>
@@ -60,12 +67,35 @@ export default class SignUp extends Vue {
     font-family: Uni Neue,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
     font-weight: 400;
     display: flex;
-    width: 487px;
-    padding: 60px;
+    width: 500px;
+    padding: 20px;
     align-items: center;
     justify-content: center;
     margin: auto;
     flex-direction: column;
     background: #fff;
+
+    &__title {
+      font-weight: 700;
+      font-size: 25px;
+      line-height: 125%;
+      text-align: center;
+      color: #000;
+      margin-bottom: 40px;
+    }
+
+    &__footer {
+      text-align: center;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 125%;
+      color: #2c2c2c;
+      min-height: 36px;
+      margin-top: 36px;
+    }
+
+    &__form {
+      margin-bottom: 30px;
+    }
   }
 </style>

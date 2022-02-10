@@ -10,6 +10,8 @@
         id="formData.username"
         :value="value"
         @input="$emit('update:value', $event.target.value)"
+        :placeholder="placeholderText"
+        :disabled="disabled"
       />
     </div>
   </div>
@@ -25,6 +27,12 @@ export default class TextInput extends Vue {
 
     @Prop({ type: String, required: true })
     value: string;
+
+    @Prop({ type: String, required: false })
+    placeholderText: string;
+
+    @Prop({ type: Boolean, default: false })
+    disabled: boolean;
 }
 </script>
 
@@ -32,6 +40,7 @@ export default class TextInput extends Vue {
 @import "../../assets/scss/variables";
 
 .text-field {
+  margin-bottom: 15px;
 
   &_medium {
     input {
@@ -133,9 +142,8 @@ export default class TextInput extends Vue {
 
   &__label {
     color: $color-silver-chalice;
-    font: $font-size-md $font-global-medium;
+    font: $font-size-small $font-global-medium;
     line-height: 1.55;
-    margin-bottom: 5px;
   }
 
   &.active {
