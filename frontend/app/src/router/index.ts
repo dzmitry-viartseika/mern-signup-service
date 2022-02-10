@@ -24,6 +24,11 @@ const routes: Array<RouteConfig> = [
     name: 'Dashboard',
     component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
   },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ForgotPassword.vue'),
+  },
 ];
 
 const router = new VueRouter({
