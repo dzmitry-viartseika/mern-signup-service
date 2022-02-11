@@ -9,8 +9,10 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true // нельзя изменять и получать внутри браузера JS
             });
+            res.sendStatus(200);
             return res.json(userData);
         } catch (e) {
+            next(e);
             console.log(e);
         }
     }
@@ -19,6 +21,7 @@ class UserController {
         try {
 
         } catch (e) {
+            next(e);
             console.log(e);
         }
     }
@@ -27,6 +30,7 @@ class UserController {
         try {
 
         } catch (e) {
+            next(e);
             console.log(e);
         }
     }
@@ -35,14 +39,18 @@ class UserController {
         try {
 
         } catch (e) {
+            next(e);
             console.log(e);
         }
     }
 
-    async activateLink(req,res,next) {
+    async activate(req,res,next) {
         try {
-
+            const activationLink = req.params.link;
+            await UserService.activate(activationLink);
+            return res.redirect(process.env.CLIENT_URL)
         } catch (e) {
+            next(e);
             console.log(e);
         }
     }
@@ -51,6 +59,7 @@ class UserController {
         try {
             res.json([1,2,3])
         } catch (e) {
+            next(e);
             console.log(e);
         }
     }
