@@ -15,7 +15,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true // нельзя изменять и получать внутри браузера JS
             });
-            res.sendStatus(200);
+            // res.sendStatus(200);
             return res.json(userData);
         } catch (e) {
             next(e);

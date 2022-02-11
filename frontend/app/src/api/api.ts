@@ -8,6 +8,7 @@ const $api = axios.create({
 });
 
 $api.interceptors.request.use((config) => {
+  // eslint-disable-next-line no-param-reassign
   config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
   return config;
 });

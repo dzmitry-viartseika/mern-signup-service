@@ -34,6 +34,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
+import { IAuthResponse } from '@/model/response/IAuthResponse';
 import AuthService from '../services/Auth/AuthService';
 
 @Component({
@@ -46,13 +47,12 @@ export default class SignUp extends Vue {
 
   userPassword = '';
 
-  async signUp(): void {
+  async signUp(): Promise<void> {
     try {
-      console.log('userPassword', this.userPassword);
-      console.log('userEmail', this.userEmail);
       const response = await AuthService.registration(this.userEmail, this.userPassword);
-      localStorage.setItem('token', response.data.accessToken);
-      console.log('response', response);
+      const { accessToken } = response.data as IAuthResponse;
+      localStorage.setItem('token', accessToken);
+      this.$router.push('/dashboard');
     } catch (e) {
       console.log(e);
     }
