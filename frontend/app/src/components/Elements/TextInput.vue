@@ -117,7 +117,7 @@ export default class TextInput extends Vue {
     border-radius: $borderRadius;
     width: 100%;
     height: 40px;
-    padding: 12px 50px 12px 12px;
+    padding: 12px 20px 12px 12px;
     font: $font-size-base $font-global;
     line-height: 1.42 ;
     transition: border-color .15s ease-in;

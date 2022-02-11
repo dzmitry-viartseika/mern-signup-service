@@ -33,8 +33,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
 import TextInput from '@/components/Elements/TextInput.vue';
+import AuthService from '../services/Auth/AuthService';
 
 @Component({
   components: {
@@ -46,9 +46,16 @@ export default class SignUp extends Vue {
 
   userPassword = '';
 
-  signUp(): void {
-    console.log('userPassword', this.userPassword);
-    console.log('userEmail', this.userEmail);
+  async signUp(): void {
+    try {
+      console.log('userPassword', this.userPassword);
+      console.log('userEmail', this.userEmail);
+      const response = await AuthService.registration(this.userEmail, this.userPassword);
+      localStorage.setItem('token', response.data.accessToken);
+      console.log('response', response);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 </script>
