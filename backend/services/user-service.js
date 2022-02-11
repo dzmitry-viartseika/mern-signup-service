@@ -1,5 +1,6 @@
 const UserModel = require('../models/user-model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 const mailService = require('./mail-service');
 const tokenService = require('./token-service');
@@ -57,6 +58,42 @@ class UserService {
         user.isActivated = true;
         console.log('user after', user)
         await user.save();
+    }
+
+    async logout(refreshToken) {
+        const token = await tokenService.removeToken(refreshToken);
+        return token;
+    }
+
+    async refresh(refreshToken) {
+        if (!refreshToken) {
+            throw ApiError.unAuthorizedError();
+        }
+
+        const userData = tokenService.validateAccessToken(refreshToken);
+        const tokenFromDb = await tokenService.findToken(refreshToken);
+        if (!userData || !tokenFromDb) {
+            throw ApiError.unAuthorizedError();
+        }
+        const user = await UserModel.findById(userData.id)
+        const userDto = new UserDto(user);
+        // TODO дублирование и нужно вынести в отдельную функцию
+        const tokens = tokenService.generateTokens({...userDto});
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+        return {
+            ...tokens,
+            user: userDto,
+        }
+    }
+
+    async getAllUsers(req, res,next) {
+        try {
+            const users = await UserModel.find();
+            return users;
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
 
