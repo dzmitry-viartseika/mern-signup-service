@@ -1,28 +1,32 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
+const token = localStorage.getItem('token');
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: () => import(/* webpackChunkName: "about" */ '../views/SignUp.vue'),
+    component: () => import(/* webpackChunkName: "SignUp" */ '../views/SignUp.vue'),
   },
   {
     path: '/sign-in',
     name: 'SignIn',
-    component: () => import(/* webpackChunkName: "about" */ '../views/SignIn.vue'),
-  },
-  {
-    path: '/sign-in',
-    name: 'SignIn',
-    component: () => import(/* webpackChunkName: "about" */ '../views/SignIn.vue'),
+    component: () => import(/* webpackChunkName: "SignIn" */ '../views/SignIn.vue'),
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
+    component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard.vue'),
+    beforeEnter: (to, from, next) => {
+      if (token) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
   },
   {
     path: '/forgot-password',

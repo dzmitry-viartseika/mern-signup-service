@@ -1,3 +1,51 @@
 @import "reset";
 @import "variables";
 @import "buttons";
+
+.app {
+
+  &-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: $color-background;
+  }
+
+  &-modal {
+    font-family: Uni Neue,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+    font-weight: 400;
+    display: flex;
+    width: 500px;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    flex-direction: column;
+    background: #fff;
+
+    &__title {
+      font-weight: 700;
+      font-size: 25px;
+      line-height: 125%;
+      text-align: center;
+      color: #000;
+      margin-bottom: 40px;
+    }
+
+    &__footer {
+      text-align: center;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 125%;
+      color: #2c2c2c;
+      min-height: 36px;
+      margin-top: 36px;
+    }
+
+    &__form {
+      margin-bottom: 30px;
+    }
+  }
+}

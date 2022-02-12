@@ -1,25 +1,27 @@
 <template>
-  <div class="app-login">
-    <h2 class="app-login__title">
-      Вход в личный кабинет
-    </h2>
-    <div class="app-login__form">
-      <a href="/forgot-password">забыли пароль</a>
-      <text-input
-        :value.sync="userEmail"
-        placeholder-text="Введите вашу почту"
-        label-text="Почта"
-      />
-      <text-input
-        :value.sync="userPassword"
-        label-text="Пароль"
-        placeholder-text="Введите ваш пароль"
-      />
-      <button @click="SignIn">Войти</button>
-    </div>
-    <div class="app-login__footer">
-      Уже есть аккаунт?
-      <a href="/sign-in">Войти</a>
+  <div class="app-container">
+    <div class="app-modal">
+      <h2 class="app-modal__title">
+        Вход в личный кабинет
+      </h2>
+      <div class="app-modal__form">
+        <a href="/forgot-password">забыли пароль</a>
+        <text-input
+          :value.sync="userEmail"
+          placeholder-text="Введите вашу почту"
+          label-text="Почта"
+        />
+        <text-input
+          :value.sync="userPassword"
+          label-text="Пароль"
+          placeholder-text="Введите ваш пароль"
+        />
+        <button @click="SignIn">Войти</button>
+      </div>
+      <div class="app-modal__footer">
+        У вас нет аккаунта?
+        <a href="/sign-up">Зарегистрировать</a>
+      </div>
     </div>
   </div>
 </template>

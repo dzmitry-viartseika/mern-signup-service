@@ -7,15 +7,6 @@
 <script>
 export default {
   name: 'App',
-  created() {
-    const token = localStorage.getItem('token');
-    console.log('token', token);
-    // if (!token) {
-    //   this.$router.push('/sign-up');
-    // } else {
-    //   this.$router.push('/dashboard');
-    // }
-  },
 };
 </script>
 
