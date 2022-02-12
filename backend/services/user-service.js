@@ -87,6 +87,14 @@ class UserService {
         }
     }
 
+    async forgotPassword(req, res, next) {
+        const { email } = req.body;
+        const user = await UserModel.findOne({ email });
+        if(!user) {
+            throw ApiError.badRequest('Пользователь с таким email не найден')
+        }
+    }
+
     async getAllUsers(req, res,next) {
         try {
             const users = await UserModel.find();

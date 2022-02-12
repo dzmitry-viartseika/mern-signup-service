@@ -12,8 +12,10 @@
           label-text="Почта"
         />
         <div class="app-modal__form-wrapper">
-          <span v-if="isVisiblePassword" @click="isVisiblePassword = !isVisiblePassword">1</span>
-          <span v-else @click="isVisiblePassword = !isVisiblePassword">2</span>
+          <span  @click="isVisiblePassword = !isVisiblePassword">
+            <template v-if="isVisiblePassword">1</template>
+            <template v-else>2</template>
+          </span>
           <text-input
             :value.sync="userPassword"
             label-text="Пароль"
