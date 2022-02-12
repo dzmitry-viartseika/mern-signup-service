@@ -31,6 +31,9 @@ export default class TextInput extends Vue {
     @Prop({ type: String, required: false })
     placeholderText: string;
 
+    @Prop({ type: String, default: 'text' })
+    inputType: string;
+
     @Prop({ type: Boolean, default: false })
     disabled: boolean;
 }

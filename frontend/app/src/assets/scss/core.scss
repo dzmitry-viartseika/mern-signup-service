@@ -46,6 +46,17 @@
 
     &__form {
       margin-bottom: 30px;
+
+      &-wrapper {
+        position: relative;
+
+        a {
+          font-size: 10px;
+          position: absolute;
+          right: 0;
+          top: 6px;
+        }
+      }
     }
   }
 }

@@ -5,22 +5,25 @@
         Вход в личный кабинет
       </h2>
       <div class="app-modal__form">
-        <a href="/forgot-password">забыли пароль</a>
         <text-input
           :value.sync="userEmail"
+          input-type="email"
           placeholder-text="Введите вашу почту"
           label-text="Почта"
         />
-        <text-input
-          :value.sync="userPassword"
-          label-text="Пароль"
-          placeholder-text="Введите ваш пароль"
-        />
-        <button @click="SignIn">Войти</button>
+        <div class="app-modal__form-wrapper">
+          <a @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
+          <text-input
+            :value.sync="userPassword"
+            label-text="Пароль"
+            placeholder-text="Введите ваш пароль"
+          />
+        </div>
       </div>
+      <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
         У вас нет аккаунта?
-        <a href="/sign-up">Зарегистрировать</a>
+        <a @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
       </div>
     </div>
   </div>
@@ -43,12 +46,12 @@ export default class SignIn extends Vue {
 
   userPassword = '';
 
-  async SignIn(): Promise<void> {
+  async signIn(): Promise<void> {
     try {
       const response = await AuthService.login(this.userEmail, this.userPassword);
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
-      this.$router.push('/dashboard');
+      await this.$router.push('/dashboard');
     } catch (e) {
       console.log(e);
     }

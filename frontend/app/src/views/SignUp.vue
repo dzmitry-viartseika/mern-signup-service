@@ -8,6 +8,7 @@
         <text-input
           :value.sync="userEmail"
           placeholder-text="Введите вашу почту"
+          input-type="email"
           label-text="Почта"
         />
         <text-input
@@ -17,14 +18,14 @@
         />
       </div>
       <button
-        class="ub-btn ub-btn_primary"
+        class="app__btn app__btn--primary"
         @click="signUp"
       >
         Регистрация
       </button>
       <div class="app-modal__footer">
         Уже есть аккаунт?
-        <a href="/sign-in">Войти</a>
+        <a class="app-modal__link" @click.prevent="$router.push('/sign-in')">Войти</a>
       </div>
     </div>
   </div>
@@ -52,7 +53,7 @@ export default class SignUp extends Vue {
       const response = await AuthService.registration(this.userEmail, this.userPassword);
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
-      this.$router.push('/dashboard');
+      await this.$router.push('/dashboard');
     } catch (e) {
       console.log(e);
     }
