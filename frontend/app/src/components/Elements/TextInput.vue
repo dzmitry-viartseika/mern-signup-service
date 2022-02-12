@@ -5,7 +5,7 @@
     </label>
     <div class="text-field-wrapper">
       <input
-        type="text"
+        :type="inputType"
         class="text-field__input"
         id="formData.username"
         :value="value"

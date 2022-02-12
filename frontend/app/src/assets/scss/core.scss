@@ -4,6 +4,16 @@
 
 .app {
 
+  &__link {
+    color: $color-denim;
+    transition: color .15s ease-in;
+    cursor: pointer;
+
+    &:hover {
+      color: rgba($color-denim, .8);
+    }
+  }
+
   &-container {
     display: flex;
     align-items: center;
@@ -51,10 +61,17 @@
         position: relative;
 
         a {
-          font-size: 10px;
+          font-size: $font-size-small;
           position: absolute;
           right: 0;
           top: 6px;
+        }
+
+        span {
+          position: absolute;
+          top: 30px;
+          z-index: 1;
+          right: 10px;
         }
       }
     }

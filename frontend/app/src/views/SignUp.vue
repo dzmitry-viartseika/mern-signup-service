@@ -11,11 +11,16 @@
           input-type="email"
           label-text="Почта"
         />
-        <text-input
-          :value.sync="userPassword"
-          label-text="Пароль"
-          placeholder-text="Введите ваш пароль"
-        />
+        <div class="app-modal__form-wrapper">
+          <span v-if="isVisiblePassword" @click="isVisiblePassword = !isVisiblePassword">1</span>
+          <span v-else @click="isVisiblePassword = !isVisiblePassword">2</span>
+          <text-input
+            :value.sync="userPassword"
+            label-text="Пароль"
+            :input-type="isVisiblePassword ? 'text' : 'password'"
+            placeholder-text="Введите ваш пароль"
+          />
+        </div>
       </div>
       <button
         class="app__btn app__btn--primary"
@@ -25,7 +30,7 @@
       </button>
       <div class="app-modal__footer">
         Уже есть аккаунт?
-        <a class="app-modal__link" @click.prevent="$router.push('/sign-in')">Войти</a>
+        <a class="app__link" @click.prevent="$router.push('/sign-in')">Войти</a>
       </div>
     </div>
   </div>
@@ -47,6 +52,8 @@ export default class SignUp extends Vue {
   userEmail = '';
 
   userPassword = '';
+
+  isVisiblePassword = false;
 
   async signUp(): Promise<void> {
     try {

@@ -12,10 +12,11 @@
           label-text="Почта"
         />
         <div class="app-modal__form-wrapper">
-          <a @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
+          <a class="app__link" @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
           <text-input
             :value.sync="userPassword"
             label-text="Пароль"
+            input-type="password"
             placeholder-text="Введите ваш пароль"
           />
         </div>
@@ -23,7 +24,7 @@
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
         У вас нет аккаунта?
-        <a @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
+        <a class="app__link" @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
       </div>
     </div>
   </div>

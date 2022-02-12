@@ -15,7 +15,7 @@
       <button class="app__btn app__btn--primary" @click="restorePassword">Отправить</button>
       <div class="app-modal__footer">
         У вас нет аккаунта?
-        <a @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
+        <a class="app__link" @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
       </div>
     </div>
   </div>
