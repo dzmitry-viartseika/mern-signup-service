@@ -1,0 +1,14 @@
+{
+  "global": {
+    "btnLogin": "Sign in",
+    "entry": "Entry",
+    "yes": "Yes",
+    "no": "No",
+    "logout": "logout",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "search": "Search",
+    "link": "Link",
+    "clear": "Clear"
+  }
+}

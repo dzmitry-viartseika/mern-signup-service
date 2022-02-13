@@ -12,10 +12,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Dashboard',
-};
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+
+@Component({
+  metaInfo() {
+    return {
+      title: 'Dashboard',
+      meta: [
+        {
+          name: 'description',
+          content: 'App Dashboard',
+        },
+      ],
+    };
+  },
+})
+export default class Dashboard extends Vue {
+}
 </script>
 
 <style scoped>
@@ -27,7 +42,6 @@ export default {
 .container__sidebar {
   width: 10%;
   max-width: 350px;
-  background: green;
 }
 
 .container__main {

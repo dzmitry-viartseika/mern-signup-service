@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <h2 class="app-modal__title">
         Вход в личный кабинет
@@ -13,10 +14,26 @@
         />
         <div class="app-modal__form-wrapper">
           <a class="app__link" @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
+          <span  @click="isVisiblePassword = !isVisiblePassword">
+            <template v-if="isVisiblePassword">
+              <svgicon
+                name="Eye"
+                width="16"
+                height="16"
+              />
+            </template>
+            <template v-else>
+              <svgicon
+                name="Eye-hidden"
+                width="16"
+                height="16"
+              />
+            </template>
+          </span>
           <text-input
             :value.sync="userPassword"
             label-text="Пароль"
-            input-type="password"
+            :input-type="isVisiblePassword ? 'text' : 'password'"
             placeholder-text="Введите ваш пароль"
           />
         </div>
@@ -35,11 +52,26 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
+import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import AuthService from '../services/Auth/AuthService';
+import '@/assets/icons/Eye';
+import '@/assets/icons/Eye-hidden';
 
 @Component({
   components: {
     TextInput,
+    LoaderTemplate,
+  },
+  metaInfo() {
+    return {
+      title: 'Authentication - Sign in',
+      meta: [
+        {
+          name: 'description',
+          content: 'Sign in to access your App Dashboard',
+        },
+      ],
+    };
   },
 })
 export default class SignIn extends Vue {
@@ -47,13 +79,20 @@ export default class SignIn extends Vue {
 
   userPassword = '';
 
+  isLoader = false;
+
+  isVisiblePassword = false;
+
   async signIn(): Promise<void> {
     try {
+      this.isLoader = true;
       const response = await AuthService.login(this.userEmail, this.userPassword);
+      this.isLoader = false;
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
       await this.$router.push('/dashboard');
     } catch (e) {
+      this.isLoader = false;
       console.log(e);
     }
   }

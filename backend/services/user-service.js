@@ -89,10 +89,14 @@ class UserService {
 
     async forgotPassword(req, res, next) {
         const { email } = req.body;
-        const user = await UserModel.findOne({ email });
-        if(!user) {
-            throw ApiError.badRequest('Пользователь с таким email не найден')
-        }
+        const user = await UserModel.findOne({ email }, (err, user) => {
+            if (err || !user) {
+                throw ApiError.badRequest('Пользователь с таким email не найден');
+            }
+        });
+        const token = jwt.sign({_id: user._id}, process.env.JWT_ACCESS_SECRET, {
+            expiresIn: '15m'
+        });
     }
 
     async getAllUsers(req, res,next) {

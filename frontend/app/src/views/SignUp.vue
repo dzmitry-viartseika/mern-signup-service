@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <h2 class="app-modal__title">
         Регистрация
@@ -13,8 +14,20 @@
         />
         <div class="app-modal__form-wrapper">
           <span  @click="isVisiblePassword = !isVisiblePassword">
-            <template v-if="isVisiblePassword">1</template>
-            <template v-else>2</template>
+            <template v-if="isVisiblePassword">
+              <svgicon
+                name="Eye"
+                width="16"
+                height="16"
+              />
+            </template>
+            <template v-else>
+              <svgicon
+                name="Eye-hidden"
+                width="16"
+                height="16"
+              />
+            </template>
           </span>
           <text-input
             :value.sync="userPassword"
@@ -32,7 +45,9 @@
       </button>
       <div class="app-modal__footer">
         Уже есть аккаунт?
-        <a class="app__link" @click.prevent="$router.push('/sign-in')">Войти</a>
+        <a class="app__link" @click.prevent="$router.push('/sign-in')">
+          {{ $t('global.btnLogin') }}
+        </a>
       </div>
     </div>
   </div>
@@ -42,12 +57,27 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
+import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import AuthService from '../services/Auth/AuthService';
+import '@/assets/icons/Eye';
+import '@/assets/icons/Eye-hidden';
 
 @Component({
   components: {
     TextInput,
+    LoaderTemplate,
+  },
+  metaInfo() {
+    return {
+      title: 'Authentication - Sign up',
+      meta: [
+        {
+          name: 'description',
+          content: 'Sign up to access your App Dashboard',
+        },
+      ],
+    };
   },
 })
 export default class SignUp extends Vue {
@@ -57,13 +87,18 @@ export default class SignUp extends Vue {
 
   isVisiblePassword = false;
 
+  isLoader = false;
+
   async signUp(): Promise<void> {
     try {
+      this.isLoader = true;
       const response = await AuthService.registration(this.userEmail, this.userPassword);
+      this.isLoader = false;
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
       await this.$router.push('/dashboard');
     } catch (e) {
+      this.isLoader = false;
       console.log(e);
     }
   }

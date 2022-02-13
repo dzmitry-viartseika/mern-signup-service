@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import Page404 from '@/views/Page404.vue';
 
 const token = localStorage.getItem('token');
 
@@ -16,6 +17,11 @@ const routes: Array<RouteConfig> = [
     name: 'SignIn',
     component: () => import(/* webpackChunkName: "SignIn" */ '../views/SignIn.vue'),
   },
+  // {
+  //   path: '*',
+  //   name: 'Page404',
+  //   component: Page404,
+  // },
   {
     path: '/dashboard',
     name: 'Dashboard',
