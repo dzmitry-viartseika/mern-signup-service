@@ -59,9 +59,14 @@ import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
+// eslint-disable-next-line import/order
 import AuthService from '../services/Auth/AuthService';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
+import { namespace } from 'vuex-class';
+import { IUser } from '@/model/IUser';
+
+const User = namespace('User');
 
 @Component({
   components: {
@@ -89,11 +94,15 @@ export default class SignUp extends Vue {
 
   isLoader = false;
 
+  @User.Mutation
+  public setUser!: () => void
+
   async signUp(): Promise<void> {
     try {
       this.isLoader = true;
       const response = await AuthService.registration(this.userEmail, this.userPassword);
       this.isLoader = false;
+      this.setUser(response.data.user);
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
       await this.$router.push('/dashboard');

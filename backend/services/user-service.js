@@ -54,9 +54,9 @@ class UserService {
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
         }
-        console.log('user before', user)
+        console.log('userVuex before', user)
         user.isActivated = true;
-        console.log('user after', user)
+        console.log('userVuex after', user)
         await user.save();
     }
 
