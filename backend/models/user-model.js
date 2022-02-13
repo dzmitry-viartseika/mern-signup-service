@@ -16,6 +16,10 @@ const UserSchema = new Schema({
     },
     activationLink: {
         type: String,
+    },
+    resetLink: {
+        type: String,
+        default: '',
     }
 })
 

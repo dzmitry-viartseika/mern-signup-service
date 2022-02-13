@@ -31,10 +31,6 @@ const User = namespace('User');
 export default class Settings extends Vue {
   @User.State
   public user: IUser;
-
-  created() {
-    console.log('wertey', this.user);
-  }
 }
 </script>
 

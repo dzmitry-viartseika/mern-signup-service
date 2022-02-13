@@ -27,6 +27,39 @@ class UserService {
         }
     }
 
+    async forgotPassword(req, res, next) {
+        const { email } = req.body;
+
+        UserModel.findOne({ email }, async (err, user) => {
+            if(err || !user) {
+                return res.status(400).json({error: "Пользователя с данным email не найден"});
+            }
+
+            const token = jwt.sign(
+                {_id: user._id},
+                process.env.API_URL,
+                {
+                    expiresIn: "15m",
+                }
+            );
+
+            const link = `${process.env.API_URL}/api/reset-password/${token}`;
+            const data = await mailService.sendForgotMail(email, link, token);
+            return user.updateOne({resetLink: token}, function(err, success) {
+                if(err) {
+                    return res.status(400).json({error: "Reset password link error."});
+                } else {
+                    res.send(data, function (error, body) {
+                        if(error) {
+                            return res.json({error: err.message})
+                        }
+                        return res.json({message: "Email has been sent. Kindly follow the instructions"});
+                    });
+                }
+            });
+        });
+    }
+
     async login(email, password) {
         const user = await UserModel.findOne({ email });
         if (!user) {
@@ -54,9 +87,7 @@ class UserService {
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
         }
-        console.log('userVuex before', user)
         user.isActivated = true;
-        console.log('userVuex after', user)
         await user.save();
     }
 
@@ -85,18 +116,6 @@ class UserService {
             ...tokens,
             user: userDto,
         }
-    }
-
-    async forgotPassword(req, res, next) {
-        const { email } = req.body;
-        const user = await UserModel.findOne({ email }, (err, user) => {
-            if (err || !user) {
-                throw ApiError.badRequest('Пользователь с таким email не найден');
-            }
-        });
-        const token = jwt.sign({_id: user._id}, process.env.JWT_ACCESS_SECRET, {
-            expiresIn: '15m'
-        });
     }
 
     async getAllUsers(req, res,next) {

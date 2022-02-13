@@ -40,9 +40,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import(/* webpackChunkName: "ResetPassword" */ '../views/ResetPassword.vue'),
+  },
+  {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ForgotPassword.vue'),
+    component: () => import(/* webpackChunkName: "ForgotPassword" */ '../views/ForgotPassword.vue'),
   },
 ];
 

@@ -74,10 +74,11 @@ class UserController {
 
     async forgotPassword(req, res) {
         try {
-            const { email } = req.body;
-
+            const users = await UserService.forgotPassword(req);
+            return res.json(users)
         } catch (e) {
-
+            next(e);
+            console.log(e);
         }
     }
 
