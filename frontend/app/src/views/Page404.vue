@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <div class="app-error-page">
+      <img src="../assets/images/placeholders/page-404.svg" alt="">
       <h2 class="app-error-page__title app__title">Страница не найдена</h2>
       <div class="app-error-page__description">
         Страница устарела, была удалена или не существовала вовсе

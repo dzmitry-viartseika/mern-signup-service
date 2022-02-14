@@ -21,12 +21,19 @@ const routes: Array<RouteConfig> = [
     path: '/settings',
     name: 'Settings',
     component: () => import(/* webpackChunkName: "Settings" */ '../views/Settings.vue'),
+    beforeEnter: (to, from, next) => {
+      if (token) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
   },
-  // {
-  //   path: '*',
-  //   name: 'Page404',
-  //   component: Page404,
-  // },
+  {
+    path: '*',
+    name: 'Page404',
+    component: Page404,
+  },
   {
     path: '/dashboard',
     name: 'Dashboard',
