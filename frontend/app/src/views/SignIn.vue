@@ -100,7 +100,7 @@ export default class SignIn extends Vue {
       this.setUser(response.data.user);
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
-      await this.$router.push('/dashboard');
+      await this.$router.push('/crm/dashboard');
     } catch (e) {
       this.isLoader = false;
       console.log(e);

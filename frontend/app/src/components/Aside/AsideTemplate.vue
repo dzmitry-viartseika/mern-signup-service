@@ -16,7 +16,7 @@
       <ul>
         <div class="active-tab"></div>
         <li class="tooltip-element" data-tooltip="0">
-          <a @click.prevent="$router.push('/dashboard')" class="active" data-active="0">
+          <a @click.prevent="$router.push('/crm/dashboard')" class="active" data-active="0">
             <div class="icon">
               <svgicon
                 name="Eye"
@@ -28,7 +28,7 @@
           </a>
         </li>
         <li class="tooltip-element" data-tooltip="1">
-          <a @click.prevent="$router.push('/settings')" data-active="1">
+          <a @click.prevent="$router.push('/crm/settings')" data-active="1">
             <div class="icon">
               <svgicon
                 name="Eye"

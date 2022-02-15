@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "SignIn" */ '../views/SignIn.vue'),
   },
   {
-    path: '/settings',
+    path: '/crm/settings',
     name: 'Settings',
     component: () => import(/* webpackChunkName: "Settings" */ '../views/Settings.vue'),
     beforeEnter: (to, from, next) => {
@@ -29,13 +29,13 @@ const routes: Array<RouteConfig> = [
       }
     },
   },
+  // {
+  //   path: '*',
+  //   name: 'Page404',
+  //   component: Page404,
+  // },
   {
-    path: '*',
-    name: 'Page404',
-    component: Page404,
-  },
-  {
-    path: '/dashboard',
+    path: '/crm/dashboard',
     name: 'Dashboard',
     component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard.vue'),
     beforeEnter: (to, from, next) => {
