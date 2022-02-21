@@ -5,6 +5,7 @@
     </label>
     <div class="text-field-wrapper">
       <input
+        data-test="input"
         :type="inputType"
         class="text-field__input"
         :value="value"

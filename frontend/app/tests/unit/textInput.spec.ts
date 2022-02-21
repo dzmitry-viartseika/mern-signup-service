@@ -1,5 +1,13 @@
 import textInput from '@/components/Elements/TextInput.vue';
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount } from '@vue/test-utils';
+
+interface ITextInputProps {
+  value: string;
+  labelText?: string;
+  placeholderText?: string;
+  inputType?: string;
+  disabled?: boolean;
+}
 
 // @Prop({ type: String, required: true })
 // value: string;
@@ -12,14 +20,6 @@ import { shallowMount } from "@vue/test-utils";
 //
 // @Prop({ type: Boolean, default: false })
 // disabled: boolean;
-
-interface ITextInputProps {
-  value: string;
-  labelText?: string;
-  placeholderText?: string;
-  inputType?: string;
-  disabled?: boolean;
-}
 
 describe('textInput component', () => {
   let wrapper: any;
@@ -41,6 +41,19 @@ describe('textInput component', () => {
     });
     expect(wrapper.text()).toContain('LabelText');
   });
+
+  it('check disabled button', () => {
+    createComponent({
+      disabled: true,
+      value: 'testValue'
+    });
+    const button = wrapper.find('[data-test="input"]');
+    expect(button.attributes().disabled).toEqual('disabled');
+  });
+
+  // it('renders textInput correctly', () => {
+  //   expect(wrapper.element).toMatchSnapshot()
+  // })
 
   // it('placeholder text transfer check', () => {
   //   createComponent({
