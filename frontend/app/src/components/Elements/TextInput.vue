@@ -1,13 +1,12 @@
 <template>
   <div class="text-field">
-    <label for="username" class="text-field__label">
+    <label class="text-field__label">
       {{ labelText }}
     </label>
     <div class="text-field-wrapper">
       <input
         :type="inputType"
         class="text-field__input"
-        id="formData.username"
         :value="value"
         @input="$emit('update:value', $event.target.value)"
         :placeholder="placeholderText"
