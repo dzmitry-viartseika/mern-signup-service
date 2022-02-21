@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const router = require('./routers/index');
+const multer = require('multer');
 const errorMiddleWare = require('./middleware/error-middleware')
 const PORT = process.env.PORT || 5000;
 
@@ -18,6 +19,15 @@ app.use(cors({
 app.use('/api', router);
 // подключаем в самом конце
 app.use(errorMiddleWare);
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' +file.originalname )
+    }
+})
 
 const startApp = async () => {
     try {

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`textInput component renders textInput correctly 1`] = `
+<div
+  class="text-field"
+>
+  <label
+    class="text-field__label"
+  >
+    
+    
+  
+  </label>
+   
+  <div
+    class="text-field-wrapper"
+  >
+    <input
+      class="text-field__input"
+      disabled="disabled"
+      type="text"
+    />
+  </div>
+</div>
+`;

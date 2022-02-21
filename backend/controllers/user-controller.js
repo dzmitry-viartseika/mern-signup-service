@@ -82,6 +82,8 @@ class UserController {
         }
     }
 
+
+
     async getUsers(req,res,next) {
         try {
            const users = await UserService.getAllUsers();

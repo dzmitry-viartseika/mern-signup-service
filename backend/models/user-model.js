@@ -20,6 +20,10 @@ const UserSchema = new Schema({
     resetLink: {
         type: String,
         default: '',
+    },
+    avatar: {
+        type: String,
+        default: '',
     }
 })
 

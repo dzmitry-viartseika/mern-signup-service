@@ -15,5 +15,6 @@ router.get('/activate/:link', UserController.activate);
 router.get('/refresh', UserController.refresh);
 router.post('/forgot-password', UserController.forgotPassword);
 router.get('/users', authMiddleWare, UserController.getUsers);
+router.post('/upload')
 
 module.exports = router;
