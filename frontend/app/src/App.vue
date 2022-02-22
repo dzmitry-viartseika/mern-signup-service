@@ -1,5 +1,15 @@
 <template>
   <div class="app">
+    <modal-template>
+      <div slot="content">
+        Мы используем файлы cookie, чтобы обеспечивать правильную работу нашего веб-сайта,
+        персонализировать рекламные объявления и другие материалы, обеспечивать работу функций
+        социальных сетей и анализировать сетевой трафик. Мы также предоставляем информацию об
+        использовании вами нашего веб-сайта своим партнерам по социальным сетям, рекламе и
+        аналитическим системам.
+        <button>Согласен</button>
+      </div>
+    </modal-template>
     <template v-if="showSidebar">
       <aside-template />
     </template>
@@ -19,10 +29,12 @@
 import Vue from 'vue';
 import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
+import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 
 @Component({
   components: {
     AsideTemplate,
+    ModalTemplate,
   },
 })
 export default class App extends Vue {
