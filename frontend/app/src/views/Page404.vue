@@ -8,7 +8,7 @@
       </div>
       <div class="app-error-page__action">
         <button
-          @click="$router.push('/sign-up')"
+          @click="$router.push('/')"
           class="app__btn app__btn--primary"
         >
           На главную
