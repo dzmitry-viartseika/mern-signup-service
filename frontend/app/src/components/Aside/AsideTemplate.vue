@@ -1,7 +1,8 @@
 <template>
   <nav>
     <div class="sidebar-top">
-      <span class="shrink-btn">
+      <span class="shrink-btn"
+      >
         <svgicon
           name="Eye"
           width="16"
@@ -16,7 +17,8 @@
       <ul>
         <div class="active-tab"></div>
         <li class="tooltip-element" data-tooltip="0">
-          <a @click.prevent="$router.push('/crm/dashboard')" class="active" data-active="0">
+          <a @click.prevent="$router.push('/crm/dashboard')"
+             class="active" data-active="0">
             <div class="icon">
               <svgicon
                 name="Eye"
@@ -75,6 +77,12 @@ import Vue from 'vue';
 import '@/assets/icons/Eye';
 
 export default class AsideTemplate extends Vue {
+  isShortAside: boolean | null = false;
+
+  hideAside(): void {
+    this.isShortAside = true;
+  }
+
   logOut(): void {
     this.setUser(null);
     localStorage.removeItem('token');
