@@ -1,0 +1,135 @@
+.fade-el-enter-active, .fade-el-leave-active {
+  transition: opacity 100ms linear;
+}
+
+.fade-el-enter, .fade-el-leave-to {
+  opacity: 0;
+}
+
+.fade-el-leave, .fade-el-enter-to {
+  opacity: 1;
+}
+
+.fade-content {
+
+  &-enter-active {
+    transition: .2s ease-in;
+  }
+
+  &-leave-active, &-leave-to {
+    transition: .1s ease-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave, &-leave-to {
+    display: none;
+  }
+}
+
+.fade-faq {
+
+  &-enter-active {
+    transition: .4s ease-in;
+  }
+
+  &-leave-active, &-leave-to {
+    transition: .2s ease-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave, &-leave-to {
+    display: none;
+  }
+}
+
+.fade-validation {
+
+  &-enter-active {
+    transition: .1s ease-in;
+  }
+
+  &-leave-active, &-leave-to {
+    transition: .1s ease-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave, &-leave-to {
+    opacity: 0;
+  }
+}
+
+.fade-block {
+
+  &-enter-active {
+    transition: .2s ease-in;
+  }
+
+  &-leave-active, &-leave-to {
+    transition: .01s ease-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave, &-leave-to {
+    opacity: 0;
+  }
+}
+
+.fade-window {
+
+  &-enter-active {
+    transition: .2s ease-in;
+  }
+
+  &-leave-active, &-leave-to {
+    transition: .1s ease-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave, &-leave-to {
+    opacity: 0;
+  }
+}
+
+.fade-btn {
+
+  &-enter-active {
+    transition: .2s ease-in;
+  }
+
+  &-leave-active, &-leave-to {
+    transition: .01s ease-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave, &-leave-to {
+    display: none;
+  }
+}
+
+@keyframes file-upload {
+  from {
+    left: 0;
+  }
+
+  to {
+    left: 100%;
+  }
+}
