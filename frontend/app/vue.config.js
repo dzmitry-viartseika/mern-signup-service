@@ -10,7 +10,7 @@ module.exports = {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
-        styles: path.resolve('src/sass'),
+        styles: path.resolve('src/assets/scss'),
       },
       extensions: ['.js', '.vue', '.json'],
     },
