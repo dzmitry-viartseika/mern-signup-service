@@ -1,13 +1,18 @@
 <template>
   <div class="app">
-    <modal-template>
-      <div slot="content">
+    <modal-template
+      v-if="!isAgreePolicy"
+    >
+      <div slot="content" class="app-modal__content">
         Мы используем файлы cookie, чтобы обеспечивать правильную работу нашего веб-сайта,
         персонализировать рекламные объявления и другие материалы, обеспечивать работу функций
         социальных сетей и анализировать сетевой трафик. Мы также предоставляем информацию об
         использовании вами нашего веб-сайта своим партнерам по социальным сетям, рекламе и
         аналитическим системам.
-        <button>Согласен</button>
+        <button
+          class="app__btn app__btn--primary"
+          @click="agreePolicy"
+        >Согласен</button>
       </div>
     </modal-template>
     <template v-if="showSidebar">
@@ -38,6 +43,8 @@ import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
   },
 })
 export default class App extends Vue {
+  isAgreePolicy: boolean | null = null;
+
   get showSidebar(): boolean {
     const token = localStorage.getItem('token');
     console.log('this.$route.path.includes(\'crm\')', this.$route.path.includes('crm'));
@@ -45,7 +52,13 @@ export default class App extends Vue {
     return !!(this.$route.path.includes('crm') && token);
   }
 
+  agreePolicy(): void {
+    this.isAgreePolicy = !this.isAgreePolicy;
+    localStorage.setItem('isAgreePolicy', 'true');
+  }
+
   created() {
+    this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
     const language = window.navigator ? (window.navigator.language
       || window.navigator.systemLanguage
       || window.navigator.userLanguage) : 'ru';

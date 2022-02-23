@@ -11,6 +11,17 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class ModalTemplate extends Vue {}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
+  .app-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+
+    &__content {
+      display: flex;
+    }
+  }
 </style>
