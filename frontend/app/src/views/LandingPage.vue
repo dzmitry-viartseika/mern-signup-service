@@ -43,6 +43,7 @@ export default class LandingPage extends Vue {
   isAgreePolicy: boolean | null = null;
 
   get language(): string {
+    console.log('this.$i18n.locale', this.$i18n.locale);
     return this.$i18n.locale;
   }
 
@@ -79,6 +80,7 @@ export default class LandingPage extends Vue {
   }
 
   created() {
+    this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
   }
 }

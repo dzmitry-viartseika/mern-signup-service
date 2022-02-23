@@ -6,12 +6,22 @@
         Вход в личный кабинет
       </h2>
       <div class="app-modal__form">
-        <text-input
-          :value.sync="userEmail"
-          input-type="email"
-          placeholder-text="Введите вашу почту"
-          label-text="Почта"
-        />
+        <div class="form-field">
+          <text-input
+            :value.sync="userEmail"
+            input-type="email"
+            placeholder-text="Введите вашу почту"
+            label-text="Почта"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userEmail')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userEmail') }}
+            </div>
+          </transition>
+        </div>
         <div class="app-modal__form-wrapper">
           <a class="app__link" @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
           <span  @click="isVisiblePassword = !isVisiblePassword">
@@ -36,6 +46,14 @@
             :input-type="isVisiblePassword ? 'text' : 'password'"
             placeholder-text="Введите ваш пароль"
           />
+          <transition name="fade-el">
+          <div
+            v-if="$validator.errors.has('userPassword')"
+            class="validation"
+          >
+            {{ $validator.errors.first('userPassword') }}
+          </div>
+          </transition>
         </div>
       </div>
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
@@ -92,18 +110,78 @@ export default class SignIn extends Vue {
 
   isVisiblePassword = false;
 
+  validationError: {
+    text: '',
+    status: false,
+  };
+
+  validator: null;
+
+  beforeMount() {
+    const dict = {
+      en: {
+        custom: {
+          email: {
+            required: 'wertey',
+            // required: validationErrorMessage.en.inputRequired,
+          },
+          password: {
+            required: 'wertey',
+            // required: validationErrorMessage.en.inputRequired,
+          },
+        },
+      },
+      ru: {
+        custom: {
+          userEmail: {
+            required: 'wertey',
+            // required: validationErrorMessage.ru.inputRequired,
+          },
+          userPassword: {
+            required: 'wertey',
+            // required: validationErrorMessage.ru.inputRequired,
+          },
+        },
+      },
+    };
+    this.$validator.localize(dict);
+    this.$validator.attach({ name: 'userEmail', rules: { required: true } });
+    this.$validator.attach({ name: 'userPassword', rules: { required: true } });
+  }
+
   async signIn(): Promise<void> {
-    try {
-      this.isLoader = true;
-      const response = await AuthService.login(this.userEmail, this.userPassword);
-      this.isLoader = false;
-      this.setUser(response.data.user);
-      const { accessToken } = response.data as IAuthResponse;
-      localStorage.setItem('token', accessToken);
-      await this.$router.push('/crm/dashboard');
-    } catch (e) {
-      this.isLoader = false;
-      console.log(e);
+    const result = await this.$validator.validateAll({
+      userEmail: this.userEmail,
+      userPassword: this.userPassword,
+    });
+
+    if (result) {
+      try {
+        this.isLoader = true;
+        const response = await AuthService.login(this.userEmail, this.userPassword);
+        this.isLoader = false;
+        this.setUser(response.data.user);
+        const { accessToken } = response.data as IAuthResponse;
+        localStorage.setItem('token', accessToken);
+        await this.$router.push('/crm/dashboard');
+      } catch (err) {
+        this.isLoader = false;
+        if (err.response && (err.response.data.statusCode === 400
+          || err.response.data.statusCode === 401
+          || err.response.data.statusCode === 404
+        )) {
+          this.validationError = {
+            status: true,
+            text: this.$t('loginPage.loginForm.loginValidation'),
+          };
+          setTimeout(() => {
+            this.validationError = {
+              status: false,
+              text: '',
+            };
+          }, 3000);
+        }
+      }
     }
   }
 }

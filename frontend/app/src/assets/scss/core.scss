@@ -2,6 +2,10 @@
 @import "variables";
 @import "buttons";
 
+.form-field {
+  position: relative;
+}
+
 .app {
 
   &__link {
@@ -76,6 +80,18 @@
       }
     }
   }
+}
+
+.validation {
+  position: absolute;
+  color: $color-cardinal;
+  font: $font-size-sm $font-global-medium;
+  line-height: 1.55;
+  max-width: 397px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  top: 58px;
 }
 
 @import

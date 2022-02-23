@@ -35,7 +35,9 @@ export default class App extends Vue {
       || window.navigator.userLanguage) : 'ru';
     console.log('language', language);
     const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
+    console.log('systemLanguage', systemLanguage);
     if (systemLanguage !== 'ru') {
+      console.log('1');
       this.$i18n.locale = 'en';
     }
   }

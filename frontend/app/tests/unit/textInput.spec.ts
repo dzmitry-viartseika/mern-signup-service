@@ -28,7 +28,7 @@ describe('textInput component', () => {
     wrapper = shallowMount(textInput, {
       propsData: props,
     });
-  }
+  };
 
   afterEach(() => {
     wrapper.destroy();
@@ -37,7 +37,7 @@ describe('textInput component', () => {
   it('label transfer check', () => {
     createComponent({
       labelText: 'LabelText',
-      value: 'testValue'
+      value: 'testValue',
     });
     expect(wrapper.text()).toContain('LabelText');
   });
@@ -45,7 +45,7 @@ describe('textInput component', () => {
   it('check disabled button', () => {
     createComponent({
       disabled: true,
-      value: 'testValue'
+      value: 'testValue',
     });
     const button = wrapper.find('[data-test="input"]');
     expect(button.attributes().disabled).toEqual('disabled');

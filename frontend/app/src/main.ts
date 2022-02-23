@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import SvgIcon from 'vue-svgicon';
 import Meta from 'vue-meta';
+import VeeValidate from 'vee-validate';
+import VueShortKey from 'vue-shortkey';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -19,11 +21,19 @@ Vue.use(SvgIcon, {
   tagName: 'svgicon',
 });
 
+Vue.use(VueShortKey);
+
+Vue.use(VeeValidate, {
+  i18n,
+});
+
 new Vue({
   router,
   store,
   i18n,
   Meta,
+  VueShortKey,
+  VeeValidate,
   SvgIcon,
   render: (h) => h(App),
 }).$mount('#app');
