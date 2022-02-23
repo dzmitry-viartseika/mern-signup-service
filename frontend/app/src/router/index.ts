@@ -29,11 +29,16 @@ const routes: Array<RouteConfig> = [
       }
     },
   },
-  // {
-  //   path: '*',
-  //   name: 'Page404',
-  //   component: Page404,
-  // },
+  {
+    path: '*',
+    name: 'Page404',
+    component: () => import(/* webpackChunkName: "Page404" */ '../views/Page404.vue'),
+  },
+  {
+    path: '/',
+    name: 'LandingPage',
+    component: () => import(/* webpackChunkName: "Landing" */ '../views/LandingPage.vue'),
+  },
   {
     path: '/crm/dashboard',
     name: 'Dashboard',
