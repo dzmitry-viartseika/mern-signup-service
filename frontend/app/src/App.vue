@@ -8,6 +8,12 @@
         {'admin-main': showSidebar},
       ]"
     >
+<!--      //  "husky": {-->
+<!--      //    "hooks": {-->
+<!--      //      "pre-commit": "npm run lint",-->
+<!--      //      "pre-push": "npm run lint"-->
+<!--      //    }-->
+<!--      //  }-->
       <router-view />
     </main>
   </div>
