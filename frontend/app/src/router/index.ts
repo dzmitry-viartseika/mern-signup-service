@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Page404 from '@/views/Page404.vue';
+import Settings from '@/views/Settings.vue';
 
 const token = localStorage.getItem('token');
 
@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/crm/settings',
     name: 'Settings',
-    component: () => import(/* webpackChunkName: "Settings" */ '../views/Settings.vue'),
+    component: Settings,
     beforeEnter: (to, from, next) => {
       if (token) {
         next();

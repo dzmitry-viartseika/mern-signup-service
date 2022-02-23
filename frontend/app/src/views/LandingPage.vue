@@ -77,6 +77,10 @@ export default class LandingPage extends Vue {
     console.log('this', this);
     localStorage.setItem('language', code);
   }
+
+  created() {
+    this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
+  }
 }
 </script>
 

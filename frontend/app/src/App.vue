@@ -3,15 +3,13 @@
     <template v-if="showSidebar">
       <aside-template />
     </template>
-    <div class="app-main"
+    <main class="app-main"
          :class="[
         {'admin-main': showSidebar},
       ]"
     >
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
-    </div>
+      <router-view />
+    </main>
   </div>
 </template>
 
@@ -28,13 +26,10 @@ import Component from 'vue-class-component';
 export default class App extends Vue {
   get showSidebar(): boolean {
     const token = localStorage.getItem('token');
-    console.log('this.$route.path.includes(\'crm\')', this.$route.path.includes('crm'));
-    console.log('token', token);
     return !!(this.$route.path.includes('crm') && token);
   }
 
   created() {
-    this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
     const language = window.navigator ? (window.navigator.language
       || window.navigator.systemLanguage
       || window.navigator.userLanguage) : 'ru';
