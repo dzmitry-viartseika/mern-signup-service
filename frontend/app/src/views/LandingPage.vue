@@ -1,6 +1,14 @@
 <template>
   <div>
-    <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">Sign IN</button>
+    <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">
+      {{ $t('global.btnLogin') }}
+    </button>
+    <dropDown
+      :dropdownOptions="dropdownOptions"
+      :customClass="'ub-dropdown_landing'"
+      :arrowAlt="true"
+      @changeDropdown="changeLanguage"
+    />
     <modal-template
       v-if="!isAgreePolicy"
     >
@@ -23,18 +31,51 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import DropDown from '@/components/Elements/DropDown.vue';
 
 @Component({
   components: {
     ModalTemplate,
+    DropDown,
   },
 })
 export default class LandingPage extends Vue {
   isAgreePolicy: boolean | null = null;
 
+  get language(): string {
+    return this.$i18n.locale;
+  }
+
+  set language(data: string) {
+    this.$i18n.locale = data;
+  }
+
+  get dropdownOptions() {
+    console.log('this', this);
+    return {
+      list: [
+        {
+          code: 'ru',
+          text: 'Russian',
+        },
+        {
+          code: 'en',
+          text: 'English',
+        },
+      ],
+      value: this.language,
+    };
+  }
+
   agreePolicy(): void {
     this.isAgreePolicy = !this.isAgreePolicy;
     localStorage.setItem('isAgreePolicy', 'true');
+  }
+
+  changeLanguage(code: string) {
+    this.language = code;
+    console.log('this', this);
+    localStorage.setItem('language', code);
   }
 }
 </script>
