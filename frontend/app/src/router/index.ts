@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/crm/settings',
     name: 'Settings',
-    component: Settings,
+    component: () => import(/* webpackChunkName: "Settings" */ '../views/Settings.vue'),
     beforeEnter: (to, from, next) => {
       if (token) {
         next();

@@ -14,7 +14,9 @@
 <!--      //      "pre-push": "npm run lint"-->
 <!--      //    }-->
 <!--      //  }-->
-      <router-view />
+      <keep-alive>
+        <router-view />
+      </keep-alive>
     </main>
   </div>
 </template>
@@ -39,11 +41,8 @@ export default class App extends Vue {
     const language = window.navigator ? (window.navigator.language
       || window.navigator.systemLanguage
       || window.navigator.userLanguage) : 'ru';
-    console.log('language', language);
     const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
-    console.log('systemLanguage', systemLanguage);
     if (systemLanguage !== 'ru') {
-      console.log('1');
       this.$i18n.locale = 'en';
     }
   }

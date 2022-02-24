@@ -1,6 +1,6 @@
 <template>
   <div class="app-dashboard">
-    Dashboard
+    Dashboard wewew
   </div>
 </template>
 
@@ -26,13 +26,9 @@ const User = namespace('User');
   },
 })
 export default class Dashboard extends Vue {
- @User.Mutation
- public setUser!: () => void;
-
- created() {
-   console.log(this);
-   console.log('Dashboard');
- }
+  created() {
+    console.log('created', this);
+  }
 }
 </script>
 

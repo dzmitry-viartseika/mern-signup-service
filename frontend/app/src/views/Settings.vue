@@ -1,9 +1,6 @@
 <template>
   <div>
     Settings
-    <div>
-      user={{ user }}
-    </div>
   </div>
 </template>
 
@@ -31,6 +28,10 @@ const User = namespace('User');
 export default class Settings extends Vue {
   @User.State
   public user: IUser;
+
+  created() {
+    console.log('created', this);
+  }
 }
 </script>
 

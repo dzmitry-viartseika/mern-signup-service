@@ -1,6 +1,8 @@
 <template>
   <nav>
-    <div class="sidebar-top">
+    <div class="sidebar-top"
+         @click="proceedTo('/crm/dashboard')"
+    >
       <span class="shrink-btn"
       >
         <svgicon
@@ -15,30 +17,22 @@
 
     <div class="sidebar-links">
       <ul>
-        <div class="active-tab"></div>
-        <li class="tooltip-element" data-tooltip="0">
-          <a @click.prevent="$router.push('/crm/dashboard')"
-             class="active" data-active="0">
+        <li
+          v-for="item in navList"
+          :key="item.id"
+          class="tooltip-element"
+          :data-tooltip="item.id"
+        >
+          <a @click.prevent="proceedTo(item.route)"
+             :class="{'active': item.route === $route.path}" :data-active="item.id">
             <div class="icon">
               <svgicon
-                name="Eye"
+                :name="item.icon"
                 width="16"
                 height="16"
               />
             </div>
-            <span class="link hide">Dashboard</span>
-          </a>
-        </li>
-        <li class="tooltip-element" data-tooltip="1">
-          <a @click.prevent="$router.push('/crm/settings')" data-active="1">
-            <div class="icon">
-              <svgicon
-                name="Eye"
-                width="16"
-                height="16"
-              />
-            </div>
-            <span class="link hide">Settings</span>
+            <span class="link hide">{{ item.name }}</span>
           </a>
         </li>
       </ul>
@@ -75,18 +69,39 @@
 <script lang="ts">
 import Vue from 'vue';
 import '@/assets/icons/Eye';
+import { namespace } from 'vuex-class';
+import Component from 'vue-class-component';
+import asideMenuItems from '@/constants/AsideMenuItems';
 
+const User = namespace('User');
+
+@Component({})
 export default class AsideTemplate extends Vue {
+  @User.Mutation
+  public setUser!: () => void;
+
   isShortAside: boolean | null = false;
+
+  navList = [];
+
+  created() {
+    this.navList = asideMenuItems;
+  }
 
   hideAside(): void {
     this.isShortAside = true;
   }
 
   logOut(): void {
-    this.setUser(null);
+    console.log('logOut');
+    // this.setUser(null);
     localStorage.removeItem('token');
     this.$router.push('/sign-in');
+  }
+
+  proceedTo(route: string) {
+    console.log('this', this.$route.path);
+    this.$router.push(route);
   }
 }
 </script>
