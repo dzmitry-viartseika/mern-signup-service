@@ -121,11 +121,11 @@ export default class SignIn extends Vue {
     const dict = {
       en: {
         custom: {
-          email: {
+          userEmail: {
             required: 'wertey',
             // required: validationErrorMessage.en.inputRequired,
           },
-          password: {
+          userPassword: {
             required: 'wertey',
             // required: validationErrorMessage.en.inputRequired,
           },
@@ -157,23 +157,29 @@ export default class SignIn extends Vue {
 
     if (result) {
       try {
+        console.log('www');
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
+        console.log('response', response);
         this.isLoader = false;
         this.setUser(response.data.user);
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push('/crm/dashboard');
       } catch (err) {
+        console.log('statusCode', err.response.status);
         this.isLoader = false;
-        if (err.response && (err.response.data.statusCode === 400
-          || err.response.data.statusCode === 401
-          || err.response.data.statusCode === 404
+        if (err.response && (err.response.status === 400
+          || err.response.status === 401
+          || err.response.status === 404
         )) {
+          console.log('err.response', err.response);
           this.validationError = {
             status: true,
-            text: this.$t('loginPage.loginForm.loginValidation'),
+            text: err.response.data.message,
+            // text: this.$t('loginPage.loginForm.loginValidation'),
           };
+          console.log('validationError', this.validationError);
           setTimeout(() => {
             this.validationError = {
               status: false,

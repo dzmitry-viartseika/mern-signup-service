@@ -80,7 +80,7 @@
             :value.sync="userEmail"
             input-type="email"
             label-text="Почта"
-            :disabled="!isEditMode"
+            :disabled="true"
           />
           <transition name="fade-el">
             <div
@@ -156,7 +156,15 @@ export default class Settings extends Vue {
 
   isEditMode = false;
 
+  created() {
+    console.log('user', this.user);
+    const { email } = this.user;
+    this.userEmail = email;
+  }
+
   editProfile(): void {
+    console.log('wwww');
+    this.$notify('text');
     this.isEditMode = !this.isEditMode;
   }
 

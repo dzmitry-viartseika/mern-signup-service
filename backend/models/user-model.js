@@ -24,6 +24,18 @@ const UserSchema = new Schema({
     avatar: {
         type: String,
         default: '',
+    },
+    phone: {
+        type: String,
+        default: '',
+    },
+    firstName: {
+        type: String,
+        default: '',
+    },
+    lastName: {
+        type: String,
+        default: '',
     }
 })
 

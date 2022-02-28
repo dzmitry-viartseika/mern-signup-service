@@ -17,7 +17,7 @@ export default class AuthService {
   }
 
   static async restorePassword(email: string): Promise<void> {
-    return $api.post('/restore-password', { email });
+    return $api.post('/forgot-password', { email });
   }
 
   static async changePassword(email: string): Promise<void> {

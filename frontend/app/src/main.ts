@@ -3,6 +3,7 @@ import SvgIcon from 'vue-svgicon';
 import Meta from 'vue-meta';
 import VeeValidate from 'vee-validate';
 import VueShortKey from 'vue-shortkey';
+import Notifications from 'vue-notification';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -21,6 +22,8 @@ Vue.use(SvgIcon, {
   tagName: 'svgicon',
 });
 
+Vue.use(Notifications);
+
 Vue.use(VueShortKey);
 
 Vue.use(VeeValidate, {
@@ -35,5 +38,6 @@ new Vue({
   VueShortKey,
   VeeValidate,
   SvgIcon,
+  Notifications,
   render: (h) => h(App),
 }).$mount('#app');

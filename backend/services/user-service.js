@@ -30,9 +30,11 @@ class UserService {
     async forgotPassword(req, res, next) {
         const { email } = req.body;
 
+        console.log('email', email)
+
         UserModel.findOne({ email }, async (err, user) => {
             if(err || !user) {
-                return res.status(400).json({error: "Пользователя с данным email не найден"});
+                throw ApiError.badRequest('Пользователь с таким email не найден')
             }
 
             const token = jwt.sign(
@@ -42,21 +44,22 @@ class UserService {
                     expiresIn: "15m",
                 }
             );
-
-            const link = `${process.env.API_URL}/api/reset-password/${token}`;
+            console.log('token', token)
+            const link = `${process.env.API_URL}/api/forgot-password/${token}`;
             const data = await mailService.sendForgotMail(email, link, token);
-            return user.updateOne({resetLink: token}, function(err, success) {
-                if(err) {
-                    return res.status(400).json({error: "Reset password link error."});
-                } else {
-                    res.send(data, function (error, body) {
-                        if(error) {
-                            return res.json({error: err.message})
-                        }
-                        return res.json({message: "Email has been sent. Kindly follow the instructions"});
-                    });
-                }
-            });
+            console.log('data', data)
+            // return user.updateOne({resetLink: token}, function(err, success) {
+            //     if(err) {
+            //         return res.status(400).json({error: "Reset password link error."});
+            //     } else {
+            //         res.send(data, function (error, body) {
+            //             if(error) {
+            //                 return res.json({error: err.message})
+            //             }
+            //             return res.json({message: "Email has been sent. Kindly follow the instructions"});
+            //         });
+            //     }
+            // });
         });
     }
 
