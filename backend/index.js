@@ -8,6 +8,7 @@ const router = require('./routers/index');
 const multer = require('multer');
 const errorMiddleWare = require('./middleware/error-middleware');
 const path = require('path');
+const axios = require('axios');
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -21,6 +22,20 @@ app.use(cors({
 app.use('/api', router);
 // подключаем в самом конце
 app.use(errorMiddleWare);
+
+app.get("/oauth/redirect", (req, res) => {
+    axios({
+        method: "POST",
+        url: `${process.env.GITHUB_URL}?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${req.query.code}`,
+        headers: {
+            Accept: "application/json",
+        },
+    }).then((response) => {
+        res.redirect(
+            `http://localhost:8080/crm/dashboard?access_token=${response.data.access_token}`
+        );
+    });
+});
 
 const startApp = async () => {
     try {

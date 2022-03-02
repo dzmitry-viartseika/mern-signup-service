@@ -58,6 +58,18 @@
           </transition>
         </div>
       </div>
+      <div>
+        Oauth
+        <img
+          src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+        >
+        <h1 className="h3 mb-3 font-weight-normal">Sign in with GitHub</h1>
+        <a
+          href="https://github.com/login/oauth/authorize?client_id=6e66afee8531e62fa36a&redirect_uri=http://localhost:8080/oauth/redirect"
+        >
+          Sign in
+        </a>
+      </div>
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
         У вас нет аккаунта?
@@ -74,12 +86,14 @@ import TextInput from '@/components/Elements/TextInput.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { namespace } from 'vuex-class';
+import axios from 'axios';
 import AuthService from '../services/Auth/AuthService';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
 
 const User = namespace('User');
-
+// TODO ENV link remove
+// https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project
 @Component({
   components: {
     TextInput,
@@ -118,6 +132,28 @@ export default class SignIn extends Vue {
   };
 
   validator: null;
+
+  created() {
+    console.log(this);
+    const token = new URLSearchParams(window.location.search).get(
+      'access_token',
+    );
+
+    console.log('token', token);
+
+    axios
+      .get('http://localhost:8010/proxy/user', {
+        headers: {
+          Authorization: `token ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log('res', res);
+      })
+      .catch((error) => {
+        console.log(`error ${error}`);
+      });
+  }
 
   beforeMount() {
     const dict = {
