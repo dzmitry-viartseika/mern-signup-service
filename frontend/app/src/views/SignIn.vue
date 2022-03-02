@@ -60,15 +60,17 @@
       </div>
       <div>
         Oauth
-        <img
-          src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-        >
-        <h1 className="h3 mb-3 font-weight-normal">Sign in with GitHub</h1>
+<!--        <img-->
+<!--          src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"-->
+<!--        >-->
         <a
           href="https://github.com/login/oauth/authorize?client_id=6e66afee8531e62fa36a&redirect_uri=http://localhost:8080/oauth/redirect"
         >
           Sign in
         </a>
+        Google
+        <br>
+        <div class="g-signin2" data-onsuccess="GOOGLE SIGN IN"></div>
       </div>
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
