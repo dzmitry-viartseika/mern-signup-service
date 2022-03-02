@@ -1,28 +1,33 @@
-const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/')
+        cb(null, 'images/')
     },
     filename: function (req, file, cb) {
-        let ext = path.extname(file.originalname);
-        cb(null, Date.now() + ext);
+        cb(null, new Date().toISOString() + '-' + file.originalname);
     }
 })
 
-const upload = multer({
-    storage: storage,
-    fileFilter: function (req, file, cb) {
-        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-            cb(null, true)
-        } else {
-            console.log('only jpg and png file supported')
-        }
-    },
-    limits: {
-        fileSize: 1024 * 1024 * 2
-    }
-})
+const types = ['image/png', 'image/jpg', 'image/jpeg'];
 
-module.exports = upload;
+const fileFilter = (req, file, cb) => {
+    if (types.includes(file.mimetype)) {
+        cb(null, true)
+    } else {
+        cb(null, false)
+        console.log('only jpg and png file supported')
+    }
+};
+
+module.exports = function() {
+    const upload = multer({ storage, fileFilter }).single('image');
+    console.log('upload', upload)
+    return function(req, res, next) {
+        upload(req, res, (err) => {
+            if(err) return res.status(400).send(err.message);
+
+            next();
+        });
+    };
+}

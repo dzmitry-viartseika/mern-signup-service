@@ -1,16 +1,17 @@
 const multer = require('multer');
 
-const upload = multer({
-    storage: Storage
-}).single('testImage');
-
-class fileController {
+class FileController {
     async uploadFile(req,res,next) {
-        upload(req, res, (err) => {
-            if (err) {
-                console.error(err);
-            } else {
+        console.log('req.file', req.file)
+        try {
+            if (req.file) {
+                // path записать в базу
+                res.json(req.file);
             }
-        })
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
+
+module.exports = new FileController();

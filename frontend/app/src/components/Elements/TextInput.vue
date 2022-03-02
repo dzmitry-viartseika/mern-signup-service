@@ -13,6 +13,10 @@
         :placeholder="placeholderText"
         :disabled="disabled"
       />
+      <i
+        v-if="errorStatus"
+        class="ub-icon-info-valid text-field__icon text-field__icon_error"
+      >icon error</i>
     </div>
   </div>
 </template>
@@ -20,7 +24,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-  @Component({})
+@Component({})
 export default class TextInput extends Vue {
     @Prop({ required: false, type: String })
     labelText: string;
@@ -36,6 +40,9 @@ export default class TextInput extends Vue {
 
     @Prop({ type: Boolean, default: false })
     disabled: boolean;
+
+    @Prop({ type: Boolean, default: false })
+    errorStatus: boolean;
 }
 </script>
 

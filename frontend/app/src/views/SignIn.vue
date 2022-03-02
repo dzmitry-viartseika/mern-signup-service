@@ -9,6 +9,7 @@
         <div class="form-field">
           <text-input
             :value.sync="userEmail"
+            :errorStatus="$validator.errors.has('userEmail')"
             input-type="email"
             placeholder-text="Введите вашу почту"
             label-text="Почта"
@@ -45,6 +46,7 @@
             label-text="Пароль"
             :input-type="isVisiblePassword ? 'text' : 'password'"
             placeholder-text="Введите ваш пароль"
+            :errorStatus="$validator.errors.has('userPassword')"
           />
           <transition name="fade-el">
           <div
@@ -122,11 +124,11 @@ export default class SignIn extends Vue {
       en: {
         custom: {
           userEmail: {
-            required: 'wertey',
+            required: 'werewt',
             // required: validationErrorMessage.en.inputRequired,
           },
           userPassword: {
-            required: 'wertey',
+            required: 'werewt',
             // required: validationErrorMessage.en.inputRequired,
           },
         },
@@ -134,11 +136,11 @@ export default class SignIn extends Vue {
       ru: {
         custom: {
           userEmail: {
-            required: 'wertey',
+            required: 'werewt',
             // required: validationErrorMessage.ru.inputRequired,
           },
           userPassword: {
-            required: 'wertey',
+            required: 'werewt',
             // required: validationErrorMessage.ru.inputRequired,
           },
         },
@@ -176,7 +178,8 @@ export default class SignIn extends Vue {
           console.log('err.response', err.response);
           this.validationError = {
             status: true,
-            text: err.response.data.message,
+            text: 'validationErrorvalidationError',
+            // text: err.response.data.message,
             // text: this.$t('loginPage.loginForm.loginValidation'),
           };
           console.log('validationError', this.validationError);
