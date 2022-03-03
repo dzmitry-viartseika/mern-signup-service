@@ -2,7 +2,8 @@ const multer = require('multer');
 
 class FileController {
     async uploadFile(req,res,next) {
-        console.log('req.file', req.file)
+        console.log('req.file', req)
+        res.json('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
         try {
             if (req.file) {
                 // path записать в базу
