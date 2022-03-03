@@ -18,6 +18,6 @@ router.get('/refresh', UserController.refresh);
 router.post('/forgot-password/', UserController.forgotPassword);
 router.post('/forgot-password/:token', UserController.forgotPassword);
 router.get('/users', authMiddleWare, UserController.getUsers);
-router.post('/upload', fileMiddleWare, FileController.uploadFile);
+router.post('/upload', FileController.uploadFile);
 
 module.exports = router;

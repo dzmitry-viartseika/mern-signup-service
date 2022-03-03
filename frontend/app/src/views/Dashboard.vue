@@ -34,10 +34,6 @@ const User = namespace('User');
 export default class Dashboard extends Vue {
   file: '';
 
-  created() {
-    console.log('created', this);
-  }
-
   handleFileUpload() {
     this.file = this.$refs.file.files[0];
   }
@@ -47,7 +43,7 @@ export default class Dashboard extends Vue {
     formData.append('file', this.file);
     console.log('formData', formData);
     try {
-      const result = await UploadService.upload(this.file);
+      const result = await UploadService.upload(formData);
       console.log('result', result);
     } catch (e) {
       console.log('e', e);
