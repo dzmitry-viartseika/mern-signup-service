@@ -1,18 +1,21 @@
 <template>
-  <nav>
+  <nav :class="{'app--short': isShortAside}">
     <div class="sidebar-top"
          @click="proceedTo('/crm/dashboard')"
     >
       <span class="shrink-btn"
+            @click="hideAside"
       >
-        <svgicon
-          name="Eye"
-          width="16"
-          height="16"
-        />
+      <svgicon
+        name="Eye"
+        width="16"
+        height="16"
+      />
       </span>
       <img src="../../assets/images/logo.png" class="logo" alt="">
-      <h3 class="hide">Aqumex</h3>
+      <h3
+        v-if="!isShortAside"
+        class="hide">Aqumex</h3>
     </div>
 
     <div class="sidebar-links">
@@ -32,7 +35,9 @@
                 height="16"
               />
             </div>
-            <span class="link hide">{{ item.name }}</span>
+            <span
+              v-if="!isShortAside"
+              class="link hide">{{ item.name }}</span>
           </a>
         </li>
       </ul>
@@ -45,7 +50,7 @@
       <div class="admin-user tooltip-element" data-tooltip="1">
         <div class="admin-profile hide">
           <img src="../../assets/images/face-1.png" alt="">
-          <div class="admin-info">
+          <div class="admin-info" v-if="!isShortAside">
             <h3>John Doe</h3>
             <h5>Admin</h5>
           </div>
@@ -89,7 +94,8 @@ export default class AsideTemplate extends Vue {
   }
 
   hideAside(): void {
-    this.isShortAside = true;
+    console.log('hideAside');
+    this.isShortAside = !this.isShortAside;
   }
 
   logOut(): void {
@@ -106,6 +112,11 @@ export default class AsideTemplate extends Vue {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .app--short {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

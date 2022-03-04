@@ -56,6 +56,14 @@
             {{ $validator.errors.first('userPassword') }}
           </div>
           </transition>
+          <transition name="fade-el">
+            <div
+              v-show="validationError.status"
+              class="validation"
+            >
+              {{ validationError.text }}
+            </div>
+          </transition>
         </div>
       </div>
       <div>
@@ -128,12 +136,12 @@ export default class SignIn extends Vue {
 
   isVisiblePassword = false;
 
-  validationError: {
+  validationError = {
     text: '',
-    status: false,
+    status: true,
   };
 
-  validator: null;
+  validator = null;
 
   created() {
     console.log(this);
@@ -197,30 +205,28 @@ export default class SignIn extends Vue {
 
     if (result) {
       try {
-        console.log('www');
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
-        console.log('response', response);
         this.isLoader = false;
         this.setUser(response.data.user);
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push('/crm/dashboard');
       } catch (err) {
-        console.log('statusCode', err.response.status);
         this.isLoader = false;
         if (err.response && (err.response.status === 400
           || err.response.status === 401
           || err.response.status === 404
         )) {
-          console.log('err.response', err.response);
           this.validationError = {
             status: true,
-            text: 'validationErrorvalidationError',
-            // text: err.response.data.message,
-            // text: this.$t('loginPage.loginForm.loginValidation'),
+            text: err.response.data.message,
           };
-          console.log('validationError', this.validationError);
+          this.$toasted.show(`${this.validationError.text}`, {
+            theme: 'bubble',
+            position: 'top-right',
+            duration: 3000,
+          });
           setTimeout(() => {
             this.validationError = {
               status: false,

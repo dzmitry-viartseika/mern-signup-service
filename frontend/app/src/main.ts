@@ -3,13 +3,15 @@ import SvgIcon from 'vue-svgicon';
 import Meta from 'vue-meta';
 import VeeValidate from 'vee-validate';
 import VueShortKey from 'vue-shortkey';
-import Notifications from 'vue-notification';
+import Toasted from 'vue-toasted';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import i18n from './i18n';
 
 Vue.config.productionTip = false;
+
+Vue.use(Toasted);
 
 Vue.use(Meta, {
   keyName: 'metaInfo',
@@ -21,8 +23,6 @@ Vue.use(Meta, {
 Vue.use(SvgIcon, {
   tagName: 'svgicon',
 });
-
-Vue.use(Notifications);
 
 Vue.use(VueShortKey);
 
@@ -38,6 +38,6 @@ new Vue({
   VueShortKey,
   VeeValidate,
   SvgIcon,
-  Notifications,
+  Toasted,
   render: (h) => h(App),
 }).$mount('#app');
