@@ -6,12 +6,23 @@
         Регистрация
       </h2>
       <div class="app-modal__form">
-        <text-input
-          :value.sync="userEmail"
-          placeholder-text="Введите вашу почту"
-          input-type="email"
-          label-text="Почта"
-        />
+        <div class="form-field">
+          <text-input
+            :value.sync="userEmail"
+            placeholder-text="Введите вашу почту"
+            input-type="email"
+            :errorStatus="$validator.errors.has('userEmail')"
+            label-text="Почта"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userEmail')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userEmail') }}
+            </div>
+          </transition>
+        </div>
         <div class="app-modal__form-wrapper">
           <span  @click="isVisiblePassword = !isVisiblePassword">
             <template v-if="isVisiblePassword">
@@ -29,12 +40,23 @@
               />
             </template>
           </span>
-          <text-input
-            :value.sync="userPassword"
-            label-text="Пароль"
-            :input-type="isVisiblePassword ? 'text' : 'password'"
-            placeholder-text="Введите ваш пароль"
-          />
+          <div class="form-field">
+            <text-input
+              :value.sync="userPassword"
+              :errorStatus="$validator.errors.has('userPassword')"
+              label-text="Пароль"
+              :input-type="isVisiblePassword ? 'text' : 'password'"
+              placeholder-text="Введите ваш пароль"
+            />
+            <transition name="fade-el">
+              <div
+                v-if="$validator.errors.has('userPassword')"
+                class="validation"
+              >
+                {{ $validator.errors.first('userPassword') }}
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
       <button
@@ -94,21 +116,86 @@ export default class SignUp extends Vue {
 
   isLoader = false;
 
+  validationError = {
+    text: '',
+    status: true,
+  };
+
+  validator = null;
+
   @User.Mutation
-  public setUser!: () => void
+  public setUser!: () => void;
+
+  beforeMount() {
+    const dict = {
+      en: {
+        custom: {
+          userEmail: {
+            required: 'Введите электронную почту',
+            // required: validationErrorMessage.en.inputRequired,
+          },
+          userPassword: {
+            required: 'Введите пароль',
+            // required: validationErrorMessage.en.inputRequired,
+          },
+        },
+      },
+      ru: {
+        custom: {
+          userEmail: {
+            required: 'werewt',
+            // required: validationErrorMessage.ru.inputRequired,
+          },
+          userPassword: {
+            required: 'werewt',
+            // required: validationErrorMessage.ru.inputRequired,
+          },
+        },
+      },
+    };
+    this.$validator.localize(dict);
+    this.$validator.attach({ name: 'userEmail', rules: { required: true } });
+    this.$validator.attach({ name: 'userPassword', rules: { required: true } });
+  }
 
   async signUp(): Promise<void> {
-    try {
-      this.isLoader = true;
-      const response = await AuthService.registration(this.userEmail, this.userPassword);
-      this.isLoader = false;
-      this.setUser(response.data.user);
-      const { accessToken } = response.data as IAuthResponse;
-      localStorage.setItem('token', accessToken);
-      await this.$router.push('/crm/dashboard');
-    } catch (e) {
-      this.isLoader = false;
-      console.log(e);
+    const result = await this.$validator.validateAll({
+      userEmail: this.userEmail,
+      userPassword: this.userPassword,
+    });
+
+    if (result) {
+      try {
+        this.isLoader = true;
+        const response = await AuthService.registration(this.userEmail, this.userPassword);
+        this.isLoader = false;
+        this.setUser(response.data.user);
+        const { accessToken } = response.data as IAuthResponse;
+        localStorage.setItem('token', accessToken);
+        await this.$router.push('/crm/dashboard');
+      } catch (err) {
+        this.isLoader = false;
+        if (err.response && (err.response.status === 400
+          || err.response.status === 401
+          || err.response.status === 404
+        )) {
+          this.validationError = {
+            status: true,
+            text: err.response.data.message,
+          };
+          this.$toasted.show(`${this.validationError.text}`, {
+            theme: 'bubble',
+            position: 'top-right',
+            duration: 3000,
+          });
+          setTimeout(() => {
+            this.validationError = {
+              status: false,
+              text: '',
+            };
+          }, 3000);
+        }
+      }
     }
   }
 }

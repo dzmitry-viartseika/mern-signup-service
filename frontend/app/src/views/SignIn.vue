@@ -170,11 +170,11 @@ export default class SignIn extends Vue {
       en: {
         custom: {
           userEmail: {
-            required: 'werewt',
+            required: 'Введите электронную почту',
             // required: validationErrorMessage.en.inputRequired,
           },
           userPassword: {
-            required: 'werewt',
+            required: 'Введите пароль',
             // required: validationErrorMessage.en.inputRequired,
           },
         },
@@ -240,6 +240,6 @@ export default class SignIn extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 
 </style>

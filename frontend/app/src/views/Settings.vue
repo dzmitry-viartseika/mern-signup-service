@@ -157,14 +157,11 @@ export default class Settings extends Vue {
   isEditMode = false;
 
   created() {
-    console.log('user', this.user);
     const { email } = this.user;
     this.userEmail = email;
   }
 
   editProfile(): void {
-    console.log('wwww');
-    this.$notify('text');
     this.isEditMode = !this.isEditMode;
   }
 

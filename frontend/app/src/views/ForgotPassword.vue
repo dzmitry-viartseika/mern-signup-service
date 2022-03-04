@@ -6,12 +6,22 @@
         Забыли пароль?
       </h2>
       <div class="app-modal__form">
-        <text-input
-          :value.sync="userEmail"
-          placeholder-text="Введите вашу почту"
-          input-type="email"
-          label-text="Почта"
-        />
+        <div class="form-field">
+          <text-input
+            :value.sync="userEmail"
+            placeholder-text="Введите вашу почту"
+            input-type="email"
+            label-text="Почта"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userEmail')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userEmail') }}
+            </div>
+          </transition>
+        </div>
       </div>
       <button class="app__btn app__btn--primary" @click="restorePassword">Отправить</button>
       <div class="app-modal__footer">
@@ -52,14 +62,76 @@ export default class ForgotPassword extends Vue {
 
   isLoader = false;
 
+  validationError = {
+    text: '',
+    status: true,
+  };
+
+  validator = null;
+
+  beforeMount() {
+    const dict = {
+      en: {
+        custom: {
+          userEmail: {
+            required: 'Введите электронную почту',
+            // required: validationErrorMessage.en.inputRequired,
+          },
+        },
+      },
+      ru: {
+        custom: {
+          userEmail: {
+            required: 'werewt',
+            // required: validationErrorMessage.ru.inputRequired,
+          },
+        },
+      },
+    };
+    this.$validator.localize(dict);
+    this.$validator.attach({ name: 'userEmail', rules: { required: true } });
+  }
+
   async restorePassword(): Promise<void> {
+    const result = await this.$validator.validateAll({
+      userEmail: this.userEmail,
+    });
+
+    if (result) {
+      try {
+        this.isLoader = true;
+        const response = await AuthService.restorePassword(this.userEmail);
+        this.isLoader = false;
+        const { accessToken } = response.data as IAuthResponse;
+        localStorage.setItem('token', accessToken);
+        await this.$router.push('/sign-in');
+      } catch (err) {
+        this.isLoader = false;
+        if (err.response && (err.response.status === 400
+          || err.response.status === 401
+          || err.response.status === 404
+        )) {
+          this.validationError = {
+            status: true,
+            text: err.response.data.message,
+          };
+          this.$toasted.show(`${this.validationError.text}`, {
+            theme: 'bubble',
+            position: 'top-right',
+            duration: 3000,
+          });
+          setTimeout(() => {
+            this.validationError = {
+              status: false,
+              text: '',
+            };
+          }, 3000);
+        }
+      }
+    }
+
     try {
-      this.isLoader = true;
-      const response = await AuthService.restorePassword(this.userEmail);
-      this.isLoader = false;
-      const { accessToken } = response.data as IAuthResponse;
-      localStorage.setItem('token', accessToken);
-      await this.$router.push('/dashboard');
+
     } catch (e) {
       this.isLoader = false;
       console.log(e);

@@ -7,7 +7,7 @@ class UserController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return next(ApiError.badRequest('Ошибка валидации', errors.array()))
+                return next(ApiError.badRequest('Заполните корректно почту и пароль минимальное <br> количество символов 3, а максимальное 32', errors.array()))
             }
             const { email, password } = req.body;
             const userData = await UserService.registration(email, password);

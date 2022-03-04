@@ -1,0 +1,29 @@
+.toasted-container.top-right {
+  top: 5px;
+  right: 5px;
+}
+
+.toasted.bubble {
+  border-radius: 5px;
+  background: gray;
+}
+
+.toasted {
+
+  .bubble {
+    border-radius: 5px;
+    background: gray;
+
+  }
+
+  &-container {
+
+    .top-right {
+      top: 5px;
+      right: 5px;
+  }
+    .toasted {
+      margin-top: 0;
+    }
+  }
+}
