@@ -32,10 +32,11 @@ const User = namespace('User');
   },
 })
 export default class Dashboard extends Vue {
-  file: '';
+  file = '';
 
   handleFileUpload() {
-    this.file = this.$refs.file.files[0];
+    const [file] = this.$refs.file.files[0];
+    this.file = file;
   }
 
   async submitFile() {

@@ -26,19 +26,21 @@
         <div class="app-modal__form-wrapper">
           <a class="app__link" @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
           <span  @click="isVisiblePassword = !isVisiblePassword">
-            <template v-if="isVisiblePassword">
-              <svgicon
-                name="Eye"
-                width="16"
-                height="16"
-              />
-            </template>
-            <template v-else>
-              <svgicon
-                name="Eye-hidden"
-                width="16"
-                height="16"
-              />
+            <template v-if="!$validator.errors.has('userPassword')">
+              <template v-if="isVisiblePassword">
+                <svgicon
+                  name="Eye"
+                  width="16"
+                  height="16"
+                />
+              </template>
+              <template v-else>
+                <svgicon
+                  name="Eye-hidden"
+                  width="16"
+                  height="16"
+                />
+              </template>
             </template>
           </span>
           <text-input
@@ -67,18 +69,11 @@
         </div>
       </div>
       <div>
-        Oauth
-<!--        <img-->
-<!--          src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"-->
-<!--        >-->
-        <a
-          href="https://github.com/login/oauth/authorize?client_id=6e66afee8531e62fa36a&redirect_uri=http://localhost:8080/oauth/redirect"
-        >
-          Sign in
-        </a>
-        Google
+        <div style="display: flex; align-items: center">
+          <img src="../assets/images/sign-in-with-google.svg" alt="google">
+          <span style="padding-left: 5px">Войти через Google</span>
+        </div>
         <br>
-        <div class="g-signin2" data-onsuccess="GOOGLE SIGN IN"></div>
       </div>
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
@@ -182,11 +177,11 @@ export default class SignIn extends Vue {
       ru: {
         custom: {
           userEmail: {
-            required: 'werewt',
+            required: 'Введите электронную почту',
             // required: validationErrorMessage.ru.inputRequired,
           },
           userPassword: {
-            required: 'werewt',
+            required: 'Введите пароль',
             // required: validationErrorMessage.ru.inputRequired,
           },
         },

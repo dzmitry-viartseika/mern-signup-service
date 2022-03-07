@@ -25,19 +25,21 @@
         </div>
         <div class="app-modal__form-wrapper">
           <span  @click="isVisiblePassword = !isVisiblePassword">
-            <template v-if="isVisiblePassword">
-              <svgicon
-                name="Eye"
-                width="16"
-                height="16"
-              />
-            </template>
-            <template v-else>
-              <svgicon
-                name="Eye-hidden"
-                width="16"
-                height="16"
-              />
+            <template v-if="!$validator.errors.has('userPassword')">
+              <template v-if="isVisiblePassword">
+                <svgicon
+                  name="Eye"
+                  width="16"
+                  height="16"
+                />
+              </template>
+              <template v-else>
+                <svgicon
+                  name="Eye-hidden"
+                  width="16"
+                  height="16"
+                />
+              </template>
             </template>
           </span>
           <div class="form-field">
@@ -143,11 +145,11 @@ export default class SignUp extends Vue {
       ru: {
         custom: {
           userEmail: {
-            required: 'werewt',
+            required: 'Введите электронную почту',
             // required: validationErrorMessage.ru.inputRequired,
           },
           userPassword: {
-            required: 'werewt',
+            required: 'Введите пароль',
             // required: validationErrorMessage.ru.inputRequired,
           },
         },

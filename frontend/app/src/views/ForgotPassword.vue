@@ -12,6 +12,7 @@
             placeholder-text="Введите вашу почту"
             input-type="email"
             label-text="Почта"
+            :errorStatus="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
             <div
@@ -82,7 +83,7 @@ export default class ForgotPassword extends Vue {
       ru: {
         custom: {
           userEmail: {
-            required: 'werewt',
+            required: 'Введите электронную почту',
             // required: validationErrorMessage.ru.inputRequired,
           },
         },
@@ -129,9 +130,8 @@ export default class ForgotPassword extends Vue {
         }
       }
     }
-
     try {
-
+      console.log('w');
     } catch (e) {
       this.isLoader = false;
       console.log(e);

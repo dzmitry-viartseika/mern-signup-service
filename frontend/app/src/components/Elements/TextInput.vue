@@ -1,5 +1,7 @@
 <template>
-  <div class="text-field">
+  <div class="text-field"
+       :class="{'text-field--validation': errorStatus}"
+  >
     <label class="text-field__label">
       {{ labelText }}
     </label>
@@ -15,14 +17,21 @@
       />
       <i
         v-if="errorStatus"
-        class="ub-icon-info-valid text-field__icon text-field__icon_error"
-      >icon error</i>
+        class="text-field__validation"
+      >
+        <svgicon
+          name="Caution-sign"
+          width="32"
+          height="32"
+        />
+      </i>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import '@/assets/icons/Caution-sign';
 
 @Component({})
 export default class TextInput extends Vue {
@@ -51,6 +60,21 @@ export default class TextInput extends Vue {
 
 .text-field {
   margin-bottom: 15px;
+
+  &--validation {
+
+    input {
+      transition: border-color .15s ease-in;
+      border: 1px solid $color-cardinal;
+    }
+  }
+
+  &__validation {
+    fill: $color-cardinal;
+    position: absolute;
+    right: -3px;
+    top: 12px;
+  }
 
   &_medium {
     input {
@@ -127,7 +151,7 @@ export default class TextInput extends Vue {
     border-radius: $borderRadius;
     width: 100%;
     height: 40px;
-    padding: 12px 20px 12px 12px;
+    padding: 12px 35px 12px 12px;
     font: $font-size-base $font-global;
     line-height: 1.42 ;
     transition: border-color .15s ease-in;

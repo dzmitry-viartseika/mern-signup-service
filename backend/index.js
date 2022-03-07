@@ -7,9 +7,13 @@ const cookieParser = require('cookie-parser');
 const router = require('./routers/index');
 const multer = require('multer');
 const errorMiddleWare = require('./middleware/error-middleware');
+const passport = require('passport');
+const session = require('express-session');
 const path = require('path');
 const axios = require('axios');
 const PORT = process.env.PORT || 5000;
+
+require('./config/passport')(passport);
 
 const app = express();
 app.use(express.json({extended: true}));
@@ -22,6 +26,15 @@ app.use(cors({
 app.use('/api', router);
 // подключаем в самом конце
 app.use(errorMiddleWare);
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/oauth/redirect", (req, res) => {
     axios({
