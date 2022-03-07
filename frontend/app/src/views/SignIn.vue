@@ -2,6 +2,7 @@
   <div class="app-container">
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
+      this.user={{ user }}
       <h2 class="app-modal__title">
         Вход в личный кабинет
       </h2>
@@ -70,10 +71,15 @@
       </div>
       <div>
         <div style="display: flex; align-items: center">
-          <img src="../assets/images/sign-in-with-google.svg" alt="google">
-          <span style="padding-left: 5px">Войти через Google</span>
-        </div>
-        <br>
+          <a href="http://localhost:5000/auth/google" target="_self" class="btn red darken-1">
+            <img src="../assets/images/sign-in-with-google.svg" alt="google">
+            <span style="padding-left: 5px">Войти через Google</span>
+          </a>
+          <br>
+
+          <a href="http://localhost:5000/auth/github">github</a>
+          <br>
+          <a href="http://localhost:5000/auth/facebook">facebook</a>
       </div>
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
@@ -81,6 +87,7 @@
         <a class="app__link" @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -137,6 +144,29 @@ export default class SignIn extends Vue {
   };
 
   validator = null;
+
+  async test() {
+    fetch('http://localhost:5000/auth/login/success', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        throw new Error('authentication has been failed!');
+      })
+      .then((resObject) => {
+        this.setUser(resObject.user);
+        console.log('resObject.user', resObject.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   created() {
     console.log(this);

@@ -1,4 +1,6 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const api_key = process.env.OAUTH2_GOOGLE_CLIENT_ID;
 
 module.exports = {
   runtimeCompiler: true,

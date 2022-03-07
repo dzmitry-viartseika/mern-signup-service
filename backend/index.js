@@ -9,8 +9,10 @@ const multer = require('multer');
 const errorMiddleWare = require('./middleware/error-middleware');
 const passport = require('passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const axios = require('axios');
+const authRoute = require("./routers/auth-google");
 const PORT = process.env.PORT || 5000;
 
 require('./config/passport')(passport);
@@ -24,6 +26,7 @@ app.use(cors({
     origin: process.env.CLIENT_URL
 }));
 app.use('/api', router);
+app.use('/auth', authRoute);
 // подключаем в самом конце
 app.use(errorMiddleWare);
 
@@ -31,6 +34,7 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
 }))
 
 app.use(passport.initialize());

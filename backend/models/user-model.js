@@ -6,6 +6,11 @@ const UserSchema = new Schema({
         unique: true,
         required: true,
     },
+    googleId: {
+        type: String,
+        unique: true,
+        required: true,
+    },
     password: {
         type: String,
         required: true,
@@ -22,10 +27,6 @@ const UserSchema = new Schema({
         default: '',
     },
     avatar: {
-        type: String,
-        default: '',
-    },
-    phone: {
         type: String,
         default: '',
     },

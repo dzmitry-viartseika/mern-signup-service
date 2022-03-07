@@ -3,6 +3,7 @@ const UserController = require('../controllers/user-controller');
 const FileController = require('../controllers/file-controller');
 const authMiddleWare = require('../middleware/auth-middleware');
 const fileMiddleWare = require('../middleware/upload-file-middleware');
+const passport = require('passport');
 const { body } = require('express-validator');
 
 const router = new Router();
