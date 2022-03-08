@@ -11,6 +11,10 @@ module.exports = function (passport) {
                 clientID: process.env.OAUTH2_GOOGLE_CLIENT_ID,
                 clientSecret: process.env.OAUTH2_GOOGLE_CLIENT_SECRET,
                 callbackURL: 'auth/google/callback',
+
+            },
+            accessToken => {
+                console.log("access token: ", accessToken);
             },
             async function (accessToken, refreshToken, profile, done) {
                 // done(null, profile);
@@ -30,8 +34,12 @@ module.exports = function (passport) {
                     if (user) {
                         done(null, user)
                     } else {
-                        user = await User.create(newUser)
-                        done(null, user)
+                        // user = await User.create(newUser)
+                        await user.save();
+                        // done(null, user)
+                        return {
+                            user,
+                        }
                     }
                 } catch (err) {
                     console.error(err)
@@ -64,7 +72,10 @@ module.exports = function (passport) {
                         done(null, user)
                     } else {
                         user = await User.create(newUser)
-                        done(null, user)
+                        // done(null, user)
+                        return {
+                            user,
+                        }
                     }
                 } catch (err) {
                     console.error(err)
