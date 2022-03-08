@@ -2,7 +2,6 @@
   <div class="app-container">
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
-      this.user={{ user }}
       <h2 class="app-modal__title">
         Вход в личный кабинет
       </h2>
@@ -69,18 +68,23 @@
           </transition>
         </div>
       </div>
-      <div>
-        <div style="display: flex; align-items: center">
-          <a href="http://localhost:5000/auth/google" target="_self" class="btn red darken-1">
-            <img src="../assets/images/sign-in-with-google.svg" alt="google">
-            <span style="padding-left: 5px">Войти через Google</span>
-          </a>
-          <br>
-
-          <a href="http://localhost:5000/auth/github">github</a>
-          <br>
-          <a href="http://localhost:5000/auth/facebook">facebook</a>
+      <div class="app-divider">
+        <span class="app-divider__item">Or login with</span>
       </div>
+      <div class="app-oauth">
+        <a href="http://localhost:5000/auth/google" target="_self" class="btn red darken-1">
+          <img src="../assets/images/sign-in-with-google.svg" alt="google">
+        </a>
+
+        <a href="http://localhost:5000/auth/github" target="_self" class="btn red darken-1">
+          <img src="../assets/images/iconmonstr-github-1.svg" alt="google">
+        </a>
+
+        <a href="http://localhost:5000/auth/facebook" target="_self" class="btn red darken-1">
+          <img src="../assets/images/iconmonstr-facebook-6.svg" alt="google">
+        </a>
+      </div>
+      <div>
       <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
         У вас нет аккаунта?
@@ -266,5 +270,50 @@ export default class SignIn extends Vue {
 </script>
 
 <style lang="scss">
+  .app-divider {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    margin: 20px 0;
 
+    &__item {
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: normal;
+      color: rgb(93, 108, 116);
+      text-align: center;
+      min-width: 70px;
+      max-width: 100px;
+      width: 100%;
+    }
+
+    &:after {
+      content: "";
+      flex: 0 1 100%;
+      border-bottom: 1px solid rgb(184, 196, 194);
+      margin: 0 10px;
+      transform: translateY(-50%);
+    }
+
+    &:before {
+      content: "";
+      flex: 0 1 100%;
+      border-bottom: 1px solid rgb(184, 196, 194);
+      margin: 0 10px;
+      transform: translateY(-50%);
+    }
+  }
+
+  .app-oauth {
+    margin-bottom: 20px;
+
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    a + a {
+      margin-left: 10px;
+    }
+  }
 </style>

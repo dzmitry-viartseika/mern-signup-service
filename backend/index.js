@@ -13,6 +13,8 @@ const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const axios = require('axios');
 const authRoute = require("./routers/auth-google");
+const swaggerDoc = require('swagger-ui-express');
+const swaggerDocumentation = require('./helper/documentations');
 const PORT = process.env.PORT || 5000;
 
 require('./config/passport')(passport);
@@ -29,6 +31,9 @@ app.use('/api', router);
 app.use('/auth', authRoute);
 // подключаем в самом конце
 app.use(errorMiddleWare);
+
+app.use('/documentations', swaggerDoc.serve);
+app.use('/documentations', swaggerDoc.setup(swaggerDocumentation));
 
 app.use(session({
     secret: 'keyboard cat',
