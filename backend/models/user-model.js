@@ -4,16 +4,15 @@ const UserSchema = new Schema({
     email: {
         type: String,
         unique: true,
-        required: true,
+        required: false,
     },
     googleId: {
         type: String,
-        unique: true,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     isActivated: {
         type: Boolean,
@@ -30,14 +29,10 @@ const UserSchema = new Schema({
         type: String,
         default: '',
     },
-    firstName: {
+    displayName: {
         type: String,
         default: '',
     },
-    lastName: {
-        type: String,
-        default: '',
-    }
 })
 
 module.exports = model('User', UserSchema);
