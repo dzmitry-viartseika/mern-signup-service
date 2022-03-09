@@ -32,32 +32,27 @@ app.use('/auth', authRoute);
 // подключаем в самом конце
 app.use(errorMiddleWare);
 
+app.get('/api/getuser', (req, res) => {
+    res.send(req.user);
+})
+
 app.use('/documentations', swaggerDoc.serve);
 app.use('/documentations', swaggerDoc.setup(swaggerDocumentation));
 
 app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        sameSite: "none",
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+    },
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
 }))
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.get("/oauth/redirect", (req, res) => {
-    axios({
-        method: "POST",
-        url: `${process.env.GITHUB_URL}?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${req.query.code}`,
-        headers: {
-            Accept: "application/json",
-        },
-    }).then((response) => {
-        res.redirect(
-            `http://localhost:8080/crm/dashboard?access_token=${response.data.access_token}`
-        );
-    });
-});
 
 const startApp = async () => {
     try {

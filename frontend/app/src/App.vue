@@ -25,6 +25,7 @@
 import Vue from 'vue';
 import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
+import AuthService from '@/services/Auth/AuthService';
 
 @Component({
   components: {
@@ -37,13 +38,20 @@ export default class App extends Vue {
     return !!(this.$route.path.includes('crm') && token);
   }
 
-  created() {
+  async created() {
     const language = window.navigator ? (window.navigator.language
       || window.navigator.systemLanguage
       || window.navigator.userLanguage) : 'ru';
     const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
     if (systemLanguage !== 'ru') {
       this.$i18n.locale = 'en';
+    }
+
+    try {
+      const response = await AuthService.test();
+      console.log('response', response);
+    } catch (e) {
+      console.log('e', e);
     }
   }
 }

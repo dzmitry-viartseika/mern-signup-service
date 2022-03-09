@@ -13,6 +13,10 @@ router.get(
     })
 );
 
+router.get('/api/getuser', (req, res) => {
+    res.send(req.user);
+})
+
 router.get("/facebook", passport.authenticate("facebook", { scope: ["profile"] }));
 
 router.get(
@@ -26,7 +30,7 @@ router.get(
 router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
 router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/sign-in', successRedirect: 'http://localhost:8080/crm/dashboard' }),
+    passport.authenticate('google', { session: true, failureRedirect: '/sign-in', successRedirect: 'http://localhost:8080/crm/dashboard' }),
     (req, res) => {
         res.redirect('http://localhost:8080/crm/dashboard')
     }

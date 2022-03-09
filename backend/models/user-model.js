@@ -4,15 +4,11 @@ const UserSchema = new Schema({
     email: {
         type: String,
         unique: true,
-        required: false,
-    },
-    googleId: {
-        type: String,
-        required: false,
+        required: true,
     },
     password: {
         type: String,
-        required: false,
+        required: true,
     },
     isActivated: {
         type: Boolean,
@@ -26,10 +22,6 @@ const UserSchema = new Schema({
         default: '',
     },
     avatar: {
-        type: String,
-        default: '',
-    },
-    displayName: {
         type: String,
         default: '',
     },

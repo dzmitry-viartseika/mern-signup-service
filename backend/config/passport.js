@@ -2,48 +2,61 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require("passport-github2").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const mongoose = require('mongoose');
-const User = require('../models/user-model');
+const Oauth2User = require('../models/oauth2-user-model');
 
 module.exports = function (passport) {
     passport.use(
         new GoogleStrategy(
             {
-                clientID: process.env.OAUTH2_GOOGLE_CLIENT_ID,
-                clientSecret: process.env.OAUTH2_GOOGLE_CLIENT_SECRET,
-                callbackURL: 'auth/google/callback',
-
+                clientID: '306249750576-0p5omh8fvab00voahj67l3qhq4rak7vc.apps.googleusercontent.com',
+                clientSecret: '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',
+                callbackURL: '/auth/google/callback',
             },
             accessToken => {
                 console.log("access token: ", accessToken);
             },
-            async function (accessToken, refreshToken, profile, done) {
-                // done(null, profile);
-                const newUser = {
-                    googleId: profile.id,
-                    displayName: profile.displayName,
-                    firstName: profile.name.givenName,
-                    lastName: profile.name.familyName,
-                    avatar: profile.photos[0].value,
-                }
+            function (accessToken, refreshToken, profile, cb) {
 
-                console.log('newUser', newUser);
+                Oauth2User.findOne({ googleId: profile.id }, async (err, doc) => {
 
-                try {
-                    let user = await User.findOne({googleId: profile.id})
-
-                    if (user) {
-                        done(null, user)
-                    } else {
-                        // user = await User.create(newUser)
-                        await user.save();
-                        // done(null, user)
-                        return {
-                            user,
-                        }
+                    if (err) {
+                        return cb(err, null);
                     }
-                } catch (err) {
-                    console.error(err)
-                }
+
+                    if (!doc) {
+                        const newUser = new Oauth2User({
+                            googleId: profile.id,
+                            username: profile.name.givenName
+                        });
+
+                        await newUser.save();
+                        cb(null, newUser);
+                    }
+                    cb(null, doc);
+                })
+
+
+                // const newUser = {
+                //     googleId: profile.id,
+                //     displayName: profile.displayName,
+                //     username: profile.name.givenName,
+                //     avatar: profile.photos[0].value,
+                // }
+                //
+                // console.log('newUser', newUser);
+                //
+                // try {
+                //     let user = await Oauth2User.findOne({googleId: profile.id})
+                //
+                //     if (user) {
+                //         done(null, user)
+                //     } else {
+                //         await newUser.save();
+                //         done(null, newUser);
+                //     }
+                // } catch (err) {
+                //     console.error(err)
+                // }
             }
         ),
     );
@@ -103,6 +116,6 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser((id, done) => {
-        User.findById(id, (err, user) => done(err, user))
+        Oauth2User.findById(id, (err, user) => done(err, user))
     });
 }
