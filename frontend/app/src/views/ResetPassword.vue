@@ -6,6 +6,23 @@
         {{ $t('resetPasswordPage.resetPasswordTitle') }}
       </h2>
       <div class="app-modal__form">
+        <div class="form-field">
+          <text-input
+            :value.sync="userEmail"
+            :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
+            :label-text="$t('signInPage.email')"
+            input-type="email"
+            :errorStatus="$validator.errors.has('userEmail')"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userEmail')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userEmail') }}
+            </div>
+          </transition>
+        </div>
         <div class="app-modal__form-wrapper">
           <span  @click="isVisiblePassword = !isVisiblePassword">
             <template v-if="isVisiblePassword">
@@ -65,6 +82,8 @@ import '@/assets/icons/Eye-hidden';
   },
 })
 export default class ForgotPassword extends Vue {
+  userEmail = '';
+
   userPassword = '';
 
   isLoader = false;
@@ -74,11 +93,11 @@ export default class ForgotPassword extends Vue {
   async restorePassword(): Promise<void> {
     try {
       this.isLoader = true;
-      const response = await AuthService.changePassword(this.userPassword);
+      const response = await AuthService.changePassword(this.userEmail, this.userPassword);
       this.isLoader = false;
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);
-      await this.$router.push('/dashboard');
+      await this.$router.push('/crm/dashboard');
     } catch (e) {
       this.isLoader = false;
       console.log(e);

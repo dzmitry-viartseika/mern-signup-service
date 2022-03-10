@@ -16,6 +16,7 @@ class UserService {
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
         const user = await UserModel.create({ email, password: hashPassword, activationLink });
+        console.log('user #1', user);
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
@@ -28,6 +29,7 @@ class UserService {
     }
 
     async forgotPassword(req, res, next) {
+        console.log('log1 #1')
         const { email } = req.body;
 
         console.log('email', email)
@@ -45,9 +47,36 @@ class UserService {
                 }
             );
             console.log('token', token);
-            const link = `${process.env.API_URL}/api/forgot-password/${token}`;
-            const data = await mailService.sendForgotMail(email, link);
-            console.log('data wertey', data);
+            console.log('user', user);
+            const resetLink = uuid.v4();
+            user.resetLink = resetLink;
+            console.log('user', user);
+            user.save();
+            const link = `${process.env.API_URL}/api/forgot-password/${resetLink}`;
+            await mailService.sendForgotMail(email, link);
+        });
+    }
+
+    async changePassword(req, res, next) {
+        const { email, newPassword } = req.body;
+
+        UserModel.findOne({ email }, async (err, user) => {
+            if(err || !user) {
+                throw ApiError.badRequest('Пользователь с таким email не найден')
+            }
+
+            const token = jwt.sign(
+                {_id: user._id},
+                process.env.API_URL,
+                {
+                    expiresIn: "15m",
+                }
+            );
+            const hashPassword = await bcrypt.hash(newPassword, 3);
+            console.log('hashPassword', hashPassword);
+            user.password = hashPassword;
+            console.log('user', user);
+            user.save();
         });
     }
 
@@ -74,6 +103,7 @@ class UserService {
     }
 
     async activate(activationLink) {
+        console.log('log #3');
         const user = await UserModel.findOne({ activationLink });
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
@@ -83,7 +113,9 @@ class UserService {
     }
 
     async refreshPassword(resetLink) {
+        console.log('log3 #3333')
         const user = await UserModel.findOne({ resetLink });
+        console.log('user', user);
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
         }

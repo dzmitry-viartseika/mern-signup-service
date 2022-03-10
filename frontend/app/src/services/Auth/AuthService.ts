@@ -20,8 +20,8 @@ export default class AuthService {
     return $api.post('/forgot-password', { email });
   }
 
-  static async changePassword(password: string): Promise<void> {
-    return $api.post('/change-password', { password });
+  static async changePassword(email: string, newPassword: string): Promise<void> {
+    return $api.post('/change-password', { email, newPassword });
   }
 
   static async test(): Promise<void> {

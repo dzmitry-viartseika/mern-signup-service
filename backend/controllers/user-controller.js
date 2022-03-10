@@ -75,18 +75,28 @@ class UserController {
     async resetPassword(req,res,next) {
         try {
             const resetLink = req.params.link;
-            console.log('resetLink', resetLink)
+            console.log('resetLink', resetLink);
             await UserService.refreshPassword(resetLink);
-            return res.redirect(process.env.CLIENT_URL)
+            return res.redirect(process.env.CLIENT_RESET_PASSWORD_URL)
         } catch (e) {
             next(e);
             console.log(e);
         }
     }
 
-    async forgotPassword(req, res) {
+    async forgotPassword(req, res, next) {
         try {
             const users = await UserService.forgotPassword(req);
+            return res.json(users)
+        } catch (e) {
+            next(e);
+            console.log(e);
+        }
+    }
+
+    async changedPassword(req, res, next) {
+        try {
+            const users = await UserService.changePassword(req);
             return res.json(users)
         } catch (e) {
             next(e);
