@@ -44,22 +44,10 @@ class UserService {
                     expiresIn: "15m",
                 }
             );
-            console.log('token', token)
+            console.log('token', token);
             const link = `${process.env.API_URL}/api/forgot-password/${token}`;
-            const data = await mailService.sendForgotMail(email, link, token);
-            console.log('data', data)
-            // return user.updateOne({resetLink: token}, function(err, success) {
-            //     if(err) {
-            //         return res.status(400).json({error: "Reset password link error."});
-            //     } else {
-            //         res.send(data, function (error, body) {
-            //             if(error) {
-            //                 return res.json({error: err.message})
-            //             }
-            //             return res.json({message: "Email has been sent. Kindly follow the instructions"});
-            //         });
-            //     }
-            // });
+            const data = await mailService.sendForgotMail(email, link);
+            console.log('data wertey', data);
         });
     }
 
@@ -91,6 +79,16 @@ class UserService {
             throw ApiError.badRequest('Некорректная активация ссылки')
         }
         user.isActivated = true;
+        await user.save();
+    }
+
+    async refreshPassword(resetLink) {
+        const user = await UserModel.findOne({ resetLink });
+        if(!user) {
+            throw ApiError.badRequest('Некорректная активация ссылки')
+        }
+        console.log('user', user)
+        user.avatar = 'wertey';
         await user.save();
     }
 
