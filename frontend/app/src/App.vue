@@ -44,7 +44,6 @@ export default class App extends Vue {
       this.$i18n.locale = lang;
     } else {
       const language = window.navigator ? (window.navigator.language
-        || window.navigator.userLanguage
         || window.navigator.userLanguage) : 'ru';
       const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
       if (systemLanguage !== 'ru') {
