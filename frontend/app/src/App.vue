@@ -39,19 +39,17 @@ export default class App extends Vue {
   }
 
   async created() {
-    const language = window.navigator ? (window.navigator.language
-      || window.navigator['userLanguage']
-      || window.navigator['userLanguage']) : 'ru';
-    const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
-    if (systemLanguage !== 'ru') {
-      this.$i18n.locale = 'en';
-    }
-
-    try {
-      const response = await AuthService.test();
-      console.log('response', response);
-    } catch (e) {
-      console.log('e', e);
+    const lang = localStorage.getItem('language');
+    if (lang) {
+      this.$i18n.locale = lang;
+    } else {
+      const language = window.navigator ? (window.navigator.language
+        || window.navigator.userLanguage
+        || window.navigator.userLanguage) : 'ru';
+      const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
+      if (systemLanguage !== 'ru') {
+        this.$i18n.locale = 'en';
+      }
     }
   }
 }

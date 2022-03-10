@@ -81,7 +81,7 @@
       </div>
       <div class="app-actions">
         <button class="app__btn app__btn--primary" @click="signIn">
-          {{ $t('signInPage.signInTitle') }}
+          {{ $t('global.signInButton') }}
         </button>
       </div>
       <div>

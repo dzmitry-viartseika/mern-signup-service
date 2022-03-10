@@ -13,9 +13,7 @@
     "sourceMap": true,
     "allowJs": true,
     "noImplicitAny": false,
-    "dotNotation": false,
     "strictPropertyInitialization": false,
-    "enforceForClassFields": false,
     "baseUrl": ".",
     "types": [
       "webpack-env",
@@ -32,6 +30,10 @@
       "dom.iterable",
       "scripthost"
     ]
+  },
+  "rules": {
+    "camelcase": 2,
+    "dot-notation": [2, {"allowPattern": "^[a-z]+(_[a-z]+)+$"}],
   },
   "include": [
     "src/**/*.ts",
