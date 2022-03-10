@@ -1,4 +1,6 @@
-const asideMenuItems = [
+import { IAsideItem } from '../model/constants/IAsideItem';
+
+const asideMenuItems: IAsideItem[] = [
   {
     id: 1,
     name: 'Dashboard',

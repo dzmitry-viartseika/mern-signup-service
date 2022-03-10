@@ -74,7 +74,7 @@ export default class ForgotPassword extends Vue {
   async restorePassword(): Promise<void> {
     try {
       this.isLoader = true;
-      const response = await AuthService.restorePassword(this.userEmail);
+      const response = await AuthService.changePassword(this.userPassword);
       this.isLoader = false;
       const { accessToken } = response.data as IAuthResponse;
       localStorage.setItem('token', accessToken);

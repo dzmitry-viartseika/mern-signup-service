@@ -11,6 +11,11 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "allowJs": true,
+    "noImplicitAny": false,
+    "dotNotation": false,
+    "strictPropertyInitialization": false,
+    "enforceForClassFields": false,
     "baseUrl": ".",
     "types": [
       "webpack-env",

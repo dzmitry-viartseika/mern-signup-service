@@ -77,6 +77,7 @@ import '@/assets/icons/Eye';
 import { namespace } from 'vuex-class';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
+import { IAsideItem } from '../../model/constants/IAsideItem';
 
 const User = namespace('User');
 
@@ -87,19 +88,17 @@ export default class AsideTemplate extends Vue {
 
   isShortAside: boolean | null = false;
 
-  navList = [];
+  navList: IAsideItem[] = [];
 
   created() {
     this.navList = asideMenuItems;
   }
 
   hideAside(): void {
-    console.log('hideAside');
     this.isShortAside = !this.isShortAside;
   }
 
   logOut(): void {
-    console.log('logOut');
     // this.setUser(null);
     localStorage.removeItem('token');
     this.$router.push('/sign-in');

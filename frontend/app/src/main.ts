@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import SvgIcon from 'vue-svgicon';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import Meta from 'vue-meta';
 import VeeValidate from 'vee-validate';
 import VueShortKey from 'vue-shortkey';
@@ -31,10 +33,12 @@ Vue.use(VeeValidate, {
 });
 
 new Vue({
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  Meta,
   router,
   store,
   i18n,
-  Meta,
   VueShortKey,
   VeeValidate,
   SvgIcon,

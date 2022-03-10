@@ -168,7 +168,7 @@ export default class SignUp extends Vue {
         this.isLoader = true;
         const response = await AuthService.registration(this.userEmail, this.userPassword);
         this.isLoader = false;
-        this.setUser(response.data.user);
+        this.setUser = response.data.user;
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push('/crm/dashboard');

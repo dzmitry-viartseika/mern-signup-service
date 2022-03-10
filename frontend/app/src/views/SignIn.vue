@@ -159,51 +159,6 @@ export default class SignIn extends Vue {
 
   validator = null;
 
-  async test() {
-    fetch('http://localhost:5000/auth/login/success', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Credentials': true,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) return response.json();
-        throw new Error('authentication has been failed!');
-      })
-      .then((resObject) => {
-        this.setUser(resObject.user);
-        console.log('resObject.user', resObject.user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  created() {
-    console.log(this);
-    const token = new URLSearchParams(window.location.search).get(
-      'access_token',
-    );
-
-    console.log('token', token);
-
-    axios
-      .get('http://localhost:8010/proxy/user', {
-        headers: {
-          Authorization: `token ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log('res', res);
-      })
-      .catch((error) => {
-        console.log(`error ${error}`);
-      });
-  }
-
   beforeMount() {
     const dict = {
       en: {
@@ -243,7 +198,7 @@ export default class SignIn extends Vue {
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
         this.isLoader = false;
-        this.setUser(response.data.user);
+        this.setUser = response.data.user;
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push('/crm/dashboard');
