@@ -47,8 +47,8 @@
           </span>
           <text-input
             :value.sync="userPassword"
-            :label-text="$t('signInPage.password')"
             :input-type="isVisiblePassword ? 'text' : 'password'"
+            :label-text="$t('signInPage.password')"
             :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
             :errorStatus="$validator.errors.has('userPassword')"
           />
@@ -111,6 +111,7 @@ import axios from 'axios';
 import AuthService from '../services/Auth/AuthService';
 import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
 import OauthGithub from '../components/Oauths/OauthGithub.vue';
+import validationErrorMessage from '../locales/validationErrorMessage';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
 
@@ -208,24 +209,20 @@ export default class SignIn extends Vue {
       en: {
         custom: {
           userEmail: {
-            required: 'Введите электронную почту',
-            // required: validationErrorMessage.en.inputRequired,
+            required: validationErrorMessage.en.inputRequired,
           },
           userPassword: {
-            required: 'Введите пароль',
-            // required: validationErrorMessage.en.inputRequired,
+            required: validationErrorMessage.en.inputRequired,
           },
         },
       },
       ru: {
         custom: {
           userEmail: {
-            required: 'Введите электронную почту',
-            // required: validationErrorMessage.ru.inputRequired,
+            required: validationErrorMessage.ru.inputRequired,
           },
           userPassword: {
-            required: 'Введите пароль',
-            // required: validationErrorMessage.ru.inputRequired,
+            required: validationErrorMessage.ru.inputRequired,
           },
         },
       },

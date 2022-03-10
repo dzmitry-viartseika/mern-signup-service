@@ -2,6 +2,7 @@
   "global": {
     "sendButton": "Send",
     "signInButton": "Sign in",
+    "signUpButton": "Sign up",
     "agreeButton": "Agree"
   },
   "signInPage": {
@@ -22,5 +23,8 @@
   },
   "forgotPasswordPage": {
     "forgotPasswordTitle": "Forgot your password?"
+  },
+  "resetPasswordPage": {
+    "resetPasswordTitle": "Set new password"
   }
 }

@@ -3,16 +3,16 @@
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <h2 class="app-modal__title">
-        Регистрация
+        {{ $t('signUpPage.signUpTitle') }}
       </h2>
       <div class="app-modal__form">
         <div class="form-field">
           <text-input
             :value.sync="userEmail"
-            placeholder-text="Введите вашу почту"
+            :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
+            :label-text="$t('signInPage.email')"
             input-type="email"
             :errorStatus="$validator.errors.has('userEmail')"
-            label-text="Почта"
           />
           <transition name="fade-el">
             <div
@@ -46,9 +46,9 @@
             <text-input
               :value.sync="userPassword"
               :errorStatus="$validator.errors.has('userPassword')"
-              label-text="Пароль"
+              :label-text="$t('signInPage.password')"
+              :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
               :input-type="isVisiblePassword ? 'text' : 'password'"
-              placeholder-text="Введите ваш пароль"
             />
             <transition name="fade-el">
               <div
@@ -65,12 +65,12 @@
         class="app__btn app__btn--primary"
         @click="signUp"
       >
-        Регистрация
+        {{ $t('signUpPage.signUpTitle') }}
       </button>
       <div class="app-modal__footer">
-        Уже есть аккаунт?
+        {{ $t('signUpPage.haveAccount') }}
         <a class="app__link" @click.prevent="$router.push('/sign-in')">
-          {{ $t('global.btnLogin') }}
+          {{ $t('global.signInButton') }}
         </a>
       </div>
     </div>
@@ -89,6 +89,7 @@ import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
 import { namespace } from 'vuex-class';
 import { IUser } from '@/model/IUser';
+import validationErrorMessage from '../locales/validationErrorMessage';
 
 const User = namespace('User');
 
@@ -133,24 +134,20 @@ export default class SignUp extends Vue {
       en: {
         custom: {
           userEmail: {
-            required: 'Введите электронную почту',
-            // required: validationErrorMessage.en.inputRequired,
+            required: validationErrorMessage.en.inputRequired,
           },
           userPassword: {
-            required: 'Введите пароль',
-            // required: validationErrorMessage.en.inputRequired,
+            required: validationErrorMessage.en.inputRequired,
           },
         },
       },
       ru: {
         custom: {
           userEmail: {
-            required: 'Введите электронную почту',
-            // required: validationErrorMessage.ru.inputRequired,
+            required: validationErrorMessage.ru.inputRequired,
           },
           userPassword: {
-            required: 'Введите пароль',
-            // required: validationErrorMessage.ru.inputRequired,
+            required: validationErrorMessage.ru.inputRequired,
           },
         },
       },

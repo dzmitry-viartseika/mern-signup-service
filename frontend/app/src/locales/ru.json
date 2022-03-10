@@ -2,6 +2,7 @@
   "global": {
     "sendButton": "Отправить",
     "signInButton": "Войти",
+    "signUpButton": "Зарегистрировать",
     "agreeButton": "Согласен"
   },
   "signInPage": {
@@ -22,5 +23,8 @@
   },
   "forgotPasswordPage": {
     "forgotPasswordTitle": "Забыли пароль?"
+  },
+  "resetPasswordPage": {
+    "resetPasswordTitle": "Выберите новый пароль"
   }
 }

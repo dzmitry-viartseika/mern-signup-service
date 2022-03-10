@@ -3,7 +3,7 @@
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <h2 class="app-modal__title">
-        Выберите новый пароль
+        {{ $t('resetPasswordPage.resetPasswordTitle') }}
       </h2>
       <div class="app-modal__form">
         <div class="app-modal__form-wrapper">
@@ -25,13 +25,14 @@
           </span>
           <text-input
             :value.sync="userPassword"
-            placeholder-text="Введите новый пароль"
-            :input-type="isVisiblePassword ? 'text' : 'password'"
-            label-text="Пароль"
+            :label-text="$t('signInPage.password')"
+            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
           />
         </div>
       </div>
-      <button class="app__btn app__btn--primary" @click="restorePassword">Отправить</button>
+      <button class="app__btn app__btn--primary" @click="restorePassword">
+        {{ $t('global.sendButton') }}
+      </button>
     </div>
   </div>
 </template>

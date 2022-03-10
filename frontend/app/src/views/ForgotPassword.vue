@@ -3,15 +3,15 @@
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <h2 class="app-modal__title">
-        Забыли пароль?
+        {{ $t('forgotPasswordPage.forgotPasswordTitle') }}
       </h2>
       <div class="app-modal__form">
         <div class="form-field">
           <text-input
             :value.sync="userEmail"
-            placeholder-text="Введите вашу почту"
+            :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
+            :label-text="$t('signInPage.email')"
             input-type="email"
-            label-text="Почта"
             :errorStatus="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
@@ -24,10 +24,14 @@
           </transition>
         </div>
       </div>
-      <button class="app__btn app__btn--primary" @click="restorePassword">Отправить</button>
+      <button class="app__btn app__btn--primary" @click="restorePassword">
+        {{ $t('global.sendButton') }}
+      </button>
       <div class="app-modal__footer">
-        У вас нет аккаунта?
-        <a class="app__link" @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
+        {{ $t('signInPage.createAccount') }}
+        <a class="app__link" @click.prevent="$router.push('/sign-up')">
+          {{ $t('global.signUpButton') }}
+        </a>
       </div>
     </div>
   </div>
@@ -40,6 +44,7 @@ import AuthService from '@/services/Auth/AuthService';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import TextInput from '../components/Elements/TextInput.vue';
+import validationErrorMessage from '../locales/validationErrorMessage';
 
 @Component({
   components: {
@@ -75,16 +80,14 @@ export default class ForgotPassword extends Vue {
       en: {
         custom: {
           userEmail: {
-            required: 'Введите электронную почту',
-            // required: validationErrorMessage.en.inputRequired,
+            required: validationErrorMessage.en.inputRequired,
           },
         },
       },
       ru: {
         custom: {
           userEmail: {
-            required: 'Введите электронную почту',
-            // required: validationErrorMessage.ru.inputRequired,
+            required: validationErrorMessage.ru.inputRequired,
           },
         },
       },
