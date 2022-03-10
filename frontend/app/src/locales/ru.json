@@ -1,15 +1,26 @@
 {
   "global": {
-    "btnLogin": "Войти",
-    "entry": "Вход",
-    "logout": "Выйти",
-    "yes": "Да",
-    "no": "Нет",
-    "delete": "Удалить",
-    "cancel": "Отменить",
-    "search": "Поиск",
-    "link": "Ссылка",
-    "clear": "Очистить",
-    "loaderText": "Подождите..."
+    "sendButton": "Отправить",
+    "signInButton": "Войти",
+    "agreeButton": "Согласен"
+  },
+  "signInPage": {
+    "signInTitle": "Вход в личный кабинет",
+    "email": "Почта",
+    "inputEmailPlaceholder": "Введите вашу почту",
+    "password": "Пароль",
+    "inputPasswordPlaceholder": "Введите ваш пароль",
+    "forgotPasswordText": "забыли пароль",
+    "oauthLogin": "Зайти через",
+    "createAccount": "У вас нет аккаунта?"
+  },
+  "signUpPage": {
+    "signUpTitle": "Регистрация",
+    "haveAccount": "Уже есть аккаунт?",
+    "agreementRules": "Нажимая на кнопку 'Зарегистрироваться', вы соглашаетесь с тем, что App",
+    "membership": "Членское соглашение"
+  },
+  "forgotPasswordPage": {
+    "forgotPasswordTitle": "Забыли пароль?"
   }
 }

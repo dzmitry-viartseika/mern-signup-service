@@ -1,14 +1,26 @@
 {
   "global": {
-    "btnLogin": "Sign in",
-    "entry": "Entry",
-    "yes": "Yes",
-    "no": "No",
-    "logout": "logout",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "search": "Search",
-    "link": "Link",
-    "clear": "Clear"
+    "sendButton": "Send",
+    "signInButton": "Sign in",
+    "agreeButton": "Agree"
+  },
+  "signInPage": {
+    "signInTitle": "Sign in",
+    "email": "Email",
+    "inputEmailPlaceholder": "Enter your email",
+    "password": "Password",
+    "inputPasswordPlaceholder": "Enter your password",
+    "forgotPasswordText": "Forgot password",
+    "oauthLogin": "Or login with",
+    "createAccount": "Not Registered?"
+  },
+  "signUpPage": {
+    "signUpTitle": "Sign up",
+    "haveAccount": "Already have an account?",
+    "agreementRules": "By clicking on Sign up, you agree to App",
+    "membership": "Membership Agreement"
+  },
+  "forgotPasswordPage": {
+    "forgotPasswordTitle": "Forgot your password?"
   }
 }

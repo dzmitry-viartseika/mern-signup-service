@@ -111,7 +111,7 @@ export default {
     getOptionImage(image) {
       try {
         /* eslint-disable */
-        return require(`@/assets/images/countryLangs/${image}.svg`);
+        return require(`@/assets/images/flags/${image}.svg`);
         /* eslint-enable */
       } catch (e) {
         return false;

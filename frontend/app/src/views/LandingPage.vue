@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">
-      {{ $t('global.btnLogin') }}
+      {{ $t('global.signInButton') }}
     </button>
     <dropDown
       :dropdownOptions="dropdownOptions"
@@ -21,7 +21,9 @@
         <button
           class="app__btn app__btn--primary"
           @click="agreePolicy"
-        >Согласен</button>
+        >
+          {{ $t('global.agreeButton') }}
+        </button>
       </div>
     </modal-template>
   </div>
@@ -43,7 +45,6 @@ export default class LandingPage extends Vue {
   isAgreePolicy: boolean | null = null;
 
   get language(): string {
-    console.log('this.$i18n.locale', this.$i18n.locale);
     return this.$i18n.locale;
   }
 
@@ -52,7 +53,6 @@ export default class LandingPage extends Vue {
   }
 
   get dropdownOptions() {
-    console.log('this', this);
     return {
       list: [
         {
@@ -75,7 +75,6 @@ export default class LandingPage extends Vue {
 
   changeLanguage(code: string) {
     this.language = code;
-    console.log('this', this);
     localStorage.setItem('language', code);
   }
 

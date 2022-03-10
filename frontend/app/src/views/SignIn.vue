@@ -3,7 +3,7 @@
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <h2 class="app-modal__title">
-        Вход в личный кабинет
+        {{ $t('signInPage.signInTitle') }}
       </h2>
       <div class="app-modal__form">
         <div class="form-field">
@@ -11,8 +11,8 @@
             :value.sync="userEmail"
             :errorStatus="$validator.errors.has('userEmail')"
             input-type="email"
-            placeholder-text="Введите вашу почту"
-            label-text="Почта"
+            :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
+            :label-text="$t('signInPage.email')"
           />
           <transition name="fade-el">
             <div
@@ -24,7 +24,9 @@
           </transition>
         </div>
         <div class="app-modal__form-wrapper">
-          <a class="app__link" @click.prevent="$router.push('/forgot-password')">забыли пароль</a>
+          <a class="app__link" @click.prevent="$router.push('/forgot-password')">
+            {{ $t('signInPage.forgotPasswordText') }}
+          </a>
           <span  @click="isVisiblePassword = !isVisiblePassword">
             <template v-if="!$validator.errors.has('userPassword')">
               <template v-if="isVisiblePassword">
@@ -45,9 +47,9 @@
           </span>
           <text-input
             :value.sync="userPassword"
-            label-text="Пароль"
+            :label-text="$t('signInPage.password')"
             :input-type="isVisiblePassword ? 'text' : 'password'"
-            placeholder-text="Введите ваш пароль"
+            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
             :errorStatus="$validator.errors.has('userPassword')"
           />
           <transition name="fade-el">
@@ -69,27 +71,30 @@
         </div>
       </div>
       <div class="app-divider">
-        <span class="app-divider__item">Or login with</span>
+        <span class="app-divider__item">
+          {{ $t('signInPage.oauthLogin') }}
+        </span>
       </div>
       <div class="app-oauth">
-        <a href="http://localhost:5000/auth/google" target="_self" class="btn red darken-1">
-          <img src="../assets/images/sign-in-with-google.svg" alt="google">
-        </a>
-
-        <a href="http://localhost:5000/auth/github" target="_self" class="btn red darken-1">
-          <img src="../assets/images/iconmonstr-github-1.svg" alt="google">
-        </a>
-
-        <a href="http://localhost:5000/auth/facebook" target="_self" class="btn red darken-1">
-          <img src="../assets/images/iconmonstr-facebook-6.svg" alt="google">
-        </a>
+        <oauth-google />
+        <oauth-github />
+      </div>
+      <div class="app-actions">
+        <button class="app__btn app__btn--primary" @click="signIn">
+          {{ $t('signInPage.signInTitle') }}
+        </button>
       </div>
       <div>
-      <button class="app__btn app__btn--primary" @click="signIn">Войти</button>
       <div class="app-modal__footer">
-        У вас нет аккаунта?
-        <a class="app__link" @click.prevent="$router.push('/sign-up')">Зарегистрировать</a>
+        {{ $t('signInPage.createAccount') }}
+        <a class="app__link" @click.prevent="$router.push('/sign-up')">
+          {{ $t('signUpPage.signUpTitle') }}
+        </a>
       </div>
+        <div class="app-modal__agreement">
+          {{ $t('signUpPage.agreementRules') }}
+          <div>{{ $t('signUpPage.membership') }} *</div>
+        </div>
     </div>
   </div>
   </div>
@@ -104,6 +109,8 @@ import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { namespace } from 'vuex-class';
 import axios from 'axios';
 import AuthService from '../services/Auth/AuthService';
+import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
+import OauthGithub from '../components/Oauths/OauthGithub.vue';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
 
@@ -114,6 +121,8 @@ const User = namespace('User');
   components: {
     TextInput,
     LoaderTemplate,
+    OauthGoogle,
+    OauthGithub,
   },
   metaInfo() {
     return {
@@ -270,6 +279,7 @@ export default class SignIn extends Vue {
 </script>
 
 <style lang="scss">
+@import "../assets/scss/variables";
   .app-divider {
     display: flex;
     align-items: center;
@@ -314,6 +324,27 @@ export default class SignIn extends Vue {
     }
     a + a {
       margin-left: 10px;
+    }
+  }
+
+  .app-actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .app-modal__agreement {
+    text-align: center;
+    font-size: 12px;
+
+    div {
+      margin-top: 5px;
+      font-weight: bold;
+      color: $color-dodger-blue;
+      cursor: pointer;
+      transition: color .15s ease-in;
+      &:hover {
+        color: $color-cornflower-blue;
+      }
     }
   }
 </style>
