@@ -30,8 +30,6 @@ class UserService {
     async forgotPassword(req, res, next) {
         const { email } = req.body;
 
-        console.log('email', email)
-
         UserModel.findOne({ email }, async (err, user) => {
             if(err || !user) {
                 throw ApiError.badRequest('Пользователь с таким email не найден')
@@ -44,22 +42,8 @@ class UserService {
                     expiresIn: "15m",
                 }
             );
-            console.log('token', token)
             const link = `${process.env.API_URL}/api/forgot-password/${token}`;
-            const data = await mailService.sendForgotMail(email, link, token);
-            console.log('data', data)
-            // return user.updateOne({resetLink: token}, function(err, success) {
-            //     if(err) {
-            //         return res.status(400).json({error: "Reset password link error."});
-            //     } else {
-            //         res.send(data, function (error, body) {
-            //             if(error) {
-            //                 return res.json({error: err.message})
-            //             }
-            //             return res.json({message: "Email has been sent. Kindly follow the instructions"});
-            //         });
-            //     }
-            // });
+            await mailService.sendForgotMail(email, link, token);
         });
     }
 

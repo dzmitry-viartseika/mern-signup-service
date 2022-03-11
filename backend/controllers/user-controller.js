@@ -65,24 +65,22 @@ class UserController {
         try {
             const activationLink = req.params.link;
             await UserService.activate(activationLink);
-            return res.redirect(process.env.CLIENT_URL)
+            // TODO: env route
+            return res.redirect('http://localhost:8080/crm/dashboard');
         } catch (e) {
             next(e);
             console.log(e);
         }
     }
 
-    async forgotPassword(req, res) {
+    async forgotPassword(req, res, next) {
         try {
-            const users = await UserService.forgotPassword(req);
-            return res.json(users)
+            await UserService.forgotPassword(req);
         } catch (e) {
             next(e);
             console.log(e);
         }
     }
-
-
 
     async getUsers(req,res,next) {
         try {
