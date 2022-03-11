@@ -25,6 +25,10 @@
     "forgotPasswordTitle": "Forgot your password?"
   },
   "resetPasswordPage": {
-    "resetPasswordTitle": "Set new password"
+    "resetPasswordTitle": "Set new password",
+    "oldEmailAddress": "Your current Email",
+    "newPassword": "New password",
+    "inputNewPasswordPlaceholder": "Enter new password",
+    "inputEmailPlaceholder": "Enter your current email"
   }
 }

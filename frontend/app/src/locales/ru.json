@@ -25,6 +25,10 @@
     "forgotPasswordTitle": "Забыли пароль?"
   },
   "resetPasswordPage": {
-    "resetPasswordTitle": "Выберите новый пароль"
+    "resetPasswordTitle": "Выберите новый пароль",
+    "oldEmailAddress": "Ваша текущая почта",
+    "newPassword": "Новый пароль",
+    "inputNewPasswordPlaceholder": "Введите новый пароль",
+    "inputEmailPlaceholder": "Введите текущую почту"
   }
 }

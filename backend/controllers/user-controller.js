@@ -88,6 +88,7 @@ class UserController {
     async forgotPassword(req, res, next) {
         try {
             await UserService.forgotPassword(req);
+            res.json({message: 'Проверьте почту'})
         } catch (e) {
             next(e);
             console.log(e);

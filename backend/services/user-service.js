@@ -71,9 +71,7 @@ class UserService {
                 }
             );
             const hashPassword = await bcrypt.hash(newPassword, 3);
-            console.log('hashPassword', hashPassword);
             user.password = hashPassword;
-            console.log('user', user);
             user.save();
         });
     }
@@ -101,7 +99,6 @@ class UserService {
     }
 
     async activate(activationLink) {
-        console.log('log #3');
         const user = await UserModel.findOne({ activationLink });
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
@@ -111,15 +108,13 @@ class UserService {
     }
 
     async refreshPassword(resetLink) {
-        console.log('log3 #3333')
         const user = await UserModel.findOne({ resetLink });
-        console.log('user', user);
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
         }
-        console.log('user', user)
-        user.avatar = 'wertey';
-        await user.save();
+        // console.log('user', user)
+        // user.avatar = 'wertey';
+        // await user.save();
     }
 
     async logout(refreshToken) {

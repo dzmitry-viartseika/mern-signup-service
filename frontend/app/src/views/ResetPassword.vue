@@ -9,8 +9,8 @@
         <div class="form-field">
           <text-input
             :value.sync="userEmail"
-            :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
-            :label-text="$t('signInPage.email')"
+            :placeholder-text="$t('resetPasswordPage.inputEmailPlaceholder')"
+            :label-text="$t('resetPasswordPage.oldEmailAddress')"
             input-type="email"
             :errorStatus="$validator.errors.has('userEmail')"
           />
@@ -25,26 +25,38 @@
         </div>
         <div class="app-modal__form-wrapper">
           <span  @click="isVisiblePassword = !isVisiblePassword">
-            <template v-if="isVisiblePassword">
-              <svgicon
-                name="Eye"
-                width="16"
-                height="16"
-              />
-            </template>
-            <template v-else>
-              <svgicon
-                name="Eye-hidden"
-                width="16"
-                height="16"
-              />
+          <template v-if="!$validator.errors.has('userPassword')">
+              <template v-if="isVisiblePassword">
+                <svgicon
+                  name="Eye"
+                  width="16"
+                  height="16"
+                />
+              </template>
+              <template v-else>
+                <svgicon
+                  name="Eye-hidden"
+                  width="16"
+                  height="16"
+                />
+              </template>
             </template>
           </span>
           <text-input
             :value.sync="userPassword"
-            :label-text="$t('signInPage.password')"
-            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
+            :input-type="isVisiblePassword ? 'text' : 'password'"
+            :label-text="$t('resetPasswordPage.newPassword')"
+            :placeholder-text="$t('resetPasswordPage.inputNewPasswordPlaceholder')"
+            :errorStatus="$validator.errors.has('userPassword')"
           />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userPassword')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userPassword') }}
+            </div>
+          </transition>
         </div>
       </div>
       <button class="app__btn app__btn--primary" @click="restorePassword">
@@ -63,6 +75,7 @@ import { IAuthResponse } from '@/model/response/IAuthResponse';
 import TextInput from '../components/Elements/TextInput.vue';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
+import validationErrorMessage from "@/locales/validationErrorMessage";
 
 @Component({
   components: {
@@ -90,17 +103,61 @@ export default class ForgotPassword extends Vue {
 
   isVisiblePassword = false;
 
+  validator = null;
+
+  beforeMount() {
+    const dict = {
+      en: {
+        custom: {
+          userEmail: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+          userPassword: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+        },
+      },
+      ru: {
+        custom: {
+          userEmail: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+          userPassword: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+        },
+      },
+    };
+    this.$validator.localize(dict);
+    this.$validator.attach({ name: 'userEmail', rules: { required: true } });
+    this.$validator.attach({ name: 'userPassword', rules: { required: true } });
+  }
+
   async restorePassword(): Promise<void> {
     try {
-      this.isLoader = true;
-      const response = await AuthService.changePassword(this.userEmail, this.userPassword);
-      this.isLoader = false;
-      const { accessToken } = response.data as IAuthResponse;
-      localStorage.setItem('token', accessToken);
-      await this.$router.push('/crm/dashboard');
+
     } catch (e) {
       this.isLoader = false;
       console.log(e);
+    }
+
+    const result = await this.$validator.validateAll({
+      userEmail: this.userEmail,
+      userPassword: this.userPassword,
+    });
+
+    if (result) {
+      try {
+        this.isLoader = true;
+        const response = await AuthService.changePassword(this.userEmail, this.userPassword);
+        this.isLoader = false;
+        const { accessToken } = response.data as IAuthResponse;
+        localStorage.setItem('token', accessToken);
+        await this.$router.push('/crm/dashboard');
+      } catch (err) {
+        this.isLoader = false;
+        console.error(err);
+      }
     }
   }
 }
