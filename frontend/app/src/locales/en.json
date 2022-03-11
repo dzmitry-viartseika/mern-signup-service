@@ -30,5 +30,8 @@
     "newPassword": "New password",
     "inputNewPasswordPlaceholder": "Enter new password",
     "inputEmailPlaceholder": "Enter your current email"
+  },
+  "modalsTextContent": {
+    "cookies": "We use cookies to ensure that our website works properly,\n        personalize ads and other content, enable social networking features\n        social media features and analyze web traffic. We also share information about\n        To our social media, advertising and analytics partners we also provide information about how you use our website.\n        analytics systems."
   }
 }
