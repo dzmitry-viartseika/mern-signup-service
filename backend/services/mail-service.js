@@ -16,7 +16,8 @@ class MailService {
         })
     }
     async sendActivationMail(to, link) {
-        console.log('link', link)
+        console.log('log #2');
+        console.log('link', link);
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,
@@ -31,7 +32,8 @@ class MailService {
         })
     }
 
-    async sendForgotMail(to, link, token) {
+    async sendForgotMail(to, link) {
+        console.log('link', link);
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,

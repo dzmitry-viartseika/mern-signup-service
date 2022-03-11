@@ -35,7 +35,8 @@ export default class Dashboard extends Vue {
   file = '';
 
   handleFileUpload(): void {
-    // this.file = this.$refs.file.files[0];
+    // eslint-disable-next-line prefer-destructuring
+    this.file = this.$refs.file.files[0];
   }
 
   async submitFile() {
