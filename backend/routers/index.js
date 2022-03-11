@@ -20,6 +20,5 @@ router.post('/forgot-password/', UserController.forgotPassword);
 router.post('/change-password/', UserController.changedPassword);
 router.get('/forgot-password/:link', UserController.resetPassword);
 router.get('/users', authMiddleWare, UserController.getUsers);
-router.post('/upload', FileController.uploadFile);
 
 module.exports = router;

@@ -112,9 +112,6 @@ class UserService {
         if(!user) {
             throw ApiError.badRequest('Некорректная активация ссылки')
         }
-        // console.log('user', user)
-        // user.avatar = 'wertey';
-        // await user.save();
     }
 
     async logout(refreshToken) {
