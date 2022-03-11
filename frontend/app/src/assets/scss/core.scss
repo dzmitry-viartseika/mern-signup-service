@@ -41,6 +41,10 @@
     flex-direction: column;
     background: #fff;
 
+    &__form {
+      margin-bottom: 10px;
+    }
+
     &__title {
       font-weight: 700;
       font-size: 25px;
