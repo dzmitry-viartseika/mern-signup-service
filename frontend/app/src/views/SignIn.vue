@@ -193,6 +193,7 @@ export default class SignIn extends Vue {
     });
 
     if (result) {
+      console.log('www');
       try {
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
@@ -200,7 +201,10 @@ export default class SignIn extends Vue {
         this.setUser(response.data.user);
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
-        await this.$router.push('/crm/dashboard');
+        console.log('wertey');
+        await this.$router.push({
+          name: 'Dashboard',
+        });
       } catch (err) {
         this.isLoader = false;
         if (err.response && (err.response.status === 400

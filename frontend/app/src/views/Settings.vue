@@ -15,13 +15,13 @@
         </label>
         <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
         <img
-          v-if="!avatar"
+          v-if="!user.avatar"
           src="../assets/images/placeholders/avatar.jpg"
-             id="output" width="200" />
+          width="200" />
         <img
           v-else
-          :src="avatar"
-             id="output" width="200" />
+          :src="user.avatar"
+          width="200" />
       </div>
       <div class="app-profile-form app-content">
         <div class="app-edit">
@@ -35,7 +35,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="firstName"
+            :value.sync="user.firstName"
             input-type="text"
             label-text="Имя"
             :disabled="!isEditMode"
@@ -43,7 +43,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="lastName"
+            :value.sync="user.lastName"
             input-type="text"
             label-text="Фамилия"
             :disabled="!isEditMode"
@@ -51,7 +51,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="phoneNumber"
+            :value.sync="user.phoneNumber"
             input-type="text"
             label-text="Телефон"
             :disabled="!isEditMode"
@@ -59,7 +59,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="userEmail"
+            :value.sync="user.email"
             input-type="email"
             label-text="Почта"
             :disabled="true"
@@ -122,38 +122,9 @@ export default class Settings extends Vue {
   @User.State
   public user: IUser;
 
-  firstName = '';
-
-  lastName = '';
-
-  phoneNumber = '';
-
-  userEmail = '';
-
-  avatar = '';
-
   file = '';
 
   isEditMode = false;
-
-  created() {
-    console.log('this.user', this.user);
-    const {
-      email, firstName, lastName, phoneNumber, avatar,
-    } = this.user;
-
-    this.userEmail = email;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.phoneNumber = phoneNumber;
-    this.avatar = avatar;
-
-    // try {
-    //   const file = UploadService.getFileById(this.avatar);
-    // } catch (e) {
-    //   console.error(e);
-    // }
-  }
 
   editProfile(): void {
     this.isEditMode = !this.isEditMode;
@@ -180,21 +151,12 @@ export default class Settings extends Vue {
 
   async saveProfile(): void {
     try {
-      console.log('this.avatar', this.avatar);
-      const updatedUser = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        phoneNumber: this.phoneNumber,
-        avatar: this.avatar,
-      };
-      console.log('this.userEmail', this.userEmail);
-      console.log('updatedUser', updatedUser);
       const formData = new FormData();
       formData.append('file', this.file);
-      const file = await UploadService.upload(formData);
-      console.log('file', file.data.id);
-      updatedUser.avatar = file.data.id;
-      const user = await UsersService.updateUser(this.userEmail, updatedUser);
+      // const file = await UploadService.upload(formData);
+      // console.log('file', file.data.id);
+      // updatedUser.avatar = file.data.id;
+      const user = await UsersService.updateUser(this.user.email, this.user);
     } catch (e) {
       console.error(e);
     } finally {

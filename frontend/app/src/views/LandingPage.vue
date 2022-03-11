@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div class="lp">
+    <div class="lp__container" v-if="false">
+      <header-template />
+    </div>
     <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">
       {{ $t('global.signInButton') }}
     </button>
@@ -34,11 +37,13 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import DropDown from '@/components/Elements/DropDown.vue';
+import HeaderTemplate from '@/components/Landing/Header/HeaderTemplate.vue';
 
 @Component({
   components: {
     ModalTemplate,
     DropDown,
+    HeaderTemplate,
   },
 })
 export default class LandingPage extends Vue {

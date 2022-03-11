@@ -49,10 +49,15 @@
       </a>
       <div class="admin-user tooltip-element" data-tooltip="1">
         <div class="admin-profile hide">
-          <img src="../../assets/images/face-1.png" alt="">
+          <img
+            v-if="!user.avatar"
+            src="../../assets/images/placeholders/avatar.jpg" alt="">
+          <img
+            v-else
+            :src="user.avatar" alt="">
           <div class="admin-info" v-if="!isShortAside">
-            <h3>John Doe</h3>
-            <h5>Admin</h5>
+            <h3 v-if="user.firstName">{{ user.firstName }}</h3>
+<!--            <h5 v-if="user.role">{{ user.role }}</h5>-->
           </div>
         </div>
         <a @click.prevent="logOut" class="log-out">
@@ -77,12 +82,16 @@ import '@/assets/icons/Eye';
 import { namespace } from 'vuex-class';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
+import { IUser } from '@/model/IUser';
 import { IAsideItem } from '../../model/constants/IAsideItem';
 
 const User = namespace('User');
 
 @Component({})
 export default class AsideTemplate extends Vue {
+  @User.State
+  public user: IUser;
+
   @User.Mutation
   public setUser!: () => void;
 

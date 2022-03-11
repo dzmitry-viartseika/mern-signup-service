@@ -1,0 +1,17 @@
+.lp {
+  background: $color-landing-background;
+
+  .logo {
+    color: $color-white;
+  }
+
+  &-header {
+    display: flex;
+  }
+
+  &__containter {
+    margin: 0 auto;
+    max-width: 960px;
+    width: 100%;
+  }
+}

@@ -3,6 +3,7 @@
 @import "transitions";
 @import "toasted-notification";
 @import "buttons";
+@import "landing";
 
 .form-field {
   position: relative;
@@ -372,7 +373,8 @@ nav:hover .shrink-btn,
 }
 
 .admin-user img {
-  width: 2.9rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin: 0 0.4rem;
 }
