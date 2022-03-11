@@ -107,7 +107,6 @@ import TextInput from '@/components/Elements/TextInput.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { namespace } from 'vuex-class';
-import axios from 'axios';
 import AuthService from '../services/Auth/AuthService';
 import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
 import OauthGithub from '../components/Oauths/OauthGithub.vue';
@@ -198,7 +197,7 @@ export default class SignIn extends Vue {
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
         this.isLoader = false;
-        this.setUser = response.data.user;
+        this.setUser(response.data.user);
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push('/crm/dashboard');

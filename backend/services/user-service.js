@@ -1,4 +1,5 @@
 const UserModel = require('../models/user-model');
+const TokenModel = require('../models/token-model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
@@ -16,7 +17,6 @@ class UserService {
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
         const user = await UserModel.create({ email, password: hashPassword, activationLink });
-        console.log('user #1', user);
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
@@ -29,7 +29,6 @@ class UserService {
     }
 
     async forgotPassword(req, res, next) {
-        console.log('log1 #1')
         const { email } = req.body;
 
         UserModel.findOne({ email }, async (err, user) => {
@@ -44,11 +43,8 @@ class UserService {
                     expiresIn: "15m",
                 }
             );
-            console.log('token', token);
-            console.log('user', user);
             const resetLink = uuid.v4();
             user.resetLink = resetLink;
-            console.log('user', user);
             user.save();
             const link = `${process.env.API_URL}/api/forgot-password/${resetLink}`;
             await mailService.sendForgotMail(email, link);
@@ -94,7 +90,7 @@ class UserService {
 
         return {
             ...tokens,
-            user: userDto,
+            user,
         }
     }
 
@@ -139,6 +135,31 @@ class UserService {
             ...tokens,
             user: userDto,
         }
+    }
+
+    async getCurrentUser(token) {
+        console.log('getCurrentUser');
+        const user = await UserModel.findOne({});
+        console.log('user', user);
+        return user;
+    }
+
+    async updateUser(email, updatedUser) {
+        console.log('email', email);
+        if (!email) {
+            throw ApiError.unAuthorizedError();
+        }
+        const user = await UserModel.findOne({ email });
+
+        if (!user) {
+            throw ApiError.badRequest('Пользователь с таким email не найден');
+        }
+
+        user.avatar = updatedUser.avatar;
+        user.firstName = updatedUser.firstName;
+        user.lastName = updatedUser.lastName;
+        user.phoneNumber = updatedUser.phoneNumber;
+        user.save();
     }
 
     async getAllUsers(req, res,next) {

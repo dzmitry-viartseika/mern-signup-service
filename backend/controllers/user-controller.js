@@ -105,6 +105,28 @@ class UserController {
         }
     }
 
+    async updateUser(req, res, next) {
+        try {
+            const { email, updatedUser } = req.body;
+            const userData = await UserService.updateUser(email, updatedUser);
+            return res.json(userData);
+        } catch (e) {
+            next(e);
+            console.log(e);
+        }
+    }
+
+    async getCurrentUser(req, res, next) {
+        console.log('req', req.header('authorization'));
+        console.log('wertey', req.header)
+        if (req.headers && req.headers.authorization) {
+            const token = req.headers.authorization.split(' ');
+            console.log('token', token[1]);
+            const userData = await UserService.getCurrentUser(token);
+            return res.json(userData);
+        }
+    }
+
     async getUsers(req,res,next) {
         try {
            const users = await UserService.getAllUsers();

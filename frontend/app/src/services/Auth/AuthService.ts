@@ -23,8 +23,4 @@ export default class AuthService {
   static async changePassword(email: string, newPassword: string): Promise<void> {
     return $api.post('/change-password', { email, newPassword });
   }
-
-  static async test(): Promise<void> {
-    return $api.get('/getuser');
-  }
 }

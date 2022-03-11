@@ -25,6 +25,18 @@ const UserSchema = new Schema({
         type: String,
         default: '',
     },
+    firstName: {
+        type: String,
+        default: '',
+    },
+    lastName: {
+        type: String,
+        default: '',
+    },
+    phoneNumber: {
+        type: String,
+        default: '',
+    },
 })
 
 module.exports = model('User', UserSchema);

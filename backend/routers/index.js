@@ -17,5 +17,7 @@ router.post('/forgot-password/', UserController.forgotPassword);
 router.post('/change-password/', UserController.changedPassword);
 router.get('/forgot-password/:link', UserController.resetPassword);
 router.get('/users', authMiddleWare, UserController.getUsers);
+router.patch('/update-user', UserController.updateUser);
+router.get('/me', UserController.getCurrentUser);
 
 module.exports = router;

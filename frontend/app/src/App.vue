@@ -25,7 +25,10 @@
 import Vue from 'vue';
 import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
-import AuthService from '@/services/Auth/AuthService';
+import UsersService from '@/services/Users/UsersService';
+import { namespace } from 'vuex-class';
+
+const User = namespace('User');
 
 @Component({
   components: {
@@ -33,6 +36,9 @@ import AuthService from '@/services/Auth/AuthService';
   },
 })
 export default class App extends Vue {
+  @User.Mutation
+  public setUser!: () => void
+
   get showSidebar(): boolean {
     const token = localStorage.getItem('token');
     return !!(this.$route.path.includes('crm') && token);
@@ -40,6 +46,8 @@ export default class App extends Vue {
 
   async created() {
     const lang = localStorage.getItem('language');
+    const token = localStorage.getItem('token');
+
     if (lang) {
       this.$i18n.locale = lang;
     } else {
@@ -48,6 +56,15 @@ export default class App extends Vue {
       const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
       if (systemLanguage !== 'ru') {
         this.$i18n.locale = 'en';
+      }
+    }
+    if (token) {
+      try {
+        const response = await UsersService.getCurrentUser();
+        console.log('user', response.data);
+        this.setUser(response.data);
+      } catch (e) {
+        console.error(e);
       }
     }
   }

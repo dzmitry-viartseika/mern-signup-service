@@ -13,8 +13,14 @@
           <span class="glyphicon glyphicon-camera"></span>
           <span>Change Image</span>
         </label>
-        <input id="file" type="file" onchange="loadFile(event)"/>
-        <img src="../assets/images/placeholders/avatar.jpg"
+        <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
+        <img
+          v-if="!avatar"
+          src="../assets/images/placeholders/avatar.jpg"
+             id="output" width="200" />
+        <img
+          v-else
+          :src="avatar"
              id="output" width="200" />
       </div>
       <div class="app-profile-form app-content">
@@ -29,35 +35,19 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="userName"
+            :value.sync="firstName"
             input-type="text"
             label-text="Имя"
             :disabled="!isEditMode"
           />
-          <transition name="fade-el">
-            <div
-              v-if="$validator.errors.has('userName')"
-              class="validation"
-            >
-              {{ $validator.errors.first('userName') }}
-            </div>
-          </transition>
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="userSurname"
+            :value.sync="lastName"
             input-type="text"
             label-text="Фамилия"
             :disabled="!isEditMode"
           />
-          <transition name="fade-el">
-            <div
-              v-if="$validator.errors.has('userSurname')"
-              class="validation"
-            >
-              {{ $validator.errors.first('userSurname') }}
-            </div>
-          </transition>
         </div>
         <div class="form-field">
           <text-input
@@ -66,14 +56,6 @@
             label-text="Телефон"
             :disabled="!isEditMode"
           />
-          <transition name="fade-el">
-            <div
-              v-if="$validator.errors.has('phoneNumber')"
-              class="validation"
-            >
-              {{ $validator.errors.first('phoneNumber') }}
-            </div>
-          </transition>
         </div>
         <div class="form-field">
           <text-input
@@ -82,14 +64,6 @@
             label-text="Почта"
             :disabled="true"
           />
-          <transition name="fade-el">
-            <div
-              v-if="$validator.errors.has('userEmail')"
-              class="validation"
-            >
-              {{ $validator.errors.first('userEmail') }}
-            </div>
-          </transition>
         </div>
       </div>
       <hr>
@@ -123,6 +97,8 @@ import { namespace } from 'vuex-class';
 import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
+import UsersService from '@/services/Users/UsersService';
+import UploadService from "@/services/Upload/UploadService";
 
 const User = namespace('User');
 
@@ -146,31 +122,84 @@ export default class Settings extends Vue {
   @User.State
   public user: IUser;
 
-  userName = '';
+  firstName = '';
 
-  userSurname = '';
+  lastName = '';
 
   phoneNumber = '';
 
   userEmail = '';
 
+  avatar = '';
+
+  file = '';
+
   isEditMode = false;
 
   created() {
-    const { email } = this.user;
+    console.log('this.user', this.user);
+    const {
+      email, firstName, lastName, phoneNumber, avatar,
+    } = this.user;
+
     this.userEmail = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phoneNumber = phoneNumber;
+    this.avatar = avatar;
+
+    // try {
+    //   const file = UploadService.getFileById(this.avatar);
+    // } catch (e) {
+    //   console.error(e);
+    // }
   }
 
   editProfile(): void {
     this.isEditMode = !this.isEditMode;
   }
 
+  imageHandler(e): void {
+    console.log('onSelect1', e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      console.log('reader.readyState ', reader.readyState);
+      if (reader.readyState === 2) {
+        console.log('reader.result', reader.result);
+        this.file = this.$refs.file.files[0];
+        this.avatar = reader.result;
+      }
+    };
+    console.log('e.target.files[0]', e.target.files[0]);
+    reader.readAsDataURL(e.target.files[0]);
+  }
+
   cancelEdit(): void {
     this.isEditMode = false;
   }
 
-  saveProfile(): void {
-    this.isEditMode = false;
+  async saveProfile(): void {
+    try {
+      console.log('this.avatar', this.avatar);
+      const updatedUser = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        phoneNumber: this.phoneNumber,
+        avatar: this.avatar,
+      };
+      console.log('this.userEmail', this.userEmail);
+      console.log('updatedUser', updatedUser);
+      const formData = new FormData();
+      formData.append('file', this.file);
+      const file = await UploadService.upload(formData);
+      console.log('file', file.data.id);
+      updatedUser.avatar = file.data.id;
+      const user = await UsersService.updateUser(this.userEmail, updatedUser);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.isEditMode = false;
+    }
   }
 }
 </script>
