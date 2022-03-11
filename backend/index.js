@@ -14,6 +14,7 @@ const path = require('path');
 const axios = require('axios');
 const authRoute = require("./routers/auth-google");
 const swaggerDoc = require('swagger-ui-express');
+const fileRoutes = require('./routers/file-upload-routes');
 const swaggerDocumentation = require('./helper/documentations');
 const PORT = process.env.PORT || 5000;
 
@@ -36,6 +37,8 @@ app.get('/api/getuser', (req, res) => {
     res.send(req.user);
 })
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use('/documentations', swaggerDoc.serve);
 app.use('/documentations', swaggerDoc.setup(swaggerDocumentation));
 
@@ -54,6 +57,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/api', fileRoutes.routes);
 const startApp = async () => {
     try {
         await mongoose.connect(process.env.DB_URL, {
