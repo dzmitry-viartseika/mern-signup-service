@@ -133,16 +133,10 @@ export default class ForgotPassword extends Vue {
         }
       }
     }
-    try {
-      console.log('w');
-    } catch (e) {
-      this.isLoader = false;
-      console.log(e);
-    }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

@@ -86,6 +86,6 @@ export default class LandingPage extends Vue {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>
