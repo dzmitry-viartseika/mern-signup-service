@@ -20,7 +20,11 @@
     "signUpTitle": "Регистрация",
     "haveAccount": "Уже есть аккаунт?",
     "agreementRules": "Нажимая на кнопку 'Зарегистрироваться', вы соглашаетесь с тем, что App",
-    "membership": "Членское соглашение"
+    "termsOfService": "Условия обслуживания Приложения",
+    "privacyPolicy": "Политики конфиденциальности",
+    "agreementRulesAccept": "Я принимаю",
+    "learnMore": "Из нашей",
+    "protectData": "вы узнаете о том, как мы используем и защищаем ваши данные."
   },
   "forgotPasswordPage": {
     "forgotPasswordTitle": "Забыли пароль?"

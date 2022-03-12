@@ -93,6 +93,16 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "ResetPassword" */ '../views/ResetPassword.vue'),
   },
   {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import(/* webpackChunkName: "Terms" */ '../views/Terms.vue'),
+  },
+  {
+    path: '/privacy',
+    name: 'Privacy',
+    component: () => import(/* webpackChunkName: "Privacy" */ '../views/Privacy.vue'),
+  },
+  {
     path: '/forgot-password',
     name: 'ForgotPassword',
     component: () => import(/* webpackChunkName: "ForgotPassword" */ '../views/ForgotPassword.vue'),
