@@ -50,12 +50,17 @@
           />
         </div>
         <div class="form-field">
-          <text-input
-            :value.sync="user.phoneNumber"
-            input-type="text"
-            label-text="Телефон"
-            :disabled="!isEditMode"
-          />
+          <div class="text-field">
+            <label class="text-field__label">
+              Телефон
+            </label>
+            <vue-tel-input
+              v-model="user.phoneNumber"
+              :disabled="!isEditMode"
+              :showDialCodeInSelection="true"
+              mode="international"
+            />
+          </div>
         </div>
         <div class="form-field">
           <text-input
@@ -140,6 +145,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { VueTelInput } from 'vue-tel-input';
 import { namespace } from 'vuex-class';
 import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
@@ -154,6 +160,7 @@ const User = namespace('User');
   components: {
     TextInput,
     ModalTemplate,
+    VueTelInput,
   },
   metaInfo() {
     return {
@@ -215,6 +222,8 @@ export default class Settings extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import "../assets/scss/variables";
+
   .app-profile {
     max-width: 600px;
     margin: 0 auto;
@@ -341,4 +350,15 @@ export default class Settings extends Vue {
     pointer-events: none;
     cursor: default;
   }
+
+  .text-field {
+    margin-bottom: 15px;
+
+    &__label {
+      color: $color-silver-chalice;
+      font: 10px Ubuntu-medium, sans-serif;
+      line-height: 1.55;
+    }
+  }
+
 </style>

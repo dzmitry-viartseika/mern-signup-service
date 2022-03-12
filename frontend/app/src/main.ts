@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueTelInput from 'vue-tel-input';
 import SvgIcon from 'vue-svgicon';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -10,10 +11,12 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import i18n from './i18n';
+import 'vue-tel-input/dist/vue-tel-input.css';
 
 Vue.config.productionTip = false;
 
 Vue.use(Toasted);
+Vue.use(VueTelInput);
 
 Vue.use(Meta, {
   keyName: 'metaInfo',
