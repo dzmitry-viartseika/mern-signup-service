@@ -11,6 +11,10 @@
 
 .app {
 
+  &--flex {
+    display: flex;
+  }
+
   &-dashboard {
     overflow-x: hidden;
     background-color: #e4e2f5;

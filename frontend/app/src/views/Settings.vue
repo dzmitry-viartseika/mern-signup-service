@@ -27,7 +27,7 @@
         <div class="app-edit">
           <h2>Основные сведения</h2>
           <svgicon
-            name="Eye"
+            name="Edit"
             width="16"
             height="16"
             @click="editProfile"
@@ -70,9 +70,10 @@
       <div class="app-edit" v-if="!isEditMode">
         <h2>Пароль</h2>
         <svgicon
-          name="Eye"
+          name="Edit"
           width="16"
           height="16"
+          @click="showModalChangingPassword = true"
         />
       </div>
       <div class="app-action"
@@ -88,6 +89,52 @@
         >Сохранить</button>
       </div>
     </div>
+    <modal-template
+      v-if="showModalChangingPassword"
+    >
+      <div slot="content" class="app-modal__content">
+        <div>
+          <span  @click="isVisiblePassword = !isVisiblePassword">
+            <template v-if="!$validator.errors.has('userPassword')">
+              <template v-if="isVisiblePassword">
+                <svgicon
+                  name="Eye"
+                  width="16"
+                  height="16"
+                />
+              </template>
+              <template v-else>
+                <svgicon
+                  name="Eye-hidden"
+                  width="16"
+                  height="16"
+                />
+              </template>
+            </template>
+          </span>
+          <text-input
+            :value.sync="userPassword"
+            :input-type="isVisiblePassword ? 'text' : 'password'"
+            :label-text="$t('signInPage.password')"
+            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
+            :errorStatus="$validator.errors.has('userPassword')"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userPassword')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userPassword') }}
+            </div>
+          </transition>
+        </div>
+<!--        <button-->
+<!--          class="app__btn app__btn&#45;&#45;primary"-->
+<!--        >-->
+<!--          {{ $t('global.agreeButton') }}-->
+<!--        </button>-->
+      </div>
+    </modal-template>
   </div>
 </template>
 
@@ -98,13 +145,15 @@ import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
-import UploadService from '@/services/Upload/UploadService';
+import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import '@/assets/icons/Edit';
 
 const User = namespace('User');
 
 @Component({
   components: {
     TextInput,
+    ModalTemplate,
   },
   metaInfo() {
     return {
@@ -125,6 +174,8 @@ export default class Settings extends Vue {
   file = '';
 
   isEditMode = false;
+
+  showModalChangingPassword = false;
 
   editProfile(): void {
     this.isEditMode = !this.isEditMode;

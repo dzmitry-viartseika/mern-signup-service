@@ -1,5 +1,7 @@
 <template>
-  <div class="app">
+  <div class="app"
+       :class="{'app--flex': showSidebar}"
+  >
     <template v-if="showSidebar">
       <aside-template />
     </template>
