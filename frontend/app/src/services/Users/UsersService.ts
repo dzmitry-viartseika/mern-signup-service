@@ -10,7 +10,7 @@ export default class UsersService {
   static updateUser(email: string, updatedUser): Promise<AxiosResponse<IUser>> {
     console.log('email', email);
     console.log('updatedUser', updatedUser);
-    return $api.patch<IUser>('/update-user', {email, updatedUser});
+    return $api.patch<IUser>('/update-user', { email, updatedUser });
   }
 
   static getCurrentUser(): Promise<AxiosResponse<IUser>> {

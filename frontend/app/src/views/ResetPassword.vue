@@ -69,13 +69,13 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import Vue from 'vue';
+import validationErrorMessage from '@/locales/validationErrorMessage';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import AuthService from '@/services/Auth/AuthService';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import TextInput from '../components/Elements/TextInput.vue';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
-import validationErrorMessage from "@/locales/validationErrorMessage";
 
 @Component({
   components: {
@@ -134,13 +134,6 @@ export default class ForgotPassword extends Vue {
   }
 
   async restorePassword(): Promise<void> {
-    try {
-
-    } catch (e) {
-      this.isLoader = false;
-      console.log(e);
-    }
-
     const result = await this.$validator.validateAll({
       userEmail: this.userEmail,
       userPassword: this.userPassword,
@@ -163,6 +156,4 @@ export default class ForgotPassword extends Vue {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped lang="scss"></style>

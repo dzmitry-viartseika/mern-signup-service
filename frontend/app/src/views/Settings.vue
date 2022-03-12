@@ -98,7 +98,7 @@ import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
-import UploadService from "@/services/Upload/UploadService";
+import UploadService from '@/services/Upload/UploadService';
 
 const User = namespace('User');
 
@@ -131,17 +131,14 @@ export default class Settings extends Vue {
   }
 
   imageHandler(e): void {
-    console.log('onSelect1', e.target.files[0]);
     const reader = new FileReader();
     reader.onload = () => {
-      console.log('reader.readyState ', reader.readyState);
       if (reader.readyState === 2) {
-        console.log('reader.result', reader.result);
-        this.file = this.$refs.file.files[0];
+        const { file = [] } = this.$refs.file.files[0];
+        this.file = file;
         this.avatar = reader.result;
       }
     };
-    console.log('e.target.files[0]', e.target.files[0]);
     reader.readAsDataURL(e.target.files[0]);
   }
 

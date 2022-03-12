@@ -3,7 +3,8 @@
     "sendButton": "Send",
     "signInButton": "Sign in",
     "signUpButton": "Sign up",
-    "agreeButton": "Agree"
+    "agreeButton": "Agree",
+    "homePageButton": "Home"
   },
   "signInPage": {
     "signInTitle": "Sign in",
@@ -33,5 +34,9 @@
   },
   "modalsTextContent": {
     "cookies": "We use cookies to ensure that our website works properly,\n        personalize ads and other content, enable social networking features\n        social media features and analyze web traffic. We also share information about\n        To our social media, advertising and analytics partners we also provide information about how you use our website.\n        analytics systems."
+  },
+  "page404": {
+    "titlePage": "Page not found",
+    "descriptionPage": "Page is out of date, has been deleted or does not exist at all"
   }
 }

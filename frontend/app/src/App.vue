@@ -74,13 +74,8 @@ export default class App extends Vue {
 <style lang="scss">
 @import "assets/scss/core";
 
-.app {
-  display: flex;
-}
-
 .admin-main {
   background: $color-alabaster;
   flex-grow: 1;
-  //padding: 16px 24px;
 }
 </style>
