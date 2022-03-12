@@ -54,12 +54,12 @@
       </div>
 
       <div class="bottom-content">
-        <li class="">
+        <li>
           <a
              @click.prevent="logOut"
           >
             <svgicon
-              class="icon"
+              class="icon icon--logout"
               name="LogOut"
               width="22"
               height="22"
@@ -140,6 +140,8 @@ export default class AsideTemplate extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import "../../assets/scss/variables";
+
   .app--short {
     width: 100px;
     display: flex;
@@ -175,6 +177,14 @@ export default class AsideTemplate extends Vue {
   .sidebar .icon{
     min-width: 60px;
     border-radius: 6px;
+  }
+
+  .icon {
+
+    &--logout {
+      position: relative;
+      top: 3px;
+    }
   }
 
   .sidebar .icon{
@@ -309,6 +319,7 @@ export default class AsideTemplate extends Vue {
   .sidebar li a:hover .icon,
   .sidebar li a:hover .text{
     color: #FFF;
+    fill: #fff;
   }
   body.dark .sidebar li a:hover .icon,
   body.dark .sidebar li a:hover .text{
@@ -415,6 +426,10 @@ export default class AsideTemplate extends Vue {
   .nav-link.active {
     background-color: #695CFE;
     border-radius: 6px;
+
+    svg {
+      fill: $color-white;
+    }
 
     .text.nav-text {
       color: #fff;

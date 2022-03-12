@@ -79,5 +79,6 @@ export default class App extends Vue {
 .admin-main {
   background: $color-alabaster;
   flex-grow: 1;
+  padding: 20px;
 }
 </style>

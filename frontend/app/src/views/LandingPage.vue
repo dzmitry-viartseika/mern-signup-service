@@ -14,6 +14,8 @@
     />
     <modal-template
       v-if="!isAgreePolicy"
+      position='bottom'
+      width="100%"
     >
       <div slot="content" class="app-modal__content">
         {{ $t('modalsTextContent.cookies') }}

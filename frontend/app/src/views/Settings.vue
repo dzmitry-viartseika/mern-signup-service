@@ -9,9 +9,17 @@
            :class="{'disabled': !isEditMode}"
       >
         <label class="-label"
+               :class="{'active': isEditMode}"
                for="file">
-          <span class="glyphicon glyphicon-camera"></span>
-          <span>Change Image</span>
+          <span>
+            <svgicon
+              class="camera"
+              name="Camera"
+              width="50"
+              height="50"
+              @click="editProfile"
+            />
+          </span>
         </label>
         <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
         <img
@@ -57,7 +65,7 @@
             <vue-tel-input
               v-model="user.phoneNumber"
               :disabled="!isEditMode"
-              :showDialCodeInSelection="true"
+              :show-dial-code-in-selection="true"
               mode="international"
             />
           </div>
@@ -96,6 +104,7 @@
     </div>
     <modal-template
       v-if="showModalChangingPassword"
+      width="400px"
     >
       <div slot="content" class="app-modal__content">
         <div>
@@ -153,6 +162,7 @@ import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import '@/assets/icons/Edit';
+import '@/assets/icons/Camera';
 
 const User = namespace('User');
 
@@ -178,11 +188,21 @@ export default class Settings extends Vue {
   @User.State
   public user: IUser;
 
+  @User.Mutation
+  public setUser!: () => void
+
   file = '';
 
   isEditMode = false;
 
   showModalChangingPassword = false;
+
+  cachedUser: IUser = {};
+
+  created() {
+    console.log('this.user', this.user);
+    this.cachedUser = { ...this.user };
+  }
 
   editProfile(): void {
     this.isEditMode = !this.isEditMode;
@@ -202,9 +222,12 @@ export default class Settings extends Vue {
 
   cancelEdit(): void {
     this.isEditMode = false;
+    console.log('this.cachedUser', this.cachedUser);
+    this.setUser(this.cachedUser);
   }
 
   async saveProfile(): void {
+    this.cachedUser = this.user;
     try {
       const formData = new FormData();
       formData.append('file', this.file);
@@ -226,7 +249,7 @@ export default class Settings extends Vue {
 
   .app-profile {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 50px auto;
     width: 100%;
   }
 
@@ -247,8 +270,9 @@ export default class Settings extends Vue {
 
   .app-action {
     display: grid;
-    grid-template-columns: 40% 40%;
+    grid-template-columns: 150px 150px;
     justify-content: space-between;
+    margin-top: 20px;
     grid-gap: 1fr;
   }
 
@@ -325,21 +349,32 @@ export default class Settings extends Vue {
       cursor: pointer;
       height: $circleSize;
       width: $circleSize;
-    }
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    &:hover {
-      .-label {
-        @include object-center;
-        background-color: rgba(0,0,0,.8);
-        z-index: 10000;
-        color: $fontColor;
-        transition: background-color .2s ease-in-out;
-        border-radius: $radius;
-        margin-bottom: 0;
+      svg {
+        fill: white;
+      }
+
+      span {
+        position: relative;
+        top: 10px;
+        left: 10px;
       }
     }
 
-    span {
+    .-label.active {
+      @include object-center;
+      background-color: rgba($color-black,.3);
+      z-index: 10000;
+      color: $fontColor;
+      transition: background-color .2s ease-in-out;
+      border-radius: $radius;
+      margin-bottom: 0;
+    }
+
+    .camera {
       display: inline-flex;
       padding: .2em;
       height: 2em;
