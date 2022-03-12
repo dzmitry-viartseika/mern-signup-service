@@ -1,5 +1,6 @@
 /* tslint:disable */
 import './100Widht';
+import './Bell';
 import './1Doc';
 import './2Doc';
 import './Add_Doc';
@@ -24,6 +25,8 @@ import './Caret_Left';
 import './Caret';
 import './Change';
 import './Chart';
+import './LogOut';
+import './ChevronBarLeft';
 import './Check_All';
 import './Checkbox_Off';
 import './Checkbox_On';
@@ -54,6 +57,8 @@ import './Executor';
 import './Expand';
 import './Eye-hidden';
 import './Eye';
+import './House';
+import './Person';
 import './FAQ';
 import './Favorite_filled';
 import './Favorite';

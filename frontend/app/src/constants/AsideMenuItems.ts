@@ -5,19 +5,31 @@ const asideMenuItems: IAsideItem[] = [
     id: 1,
     name: 'Dashboard',
     route: '/crm/dashboard',
-    icon: 'Eye',
+    icon: 'House',
   },
   {
     id: 2,
     name: 'Settings',
     route: '/crm/settings',
-    icon: 'Eye',
+    icon: 'Person',
   },
   {
     id: 3,
     name: 'Calendar',
     route: '/crm/calendar-working-days',
-    icon: 'Eye',
+    icon: 'Calendar',
+  },
+  {
+    id: 4,
+    name: 'Notification',
+    route: '/crm/notifications',
+    icon: 'Bell',
+  },
+  {
+    id: 5,
+    name: 'Analytics',
+    route: '/crm/analytics',
+    icon: 'Chart',
   },
 ];
 

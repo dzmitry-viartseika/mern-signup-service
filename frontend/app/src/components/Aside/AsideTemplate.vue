@@ -16,7 +16,7 @@
 
       <svgicon
         class="toggle"
-        name="Eye"
+        name="ChevronBarLeft"
         width="16"
         height="16"
         @click="hideAside"
@@ -40,9 +40,9 @@
             >
               <svgicon
                 class="icon"
-                :name="'Eye'"
-                width="16"
-                height="16"
+                :name="item.icon"
+                width="20"
+                height="20"
               />
               <span class="text nav-text">
                 {{ item.name }}
@@ -66,7 +66,7 @@
           <a href="#">
             <svgicon
               class="icon"
-              name="Eye"
+              name="LogOut"
               width="16"
               height="16"
             />
@@ -93,86 +93,18 @@
     </div>
 
   </nav>
-<!--  <nav :class="{'app&#45;&#45;short': isShortAside}">-->
-<!--    <div class="sidebar-top"-->
-<!--         @click="proceedTo('/crm/dashboard')"-->
-<!--    >-->
-<!--      <span class="shrink-btn"-->
-<!--            @click="hideAside"-->
-<!--      >-->
-<!--      <svgicon-->
-<!--        name="Eye"-->
-<!--        width="16"-->
-<!--        height="16"-->
-<!--      />-->
-<!--      </span>-->
-<!--      <img src="../../assets/images/logo.png" class="logo" alt="">-->
-<!--      <h3-->
-<!--        v-if="!isShortAside"-->
-<!--        class="hide">Aqumex</h3>-->
-<!--    </div>-->
-
-<!--    <div class="sidebar-links">-->
-<!--      <ul>-->
-<!--        <li-->
-<!--          v-for="item in navList"-->
-<!--          :key="item.id"-->
-<!--          class="tooltip-element"-->
-<!--          :data-tooltip="item.id"-->
-<!--        >-->
-<!--          <a @click.prevent="proceedTo(item.route)"-->
-<!--             :class="{'active': item.route === $route.path}" :data-active="item.id">-->
-<!--            <div class="icon">-->
-<!--              <svgicon-->
-<!--                :name="item.icon"-->
-<!--                width="16"-->
-<!--                height="16"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <span-->
-<!--              v-if="!isShortAside"-->
-<!--              class="link hide">{{ item.name }}</span>-->
-<!--          </a>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
-
-<!--    <div class="sidebar-footer">-->
-<!--      <a href="#" class="account tooltip-element" data-tooltip="0">-->
-<!--        <i class='bx bx-user'></i>-->
-<!--      </a>-->
-<!--      <div class="admin-user tooltip-element" data-tooltip="1">-->
-<!--        <div class="admin-profile hide">-->
-<!--          <img-->
-<!--            v-if="!user.avatar"-->
-<!--            src="../../assets/images/placeholders/avatar.jpg" alt="">-->
-<!--          <img-->
-<!--            v-else-->
-<!--            :src="user.avatar" alt="">-->
-<!--          <div class="admin-info" v-if="!isShortAside">-->
-<!--            <h3 v-if="user.firstName">{{ user.firstName }}</h3>-->
-<!--&lt;!&ndash;            <h5 v-if="user.role">{{ user.role }}</h5>&ndash;&gt;-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <a @click.prevent="logOut" class="log-out">-->
-<!--          <svgicon-->
-<!--            name="Eye"-->
-<!--            width="16"-->
-<!--            height="16"-->
-<!--          />-->
-<!--        </a>-->
-<!--      </div>-->
-<!--      <div class="tooltip">-->
-<!--        <span class="show">John Doe</span>-->
-<!--        <span>Logout</span>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </nav>-->
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import '@/assets/icons/Eye';
+import '@/assets/icons/Bell';
+import '@/assets/icons/House';
+import '@/assets/icons/Person';
+import '@/assets/icons/Chart';
+import '@/assets/icons/Calendar';
+import '@/assets/icons/LogOut';
+import '@/assets/icons/ChevronBarLeft';
 import { namespace } from 'vuex-class';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
@@ -317,11 +249,13 @@ export default class AsideTemplate extends Vue {
   .sidebar header .toggle{
     position: absolute;
     top: 50%;
-    right: -25px;
-    transform: translateY(-50%) rotate(180deg);
-    height: 25px;
-    width: 25px;
-    background-color: var(--primary-color);
+    right: -23px;
+    height: 28px;
+    width: 28px;
+    padding-left: 4px;
+    padding-top: 4px;
+    transform: translateY(-50%) rotate(0deg);
+    background-color: #695CFE;
     color: #FFF;
     border-radius: 50%;
     display: flex;
@@ -337,7 +271,7 @@ export default class AsideTemplate extends Vue {
   }
 
   .sidebar.close .toggle{
-    transform: translateY(-50%) rotate(0deg);
+    transform: translateY(-50%) rotate(180deg);
   }
 
   .sidebar .menu{
