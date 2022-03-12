@@ -19,8 +19,11 @@
   "signUpPage": {
     "signUpTitle": "Sign up",
     "haveAccount": "Already have an account?",
-    "agreementRules": "By clicking on Sign up, you agree to App",
-    "membership": "Membership Agreement"
+    "agreementRulesAccept": "I accept",
+    "learnMore": "Learn more",
+    "protectData": "about how we use and protect your data in ours.",
+    "termsOfService": "App Terms of Service",
+    "privacyPolicy": "Privacy Policy"
   },
   "forgotPasswordPage": {
     "forgotPasswordTitle": "Forgot your password?"

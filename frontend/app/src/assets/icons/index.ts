@@ -118,7 +118,6 @@ import './Notation';
 import './Notif';
 import './Open';
 import './PDF';
-import './Person';
 import './Phone';
 import './Pin';
 import './Plus_Doc';

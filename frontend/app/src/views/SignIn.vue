@@ -92,8 +92,17 @@
         </a>
       </div>
         <div class="app-modal__agreement">
-          {{ $t('signUpPage.agreementRules') }}
-          <div>{{ $t('signUpPage.membership') }} *</div>
+          {{ $t('signUpPage.agreementRulesAccept') }}
+          <span class="app-modal__agreement-link"
+                @click="$router.push('/terms')"
+          >
+            {{ $t('signUpPage.termsOfService') }}</span>.
+          {{ $t('signUpPage.learnMore') }}
+          <span
+            class="app-modal__agreement-link"
+            @click="$router.push('/privacy')"
+          >{{ $t('signUpPage.privacyPolicy') }}
+          </span> {{ $t('signUpPage.protectData') }}.
         </div>
     </div>
   </div>
@@ -193,7 +202,6 @@ export default class SignIn extends Vue {
     });
 
     if (result) {
-      console.log('www');
       try {
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
