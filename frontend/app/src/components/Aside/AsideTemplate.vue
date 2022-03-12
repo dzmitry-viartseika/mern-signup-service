@@ -54,25 +54,18 @@
       </div>
 
       <div class="bottom-content">
-        <img
-          style="width: 50px;height: 50px;border-radius: 50%"
-          v-if="!user.avatar"
-          src="../../assets/images/placeholders/avatar.jpg" alt="">
-        <img
-          v-else
-          style="width: 50px;height: 50px;border-radius: 50%"
-          :src="user.avatar" alt="">
         <li class="">
-          <a href="#">
+          <a
+             @click.prevent="logOut"
+          >
             <svgicon
               class="icon"
               name="LogOut"
-              width="16"
-              height="16"
+              width="22"
+              height="22"
             />
             <span
               class="text nav-text"
-              @click.prevent="logOut"
             >Logout</span>
           </a>
         </li>

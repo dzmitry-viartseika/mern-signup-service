@@ -52,6 +52,42 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/crm/analytics',
+    name: 'Analytics',
+    component: () => import(/* webpackChunkName: "Analytics" */ '../views/Analytics.vue'),
+    beforeEnter: (to, from, next) => {
+      if (token) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
+  },
+  {
+    path: '/crm/notifications',
+    name: 'Notification',
+    component: () => import(/* webpackChunkName: "Notification" */ '../views/Notification.vue'),
+    beforeEnter: (to, from, next) => {
+      if (token) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
+  },
+  {
+    path: '/crm/calendar-working-days',
+    name: 'Calendar',
+    component: () => import(/* webpackChunkName: "Calendar" */ '../views/Calendar.vue'),
+    beforeEnter: (to, from, next) => {
+      if (token) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
+  },
+  {
     path: '/reset-password',
     name: 'ResetPassword',
     component: () => import(/* webpackChunkName: "ResetPassword" */ '../views/ResetPassword.vue'),
