@@ -209,7 +209,6 @@ export default class SignIn extends Vue {
         this.setUser(response.data.user);
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
-        console.log('wertey');
         await this.$router.push({
           name: 'Dashboard',
         });

@@ -9,9 +9,17 @@
            :class="{'disabled': !isEditMode}"
       >
         <label class="-label"
+               :class="{'active': isEditMode}"
                for="file">
-          <span class="glyphicon glyphicon-camera"></span>
-          <span>Change Image</span>
+          <span>
+            <svgicon
+              class="camera"
+              name="Camera"
+              width="50"
+              height="50"
+              @click="editProfile"
+            />
+          </span>
         </label>
         <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
         <img
@@ -27,7 +35,7 @@
         <div class="app-edit">
           <h2>Основные сведения</h2>
           <svgicon
-            name="Eye"
+            name="Edit"
             width="16"
             height="16"
             @click="editProfile"
@@ -50,12 +58,17 @@
           />
         </div>
         <div class="form-field">
-          <text-input
-            :value.sync="user.phoneNumber"
-            input-type="text"
-            label-text="Телефон"
-            :disabled="!isEditMode"
-          />
+          <div class="text-field">
+            <label class="text-field__label">
+              Телефон
+            </label>
+            <vue-tel-input
+              v-model="user.phoneNumber"
+              :disabled="!isEditMode"
+              :show-dial-code-in-selection="true"
+              mode="international"
+            />
+          </div>
         </div>
         <div class="form-field">
           <text-input
@@ -70,9 +83,10 @@
       <div class="app-edit" v-if="!isEditMode">
         <h2>Пароль</h2>
         <svgicon
-          name="Eye"
+          name="Edit"
           width="16"
           height="16"
+          @click="showModalChangingPassword = true"
         />
       </div>
       <div class="app-action"
@@ -88,23 +102,75 @@
         >Сохранить</button>
       </div>
     </div>
+    <modal-template
+      v-if="showModalChangingPassword"
+      width="400px"
+    >
+      <div slot="content" class="app-modal__content">
+        <div>
+          <span  @click="isVisiblePassword = !isVisiblePassword">
+            <template v-if="!$validator.errors.has('userPassword')">
+              <template v-if="isVisiblePassword">
+                <svgicon
+                  name="Eye"
+                  width="16"
+                  height="16"
+                />
+              </template>
+              <template v-else>
+                <svgicon
+                  name="Eye-hidden"
+                  width="16"
+                  height="16"
+                />
+              </template>
+            </template>
+          </span>
+          <text-input
+            :value.sync="userPassword"
+            :input-type="isVisiblePassword ? 'text' : 'password'"
+            :label-text="$t('signInPage.password')"
+            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
+            :errorStatus="$validator.errors.has('userPassword')"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userPassword')"
+              class="validation"
+            >
+              {{ $validator.errors.first('userPassword') }}
+            </div>
+          </transition>
+        </div>
+<!--        <button-->
+<!--          class="app__btn app__btn&#45;&#45;primary"-->
+<!--        >-->
+<!--          {{ $t('global.agreeButton') }}-->
+<!--        </button>-->
+      </div>
+    </modal-template>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { VueTelInput } from 'vue-tel-input';
 import { namespace } from 'vuex-class';
 import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
-import UploadService from '@/services/Upload/UploadService';
+import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import '@/assets/icons/Edit';
+import '@/assets/icons/Camera';
 
 const User = namespace('User');
 
 @Component({
   components: {
     TextInput,
+    ModalTemplate,
+    VueTelInput,
   },
   metaInfo() {
     return {
@@ -122,9 +188,21 @@ export default class Settings extends Vue {
   @User.State
   public user: IUser;
 
+  @User.Mutation
+  public setUser;
+
   file = '';
 
   isEditMode = false;
+
+  showModalChangingPassword = false;
+
+  cachedUser: IUser = {};
+
+  created() {
+    console.log('this.user', this.user);
+    this.cachedUser = { ...this.user };
+  }
 
   editProfile(): void {
     this.isEditMode = !this.isEditMode;
@@ -144,9 +222,12 @@ export default class Settings extends Vue {
 
   cancelEdit(): void {
     this.isEditMode = false;
+    console.log('this.cachedUser', this.cachedUser);
+    this.setUser(this.cachedUser);
   }
 
   async saveProfile(): void {
+    this.cachedUser = this.user;
     try {
       const formData = new FormData();
       formData.append('file', this.file);
@@ -164,10 +245,16 @@ export default class Settings extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import "../assets/scss/variables";
+
   .app-profile {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 50px auto;
     width: 100%;
+
+    &-form {
+      padding-top: 50px;
+    }
   }
 
   .app-avatar {
@@ -187,8 +274,9 @@ export default class Settings extends Vue {
 
   .app-action {
     display: grid;
-    grid-template-columns: 40% 40%;
+    grid-template-columns: 150px 150px;
     justify-content: space-between;
+    margin-top: 20px;
     grid-gap: 1fr;
   }
 
@@ -265,21 +353,32 @@ export default class Settings extends Vue {
       cursor: pointer;
       height: $circleSize;
       width: $circleSize;
-    }
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    &:hover {
-      .-label {
-        @include object-center;
-        background-color: rgba(0,0,0,.8);
-        z-index: 10000;
-        color: $fontColor;
-        transition: background-color .2s ease-in-out;
-        border-radius: $radius;
-        margin-bottom: 0;
+      svg {
+        fill: white;
+      }
+
+      span {
+        position: relative;
+        top: 10px;
+        left: 10px;
       }
     }
 
-    span {
+    .-label.active {
+      @include object-center;
+      background-color: rgba($color-black,.3);
+      z-index: 10000;
+      color: $fontColor;
+      transition: background-color .2s ease-in-out;
+      border-radius: $radius;
+      margin-bottom: 0;
+    }
+
+    .camera {
       display: inline-flex;
       padding: .2em;
       height: 2em;
@@ -290,4 +389,15 @@ export default class Settings extends Vue {
     pointer-events: none;
     cursor: default;
   }
+
+  .text-field {
+    margin-bottom: 15px;
+
+    &__label {
+      color: $color-silver-chalice;
+      font: 10px Ubuntu-medium, sans-serif;
+      line-height: 1.55;
+    }
+  }
+
 </style>

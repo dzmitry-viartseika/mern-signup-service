@@ -1,5 +1,7 @@
 <template>
-  <div class="app">
+  <div class="app"
+       :class="{'app--flex': showSidebar}"
+  >
     <template v-if="showSidebar">
       <aside-template />
     </template>
@@ -77,5 +79,6 @@ export default class App extends Vue {
 .admin-main {
   background: $color-alabaster;
   flex-grow: 1;
+  padding: 20px;
 }
 </style>

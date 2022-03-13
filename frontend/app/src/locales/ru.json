@@ -42,5 +42,13 @@
   "page404": {
     "titlePage": "Страница не найдена",
     "descriptionPage": "Страница устарела, была удалена или не существовала вовсе"
+  },
+  "asideMenu": {
+    "dashboard": "Главная",
+    "settings": "Настройки",
+    "calendar": "Календарь",
+    "notification": "Уведомления",
+    "analytics": "Аналитика",
+    "logout": "Выйти"
   }
 }

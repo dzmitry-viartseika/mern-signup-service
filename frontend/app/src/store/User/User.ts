@@ -1,16 +1,21 @@
+import { VuexModule, Module, Mutation } from 'vuex-module-decorators';
 import { IUser } from '@/model/IUser';
-import {
-  VuexModule, Module, Mutation,
-} from 'vuex-module-decorators';
 
 @Module({ namespaced: true })
 class User extends VuexModule {
-  public user: IUser | null = null;
+  public user: IUser = {
+    email: '',
+    isActivated: false,
+    id: '',
+    avatar: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+  }
 
   @Mutation
-  public setUser(user: IUser): void {
-    this.user = user;
+  public setUser(data: IUser): void {
+    this.user = data;
   }
 }
-
 export default User;
