@@ -115,7 +115,6 @@ import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
-import { namespace } from 'vuex-class';
 import AuthService from '../services/Auth/AuthService';
 import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
 import OauthGithub from '../components/Oauths/OauthGithub.vue';
@@ -123,7 +122,6 @@ import validationErrorMessage from '../locales/validationErrorMessage';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
 
-const User = namespace('User');
 // TODO ENV link remove
 // https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project
 @Component({
@@ -146,11 +144,6 @@ const User = namespace('User');
   },
 })
 export default class SignIn extends Vue {
-  @User.State
-  private user: string;
-
-  @User.Mutation
-  public setUser!: () => void
 
   userEmail = '';
 
@@ -206,7 +199,7 @@ export default class SignIn extends Vue {
         this.isLoader = true;
         const response = await AuthService.login(this.userEmail, this.userPassword);
         this.isLoader = false;
-        this.setUser(response.data.user);
+        await this.$store.dispatch('setUser', response.data.user);
         const { accessToken } = response.data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push({

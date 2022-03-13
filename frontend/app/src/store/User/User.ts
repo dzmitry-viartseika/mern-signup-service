@@ -1,21 +1,31 @@
-import { VuexModule, Module, Mutation } from 'vuex-module-decorators';
-import { IUser } from '@/model/IUser';
+export const types = {
+  SET_USER: 'setUser',
+};
 
-@Module({ namespaced: true })
-class User extends VuexModule {
-  public user: IUser = {
-    email: '',
-    isActivated: false,
-    id: '',
-    avatar: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-  }
+const state = {
+  user: {},
+};
 
-  @Mutation
-  public setUser(data: IUser): void {
-    this.user = data;
-  }
-}
-export default User;
+const getters = {
+  user: (state) => state.user,
+};
+
+const actions = {
+  setUser({ commit }, data) {
+    console.log('data', data);
+    commit(types.SET_USER, data);
+  },
+};
+
+const mutations = {
+  [types.SET_USER](state, data) {
+    state.user = data;
+  },
+};
+
+export default {
+  state,
+  getters,
+  actions,
+  mutations,
+};

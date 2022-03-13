@@ -1,0 +1,5 @@
+dist/*
+node_modules/*
+src/vendor/*
+babel.config.js
+vue.config.js

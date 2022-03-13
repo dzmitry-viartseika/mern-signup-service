@@ -126,21 +126,21 @@
               </template>
             </template>
           </span>
-          <text-input
-            :value.sync="userPassword"
-            :input-type="isVisiblePassword ? 'text' : 'password'"
-            :label-text="$t('signInPage.password')"
-            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
-            :errorStatus="$validator.errors.has('userPassword')"
-          />
-          <transition name="fade-el">
-            <div
-              v-if="$validator.errors.has('userPassword')"
-              class="validation"
-            >
-              {{ $validator.errors.first('userPassword') }}
-            </div>
-          </transition>
+<!--          <text-input-->
+<!--            :value.sync="userPassword"-->
+<!--            :input-type="isVisiblePassword ? 'text' : 'password'"-->
+<!--            :label-text="$t('signInPage.password')"-->
+<!--            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"-->
+<!--            :errorStatus="$validator.errors.has('userPassword')"-->
+<!--          />-->
+<!--          <transition name="fade-el">-->
+<!--            <div-->
+<!--              v-if="$validator.errors.has('userPassword')"-->
+<!--              class="validation"-->
+<!--            >-->
+<!--              {{ $validator.errors.first('userPassword') }}-->
+<!--            </div>-->
+<!--          </transition>-->
         </div>
 <!--        <button-->
 <!--          class="app__btn app__btn&#45;&#45;primary"-->
@@ -164,8 +164,6 @@ import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
 
-const User = namespace('User');
-
 @Component({
   components: {
     TextInput,
@@ -185,12 +183,6 @@ const User = namespace('User');
   },
 })
 export default class Settings extends Vue {
-  @User.State
-  public user: IUser;
-
-  @User.Mutation
-  public setUser;
-
   file = '';
 
   isEditMode = false;
@@ -199,8 +191,12 @@ export default class Settings extends Vue {
 
   cachedUser: IUser = {};
 
+  get user() {
+    return this.$store.getters.user;
+  }
+
   created() {
-    console.log('this.user', this.user);
+    console.log('this.$store.getters.user', this.$store.getters.user)
     this.cachedUser = { ...this.user };
   }
 
@@ -223,10 +219,10 @@ export default class Settings extends Vue {
   cancelEdit(): void {
     this.isEditMode = false;
     console.log('this.cachedUser', this.cachedUser);
-    this.setUser(this.cachedUser);
+    this.$store.dispatch('setUser', this.cachedUser);
   }
 
-  async saveProfile(): void {
+  async saveProfile(): Promise<void> {
     this.cachedUser = this.user;
     try {
       const formData = new FormData();
@@ -235,6 +231,7 @@ export default class Settings extends Vue {
       // console.log('file', file.data.id);
       // updatedUser.avatar = file.data.id;
       const user = await UsersService.updateUser(this.user.email, this.user);
+      console.log('user', user);
     } catch (e) {
       console.error(e);
     } finally {

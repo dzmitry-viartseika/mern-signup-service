@@ -11,6 +11,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import i18n from './i18n';
+// @ts-ignore
+import PortalVue from 'portal-vue'
 import 'vue-tel-input/dist/vue-tel-input.css';
 
 Vue.config.productionTip = false;
@@ -30,6 +32,7 @@ Vue.use(SvgIcon, {
 });
 
 Vue.use(VueShortKey);
+Vue.use(PortalVue);
 
 Vue.use(VeeValidate, {
   i18n,
@@ -44,6 +47,7 @@ new Vue({
   i18n,
   VueShortKey,
   VeeValidate,
+  PortalVue,
   SvgIcon,
   Toasted,
   render: (h) => h(App),

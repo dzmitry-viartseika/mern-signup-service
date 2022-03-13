@@ -104,9 +104,9 @@ export default class ForgotPassword extends Vue {
     if (result) {
       try {
         this.isLoader = true;
-        const response = await AuthService.restorePassword(this.userEmail);
+        const { data } = await AuthService.restorePassword(this.userEmail);
         this.isLoader = false;
-        const { accessToken } = response.data as IAuthResponse;
+        const { accessToken } = data as IAuthResponse;
         localStorage.setItem('token', accessToken);
         await this.$router.push('/sign-in');
       } catch (err) {

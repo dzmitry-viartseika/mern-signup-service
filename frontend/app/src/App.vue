@@ -30,16 +30,12 @@ import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
 import { namespace } from 'vuex-class';
 
-const User = namespace('User');
-
 @Component({
   components: {
     AsideTemplate,
   },
 })
 export default class App extends Vue {
-  @User.Mutation
-  public setUser!: () => void
 
   get showSidebar(): boolean {
     const token = localStorage.getItem('token');
@@ -53,18 +49,18 @@ export default class App extends Vue {
     if (lang) {
       this.$i18n.locale = lang;
     } else {
-      const language = window.navigator ? (window.navigator.language
-        || window.navigator.userLanguage) : 'ru';
+      const language = window.navigator ? window.navigator.language : 'ru';
       const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
       if (systemLanguage !== 'ru') {
         this.$i18n.locale = 'en';
       }
     }
     if (token) {
+      console.log('wertey');
       try {
         const response = await UsersService.getCurrentUser();
-        console.log('user', response.data);
-        this.setUser(response.data);
+        console.log('response.data', response.data);
+        this.$store.dispatch('setUser', response.data);
       } catch (e) {
         console.error(e);
       }
@@ -74,7 +70,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import "assets/scss/core";
+@import 'assets/scss/core';
 
 .admin-main {
   background: $color-alabaster;
