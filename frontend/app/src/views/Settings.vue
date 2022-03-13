@@ -251,6 +251,10 @@ export default class Settings extends Vue {
     max-width: 600px;
     margin: 50px auto;
     width: 100%;
+
+    &-form {
+      padding-top: 50px;
+    }
   }
 
   .app-avatar {
