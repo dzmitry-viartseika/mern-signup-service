@@ -1,33 +1,34 @@
+import i18n from '@/i18n';
 import { IAsideItem } from '../model/constants/IAsideItem';
 
 const asideMenuItems: IAsideItem[] = [
   {
     id: 1,
-    name: 'Dashboard',
+    name: i18n.t('asideMenu.dashboard') as string,
     route: '/crm/dashboard',
     icon: 'House',
   },
   {
     id: 2,
-    name: 'Settings',
+    name: i18n.t('asideMenu.settings') as string,
     route: '/crm/settings',
     icon: 'Person',
   },
   {
     id: 3,
-    name: 'Calendar',
+    name: i18n.t('asideMenu.calendar') as string,
     route: '/crm/calendar-working-days',
     icon: 'Calendar',
   },
   {
     id: 4,
-    name: 'Notification',
+    name: i18n.t('asideMenu.notification') as string,
     route: '/crm/notifications',
     icon: 'Bell',
   },
   {
     id: 5,
-    name: 'Analytics',
+    name: i18n.t('asideMenu.analytics') as string,
     route: '/crm/analytics',
     icon: 'Chart',
   },

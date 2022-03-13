@@ -66,7 +66,9 @@
             />
             <span
               class="text nav-text"
-            >Logout</span>
+            >
+              {{ $t('asideMenu.logout') }}
+            </span>
           </a>
         </li>
 

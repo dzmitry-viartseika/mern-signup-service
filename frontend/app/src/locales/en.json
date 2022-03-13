@@ -41,5 +41,13 @@
   "page404": {
     "titlePage": "Page not found",
     "descriptionPage": "Page is out of date, has been deleted or does not exist at all"
+  },
+  "asideMenu": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "calendar": "Calendar",
+    "notification": "Notifications",
+    "analytics": "Analytics",
+    "logout": "Logout"
   }
 }

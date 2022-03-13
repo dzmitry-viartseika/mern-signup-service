@@ -189,7 +189,7 @@ export default class Settings extends Vue {
   public user: IUser;
 
   @User.Mutation
-  public setUser!: () => void
+  public setUser;
 
   file = '';
 
