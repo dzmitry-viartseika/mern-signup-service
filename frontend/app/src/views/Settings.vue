@@ -62,12 +62,12 @@
             <label class="text-field__label">
               Телефон
             </label>
-            <vue-tel-input
-              v-model="user.phoneNumber"
-              :disabled="!isEditMode"
-              :show-dial-code-in-selection="true"
-              mode="international"
-            />
+<!--            <vue-tel-input-->
+<!--              v-model="user.phoneNumber"-->
+<!--              :disabled="!isEditMode"-->
+<!--              :show-dial-code-in-selection="true"-->
+<!--              mode="international"-->
+<!--            />-->
           </div>
         </div>
         <div class="form-field">
@@ -154,8 +154,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { VueTelInput } from 'vue-tel-input';
-import { namespace } from 'vuex-class';
+// import { VueTelInput } from 'vue-tel-input';
 import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
@@ -168,7 +167,7 @@ import '@/assets/icons/Camera';
   components: {
     TextInput,
     ModalTemplate,
-    VueTelInput,
+    // VueTelInput,
   },
   metaInfo() {
     return {

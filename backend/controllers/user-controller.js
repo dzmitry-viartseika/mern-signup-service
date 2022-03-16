@@ -136,6 +136,13 @@ class UserController {
             console.log(e);
         }
     }
+
+    async test(req, res,next) {
+        res.status(201).send({
+            'message': 'tryrtyrt yrt yrt yrt yrt yrt yryr',
+            user: req.user,
+        });
+    }
 }
 
 module.exports = new UserController();

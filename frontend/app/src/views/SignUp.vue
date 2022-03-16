@@ -83,7 +83,6 @@ import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
-// eslint-disable-next-line import/order
 import AuthService from '../services/Auth/AuthService';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';

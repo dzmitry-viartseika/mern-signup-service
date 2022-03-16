@@ -1,8 +1,7 @@
 import Vue from 'vue';
-import VueTelInput from 'vue-tel-input';
+// import VueTelInput from 'vue-tel-input';
 import SvgIcon from 'vue-svgicon';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import Meta from 'vue-meta';
 import VeeValidate from 'vee-validate';
 import VueShortKey from 'vue-shortkey';
@@ -11,14 +10,13 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import i18n from './i18n';
-// @ts-ignore
-import PortalVue from 'portal-vue'
-import 'vue-tel-input/dist/vue-tel-input.css';
+// import PortalVue from 'portal-vue';
+// import 'vue-tel-input/dist/vue-tel-input.css';
 
 Vue.config.productionTip = false;
 
 Vue.use(Toasted);
-Vue.use(VueTelInput);
+// Vue.use(VueTelInput);
 
 Vue.use(Meta, {
   keyName: 'metaInfo',
@@ -32,7 +30,7 @@ Vue.use(SvgIcon, {
 });
 
 Vue.use(VueShortKey);
-Vue.use(PortalVue);
+// Vue.use(PortalVue);
 
 Vue.use(VeeValidate, {
   i18n,
@@ -47,7 +45,7 @@ new Vue({
   i18n,
   VueShortKey,
   VeeValidate,
-  PortalVue,
+  // PortalVue,
   SvgIcon,
   Toasted,
   render: (h) => h(App),

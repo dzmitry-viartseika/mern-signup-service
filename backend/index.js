@@ -51,7 +51,7 @@ app.use(session({
         secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
     },
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    store: new MongoStore({ mongooseConnection: mongoose.connection, collectionName: 'sessions' }),
 }))
 
 app.use(passport.initialize());

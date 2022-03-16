@@ -43,13 +43,13 @@ const routes: Array<RouteConfig> = [
     path: '/crm/dashboard',
     name: 'Dashboard',
     component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard.vue'),
-    beforeEnter: (to, from, next) => {
-      if (token) {
-        next();
-      } else {
-        next({ name: 'SignIn' });
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if (token) {
+    //     next();
+    //   } else {
+    //     next({ name: 'SignIn' });
+    //   }
+    // },
   },
   {
     path: '/crm/analytics',
