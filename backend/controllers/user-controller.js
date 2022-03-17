@@ -43,6 +43,7 @@ class UserController {
             const { refreshToken } =  req.cookies;
             const token = await UserService.logout(refreshToken);
             res.clearCookie('refreshToken');
+            res.clearCookie('accessToken');
             return res.json(token)
         } catch (e) {
             next(e);
@@ -117,11 +118,8 @@ class UserController {
     }
 
     async getCurrentUser(req, res, next) {
-        console.log('req', req.header('authorization'));
-        console.log('wertey', req.header)
         if (req.headers && req.headers.authorization) {
             const token = req.headers.authorization.split(' ');
-            console.log('token', token[1]);
             const userData = await UserService.getCurrentUser(token);
             return res.json(userData);
         }

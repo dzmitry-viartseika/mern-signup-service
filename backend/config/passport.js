@@ -8,31 +8,30 @@ module.exports = function (passport) {
     passport.use(
         new GoogleStrategy(
             {
-                clientID: '306249750576-0p5omh8fvab00voahj67l3qhq4rak7vc.apps.googleusercontent.com',
-                clientSecret: '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',
+                clientID: '12221857987-tiubpde8hs8ee34bo4phceo141ph3lq7.apps.googleusercontent.com',
+                clientSecret: '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',
                 callbackURL: '/auth/google/callback',
             },
-            accessToken => {
-                console.log("access token: ", accessToken);
-            },
+            // accessToken => {
+            //     console.log("access token: ", accessToken);
+            // },
             function (accessToken, refreshToken, profile, cb) {
-
                 Oauth2User.findOne({ googleId: profile.id }, async (err, doc) => {
-
                     if (err) {
                         return cb(err, null);
+                    }
+
+                    if (doc) {
+                        return cb(null, doc);
                     }
 
                     if (!doc) {
                         const newUser = new Oauth2User({
                             googleId: profile.id,
                             username: profile.name.givenName
-                        });
-
-                        await newUser.save();
-                        cb(null, newUser);
+                        }).save()
+                        return cb(newUser);
                     }
-                    cb(null, doc);
                 })
 
 
@@ -79,13 +78,13 @@ module.exports = function (passport) {
                 console.log('newUser', newUser);
 
                 try {
-                    let user = await User.findOne({googleId: profile.id})
+                    let user = await Oauth2User.findOne({googleId: profile.id})
 
                     if (user) {
                         done(null, user)
                     } else {
-                        user = await User.create(newUser)
-                        // done(null, user)
+                        user = await Oauth2User.create(newUser)
+                        done(null, user)
                         return {
                             user,
                         }

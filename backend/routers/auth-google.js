@@ -29,7 +29,7 @@ router.get(
 router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
 router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/sign-in', successRedirect: 'http://localhost:5000/api/crm/dashboard' }),
+    passport.authenticate('google', { failureRedirect: '/sign-in', successRedirect: 'http://localhost:8080/crm/dashboard' }),
     // session: true,
     (req, res) => {
         // res.status(201).send({
