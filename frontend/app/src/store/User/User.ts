@@ -12,7 +12,6 @@ const getters = {
 
 const actions = {
   setUser({ commit }, data) {
-    console.log('data', data);
     commit(types.SET_USER, data);
   },
 };

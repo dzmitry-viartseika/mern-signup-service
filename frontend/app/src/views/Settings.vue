@@ -21,14 +21,22 @@
             />
           </span>
         </label>
+<!--        <svgicon-->
+<!--          v-if="isEditMode"-->
+<!--          class="delete"-->
+<!--          name="Delete"-->
+<!--          width="50"-->
+<!--          height="50"-->
+<!--          @click="deletePhoto"-->
+<!--        />-->
         <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
         <img
-          v-if="!user.avatar"
+          v-if="!userData.avatar"
           src="../assets/images/placeholders/avatar.jpg"
           width="200" />
         <img
           v-else
-          :src="user.avatar"
+          :src="userData.avatar"
           width="200" />
       </div>
       <div class="app-profile-form app-content">
@@ -43,7 +51,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="user.firstName"
+            :value.sync="userData.firstName"
             input-type="text"
             label-text="Имя"
             :disabled="!isEditMode"
@@ -51,7 +59,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="user.lastName"
+            :value.sync="userData.lastName"
             input-type="text"
             label-text="Фамилия"
             :disabled="!isEditMode"
@@ -62,17 +70,17 @@
             <label class="text-field__label">
               Телефон
             </label>
-<!--            <vue-tel-input-->
-<!--              v-model="user.phoneNumber"-->
-<!--              :disabled="!isEditMode"-->
-<!--              :show-dial-code-in-selection="true"-->
-<!--              mode="international"-->
-<!--            />-->
+            <vue-tel-input
+              v-model="userData.phoneNumber"
+              :disabled="!isEditMode"
+              :show-dial-code-in-selection="true"
+              mode="international"
+            />
           </div>
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="user.email"
+            :value.sync="userData.email"
             input-type="email"
             label-text="Почта"
             :disabled="true"
@@ -154,7 +162,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-// import { VueTelInput } from 'vue-tel-input';
+import { VueTelInput } from 'vue-tel-input';
 import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
@@ -162,12 +170,13 @@ import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
+import '@/assets/icons/Delete';
 
 @Component({
   components: {
     TextInput,
     ModalTemplate,
-    // VueTelInput,
+    VueTelInput,
   },
   metaInfo() {
     return {
@@ -190,17 +199,35 @@ export default class Settings extends Vue {
 
   cachedUser: IUser = {};
 
-  get user() {
-    return this.$store.getters.user;
+  userData: IUser = {};
+
+  async mounted() {
+    if (Object.keys(this.user).length === 0) {
+      const response = await UsersService.getCurrentUser();
+      console.log('response', response.data);
+      this.userData = response.data;
+    } else {
+      this.userData = this.user;
+      console.log('userData', this.userData);
+      this.cachedUser =  JSON.parse(JSON.stringify(this.$store.getters.user));
+    }
   }
 
-  created() {
-    console.log('this.$store.getters.user', this.$store.getters.user)
-    this.cachedUser = { ...this.user };
+  deletePhoto(): void {
+    console.log('deletePhoto');
+    this.userData.avatar = '';
   }
 
   editProfile(): void {
     this.isEditMode = !this.isEditMode;
+  }
+
+  get user() {
+    return this.$store.getters.user;
+  }
+
+  set user(data) {
+    this.$store.dispatch('setUser', data);
   }
 
   imageHandler(e): void {
@@ -217,20 +244,24 @@ export default class Settings extends Vue {
 
   cancelEdit(): void {
     this.isEditMode = false;
+    console.log('this.user', this.user);
+    console.log('this.userData', this.userData);
     console.log('this.cachedUser', this.cachedUser);
-    this.$store.dispatch('setUser', this.cachedUser);
+    this.userData = { ...this.user };
+    this.user = { ...this.userData };
+    // this.userData = this.user;
   }
 
   async saveProfile(): Promise<void> {
-    this.cachedUser = this.user;
     try {
       const formData = new FormData();
       formData.append('file', this.file);
       // const file = await UploadService.upload(formData);
       // console.log('file', file.data.id);
       // updatedUser.avatar = file.data.id;
-      const user = await UsersService.updateUser(this.user.email, this.user);
-      console.log('user', user);
+      const response = await UsersService.updateUser(this.$store.getters.user.email, this.userData);
+      console.log('user', response.data);
+      this.user = response.data;
     } catch (e) {
       console.error(e);
     } finally {
