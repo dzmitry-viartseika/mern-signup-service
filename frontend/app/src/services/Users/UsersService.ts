@@ -16,4 +16,8 @@ export default class UsersService {
   static getCurrentUser(): Promise<AxiosResponse<IUser>> {
     return $api.get<IUser>('/me');
   }
+
+  static async success() {
+    return $api.get('/success');
+  }
 }

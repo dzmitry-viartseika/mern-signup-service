@@ -61,6 +61,14 @@
           </div>
         </div>
       </div>
+      <div class="app-divider">
+        <span class="app-divider__item">
+          {{ $t('signInPage.oauthLogin') }}
+        </span>
+      </div>
+      <div class="app-oauth">
+        <oauth-google />
+      </div>
       <button
         class="app__btn app__btn--primary"
         @click="signUp"
@@ -84,18 +92,17 @@ import TextInput from '@/components/Elements/TextInput.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import AuthService from '../services/Auth/AuthService';
+import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
-import { namespace } from 'vuex-class';
-import { IUser } from '@/model/IUser';
 import validationErrorMessage from '../locales/validationErrorMessage';
 
-const User = namespace('User');
 
 @Component({
   components: {
     TextInput,
     LoaderTemplate,
+    OauthGoogle,
   },
   metaInfo() {
     return {
@@ -124,9 +131,6 @@ export default class SignUp extends Vue {
   };
 
   validator = null;
-
-  @User.Mutation
-  public setUser!: () => void;
 
   beforeMount() {
     const dict = {

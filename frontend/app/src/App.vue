@@ -28,7 +28,6 @@ import Vue from 'vue';
 import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
-import { namespace } from 'vuex-class';
 
 @Component({
   components: {

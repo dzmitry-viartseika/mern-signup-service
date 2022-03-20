@@ -14,7 +14,8 @@
     "inputPasswordPlaceholder": "Enter your password",
     "forgotPasswordText": "Forgot password",
     "oauthLogin": "Or login with",
-    "createAccount": "Not Registered?"
+    "createAccount": "Not Registered?",
+    "rememberMe": "Remember me"
   },
   "signUpPage": {
     "signUpTitle": "Sign up",

@@ -69,6 +69,13 @@
             </div>
           </transition>
         </div>
+        <checkbox
+          name="remember-me"
+          :value="isRememberMe"
+          :label="$t('signInPage.rememberMe')"
+          v-model="isRememberMe"
+          id="remember-me"
+        />
       </div>
       <div class="app-divider">
         <span class="app-divider__item">
@@ -77,7 +84,6 @@
       </div>
       <div class="app-oauth">
         <oauth-google />
-        <oauth-github />
       </div>
       <div class="app-actions">
         <button class="app__btn app__btn--primary" @click="signIn">
@@ -113,11 +119,11 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
+import Checkbox from '@/components/Elements/Checkbox.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import AuthService from '../services/Auth/AuthService';
 import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
-import OauthGithub from '../components/Oauths/OauthGithub.vue';
 import validationErrorMessage from '../locales/validationErrorMessage';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
@@ -129,7 +135,7 @@ import '@/assets/icons/Eye-hidden';
     TextInput,
     LoaderTemplate,
     OauthGoogle,
-    OauthGithub,
+    Checkbox,
   },
   metaInfo() {
     return {
@@ -148,6 +154,8 @@ export default class SignIn extends Vue {
   userEmail = '';
 
   userPassword = '';
+
+  isRememberMe = false;
 
   isLoader = false;
 

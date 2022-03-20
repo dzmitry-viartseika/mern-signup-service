@@ -14,7 +14,8 @@
     "inputPasswordPlaceholder": "Введите ваш пароль",
     "forgotPasswordText": "забыли пароль",
     "oauthLogin": "Зайти через",
-    "createAccount": "У вас нет аккаунта?"
+    "createAccount": "У вас нет аккаунта?",
+    "rememberMe": "Запомнить меня"
   },
   "signUpPage": {
     "signUpTitle": "Регистрация",

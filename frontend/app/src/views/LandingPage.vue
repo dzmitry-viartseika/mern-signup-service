@@ -36,6 +36,7 @@ import Component from 'vue-class-component';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import DropDown from '@/components/Elements/DropDown.vue';
 import HeaderTemplate from '@/components/Landing/Header/HeaderTemplate.vue';
+import UsersService from "@/services/Users/UsersService";
 
 @Component({
   components: {
@@ -46,6 +47,7 @@ import HeaderTemplate from '@/components/Landing/Header/HeaderTemplate.vue';
 })
 export default class LandingPage extends Vue {
   isAgreePolicy: boolean | null = null;
+
 
   get language(): string {
     return this.$i18n.locale;
@@ -81,9 +83,19 @@ export default class LandingPage extends Vue {
     localStorage.setItem('language', code);
   }
 
-  created() {
+  async created() {
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
+    try {
+      const response = await UsersService.success();
+      if (response) {
+        localStorage.setItem('token', response.data.user.id);
+        await this.$store.dispatch('setUser', response.data.user);
+        await this.$router.push('/crm/dashboard');
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 </script>

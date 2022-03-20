@@ -8,10 +8,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import '@/assets/icons/Eye';
-import { namespace } from 'vuex-class';
 import UsersService from "@/services/Users/UsersService";
-
-const User = namespace('User');
 
 @Component({
   metaInfo() {
@@ -30,8 +27,11 @@ export default class Dashboard extends Vue {
 
   async created() {
     try {
-      const response = await UsersService.getCurrentUser();
-      console.log('response.data', response.data);
+      const response = await UsersService.success();
+      console.log('response', response.data);
+      // this.userName = response.data.user.displayName;
+      // this.avatar = response.data.user.photos[0].value;
+      // this.email = response.data.user.emails[0].value;
     } catch (e) {
       console.error(e);
     }

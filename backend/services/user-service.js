@@ -1,4 +1,5 @@
 const UserModel = require('../models/user-model');
+const Oauth2User = require('../models/oauth2-user-model');
 const TokenModel = require('../models/token-model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -7,6 +8,7 @@ const mailService = require('./mail-service');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
+const passport = require('passport');
 
 class UserService {
     async registration(email, password) {
@@ -138,8 +140,12 @@ class UserService {
     }
 
     async getCurrentUser(token) {
-        console.log('getCurrentUser');
-        const user = await UserModel.findOne({});
+        console.log('getCurrentUser getCurrentUser');
+        // const user = await UserModel.findOne({});
+        const user = await passport.serializeUser((user, done) => {
+            console.log('passport')
+            done(null, user.id)
+        });
         console.log('user', user);
         return user;
     }
@@ -162,13 +168,11 @@ class UserService {
         user.save();
     }
 
-    async getAllUsers(req, res,next) {
-        try {
-            const users = await UserModel.find();
-            return users;
-        } catch (e) {
-            console.log(e)
-        }
+    async googleUser(req, res,next) {
+        // res.send({
+        //     message: 'wertey  sucecess',
+        //     // user: req.user,
+        // })
     }
 }
 

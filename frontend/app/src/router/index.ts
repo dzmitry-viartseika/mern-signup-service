@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Settings from '@/views/Settings.vue';
+import { mapGetters } from "vuex";
 
 const token = localStorage.getItem('token');
+import store from '../store/index';
 
 Vue.use(VueRouter);
 
@@ -22,7 +24,7 @@ const routes: Array<RouteConfig> = [
     name: 'Settings',
     component: () => import(/* webpackChunkName: "Settings" */ '../views/Settings.vue'),
     beforeEnter: (to, from, next) => {
-      if (token) {
+      if (store.getters.user) {
         next();
       } else {
         next({ name: 'SignIn' });
@@ -35,7 +37,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "Page404" */ '../views/Page404.vue'),
   },
   {
-    path: '/',
+    path: '/success',
     name: 'LandingPage',
     component: () => import(/* webpackChunkName: "Landing" */ '../views/LandingPage.vue'),
   },
@@ -43,20 +45,20 @@ const routes: Array<RouteConfig> = [
     path: '/crm/dashboard',
     name: 'Dashboard',
     component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard.vue'),
-    // beforeEnter: (to, from, next) => {
-    //   if (token) {
-    //     next();
-    //   } else {
-    //     next({ name: 'SignIn' });
-    //   }
-    // },
+    beforeEnter: (to, from, next) => {
+      if (store.getters.user) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
   },
   {
     path: '/crm/analytics',
     name: 'Analytics',
     component: () => import(/* webpackChunkName: "Analytics" */ '../views/Analytics.vue'),
     beforeEnter: (to, from, next) => {
-      if (token) {
+      if (store.getters.user) {
         next();
       } else {
         next({ name: 'SignIn' });
@@ -68,7 +70,7 @@ const routes: Array<RouteConfig> = [
     name: 'Notification',
     component: () => import(/* webpackChunkName: "Notification" */ '../views/Notification.vue'),
     beforeEnter: (to, from, next) => {
-      if (token) {
+      if (store.getters.user) {
         next();
       } else {
         next({ name: 'SignIn' });
@@ -80,7 +82,7 @@ const routes: Array<RouteConfig> = [
     name: 'Calendar',
     component: () => import(/* webpackChunkName: "Calendar" */ '../views/Calendar.vue'),
     beforeEnter: (to, from, next) => {
-      if (token) {
+      if (store.getters.user) {
         next();
       } else {
         next({ name: 'SignIn' });

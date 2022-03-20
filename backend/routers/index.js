@@ -19,6 +19,5 @@ router.get('/forgot-password/:link', UserController.resetPassword);
 router.get('/users', authMiddleWare, UserController.getUsers);
 router.patch('/update-user', UserController.updateUser);
 router.get('/me', UserController.getCurrentUser);
-router.get('/crm/dashboard', UserController.test);
 
 module.exports = router;

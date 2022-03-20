@@ -100,21 +100,13 @@ import '@/assets/icons/Chart';
 import '@/assets/icons/Calendar';
 import '@/assets/icons/LogOut';
 import '@/assets/icons/ChevronBarLeft';
-import { namespace } from 'vuex-class';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
 import { IUser } from '@/model/IUser';
 import { IAsideItem } from '../../model/constants/IAsideItem';
 
-const User = namespace('User');
-
 @Component({})
 export default class AsideTemplate extends Vue {
-  @User.State
-  public user: IUser;
-
-  @User.Mutation
-  public setUser!: () => void;
 
   isShortAside: boolean | null = false;
 

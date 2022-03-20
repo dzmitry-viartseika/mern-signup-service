@@ -119,6 +119,7 @@ class UserController {
 
     async getCurrentUser(req, res, next) {
         if (req.headers && req.headers.authorization) {
+            console.log('req.session', req)
             const token = req.headers.authorization.split(' ');
             const userData = await UserService.getCurrentUser(token);
             return res.json(userData);
@@ -136,10 +137,13 @@ class UserController {
     }
 
     async test(req, res,next) {
-        res.status(201).send({
-            'message': 'tryrtyrt yrt yrt yrt yrt yrt yryr',
-            user: req.user,
-        });
+        try {
+            const user = await UserService.googleUser();
+            return res.json(user)
+        } catch (e) {
+            next(e);
+            console.log(e);
+        }
     }
 }
 
