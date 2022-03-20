@@ -104,6 +104,7 @@ import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
 import { IUser } from '@/model/IUser';
 import { IAsideItem } from '../../model/constants/IAsideItem';
+import UsersService from "@/services/Users/UsersService";
 
 @Component({})
 export default class AsideTemplate extends Vue {
@@ -111,6 +112,13 @@ export default class AsideTemplate extends Vue {
   isShortAside: boolean | null = false;
 
   navList: IAsideItem[] = [];
+
+  // async mounted() {
+  //   if (Object.keys(this.$store.getters.user).length === 0) {
+  //     const response = await UsersService.getCurrentUser();
+  //     this.$store.dispatch('setUser', response.data);
+  //   }
+  // }
 
   created() {
     this.navList = asideMenuItems;

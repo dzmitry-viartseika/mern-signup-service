@@ -21,14 +21,14 @@
             />
           </span>
         </label>
-<!--        <svgicon-->
-<!--          v-if="isEditMode"-->
-<!--          class="delete"-->
-<!--          name="Delete"-->
-<!--          width="50"-->
-<!--          height="50"-->
-<!--          @click="deletePhoto"-->
-<!--        />-->
+        <svgicon
+          v-if="isEditMode"
+          class="delete"
+          name="Delete"
+          width="50"
+          height="50"
+          @click="deletePhoto"
+        />
         <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
         <img
           v-if="!userData.avatar"
@@ -110,53 +110,53 @@
         >Сохранить</button>
       </div>
     </div>
-    <modal-template
-      v-if="showModalChangingPassword"
-      width="400px"
-    >
-      <div slot="content" class="app-modal__content">
-        <div>
-          <span  @click="isVisiblePassword = !isVisiblePassword">
-            <template v-if="!$validator.errors.has('userPassword')">
-              <template v-if="isVisiblePassword">
-                <svgicon
-                  name="Eye"
-                  width="16"
-                  height="16"
-                />
-              </template>
-              <template v-else>
-                <svgicon
-                  name="Eye-hidden"
-                  width="16"
-                  height="16"
-                />
-              </template>
-            </template>
-          </span>
-<!--          <text-input-->
-<!--            :value.sync="userPassword"-->
-<!--            :input-type="isVisiblePassword ? 'text' : 'password'"-->
-<!--            :label-text="$t('signInPage.password')"-->
-<!--            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"-->
-<!--            :errorStatus="$validator.errors.has('userPassword')"-->
-<!--          />-->
-<!--          <transition name="fade-el">-->
-<!--            <div-->
-<!--              v-if="$validator.errors.has('userPassword')"-->
-<!--              class="validation"-->
-<!--            >-->
-<!--              {{ $validator.errors.first('userPassword') }}-->
-<!--            </div>-->
-<!--          </transition>-->
-        </div>
-<!--        <button-->
-<!--          class="app__btn app__btn&#45;&#45;primary"-->
-<!--        >-->
-<!--          {{ $t('global.agreeButton') }}-->
-<!--        </button>-->
-      </div>
-    </modal-template>
+<!--    <modal-template-->
+<!--      v-if="showModalChangingPassword"-->
+<!--      width="400px"-->
+<!--    >-->
+<!--      <div slot="content" class="app-modal__content">-->
+<!--        <div>-->
+<!--          <span>-->
+<!--            <template v-if="!$validator.errors.has('userPassword')">-->
+<!--              <template v-if="isVisiblePassword">-->
+<!--                <svgicon-->
+<!--                  name="Eye"-->
+<!--                  width="16"-->
+<!--                  height="16"-->
+<!--                />-->
+<!--              </template>-->
+<!--              <template v-else>-->
+<!--                <svgicon-->
+<!--                  name="Eye-hidden"-->
+<!--                  width="16"-->
+<!--                  height="16"-->
+<!--                />-->
+<!--              </template>-->
+<!--            </template>-->
+<!--          </span>-->
+<!--&lt;!&ndash;          <text-input&ndash;&gt;-->
+<!--&lt;!&ndash;            :value.sync="userPassword"&ndash;&gt;-->
+<!--&lt;!&ndash;            :input-type="isVisiblePassword ? 'text' : 'password'"&ndash;&gt;-->
+<!--&lt;!&ndash;            :label-text="$t('signInPage.password')"&ndash;&gt;-->
+<!--&lt;!&ndash;            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"&ndash;&gt;-->
+<!--&lt;!&ndash;            :errorStatus="$validator.errors.has('userPassword')"&ndash;&gt;-->
+<!--&lt;!&ndash;          />&ndash;&gt;-->
+<!--&lt;!&ndash;          <transition name="fade-el">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div&ndash;&gt;-->
+<!--&lt;!&ndash;              v-if="$validator.errors.has('userPassword')"&ndash;&gt;-->
+<!--&lt;!&ndash;              class="validation"&ndash;&gt;-->
+<!--&lt;!&ndash;            >&ndash;&gt;-->
+<!--&lt;!&ndash;              {{ $validator.errors.first('userPassword') }}&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </transition>&ndash;&gt;-->
+<!--        </div>-->
+<!--&lt;!&ndash;        <button&ndash;&gt;-->
+<!--&lt;!&ndash;          class="app__btn app__btn&#45;&#45;primary"&ndash;&gt;-->
+<!--&lt;!&ndash;        >&ndash;&gt;-->
+<!--&lt;!&ndash;          {{ $t('global.agreeButton') }}&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </modal-template>-->
   </div>
 </template>
 
@@ -167,7 +167,7 @@ import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
-import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+// import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
 import '@/assets/icons/Delete';
@@ -175,7 +175,7 @@ import '@/assets/icons/Delete';
 @Component({
   components: {
     TextInput,
-    ModalTemplate,
+    // ModalTemplate,
     VueTelInput,
   },
   metaInfo() {
@@ -202,7 +202,7 @@ export default class Settings extends Vue {
   userData: IUser = {};
 
   async mounted() {
-    if (Object.keys(this.user).length === 0) {
+    if (Object.keys(this.$store.getters.user).length === 0) {
       const response = await UsersService.getCurrentUser();
       console.log('response', response.data);
       this.userData = response.data;
@@ -236,7 +236,7 @@ export default class Settings extends Vue {
       if (reader.readyState === 2) {
         const { file = [] } = this.$refs.file.files[0];
         this.file = file;
-        this.avatar = reader.result;
+        this.userData.avatar = reader.result;
       }
     };
     reader.readAsDataURL(e.target.files[0]);

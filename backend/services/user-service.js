@@ -140,13 +140,7 @@ class UserService {
     }
 
     async getCurrentUser(token) {
-        console.log('getCurrentUser getCurrentUser');
-        // const user = await UserModel.findOne({});
-        const user = await passport.serializeUser((user, done) => {
-            console.log('passport')
-            done(null, user.id)
-        });
-        console.log('user', user);
+        const user = await UserModel.findOne({});
         return user;
     }
 

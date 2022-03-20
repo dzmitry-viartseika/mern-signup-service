@@ -164,6 +164,14 @@
       margin-bottom: 40px;
     }
 
+    &__logo {
+      margin-bottom: 10px;
+      img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
     &__footer {
       text-align: center;
       font-weight: 500;
