@@ -167,6 +167,7 @@ import { IUser } from '@/model/IUser';
 import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
+import UploadService from '@/services/Upload/UploadService';
 // import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
@@ -230,7 +231,7 @@ export default class Settings extends Vue {
     this.$store.dispatch('setUser', data);
   }
 
-  imageHandler(e): void {
+  async imageHandler(e): void {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
@@ -239,17 +240,14 @@ export default class Settings extends Vue {
         this.userData.avatar = reader.result;
       }
     };
+    await UploadService.upload(this.file)
     reader.readAsDataURL(e.target.files[0]);
   }
 
   cancelEdit(): void {
     this.isEditMode = false;
-    console.log('this.user', this.user);
-    console.log('this.userData', this.userData);
-    console.log('this.cachedUser', this.cachedUser);
     this.userData = { ...this.user };
     this.user = { ...this.userData };
-    // this.userData = this.user;
   }
 
   async saveProfile(): Promise<void> {

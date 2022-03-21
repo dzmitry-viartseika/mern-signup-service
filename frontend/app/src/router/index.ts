@@ -37,7 +37,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "Page404" */ '../views/Page404.vue'),
   },
   {
-    path: '/success',
+    path: '/',
     name: 'LandingPage',
     component: () => import(/* webpackChunkName: "Landing" */ '../views/LandingPage.vue'),
   },

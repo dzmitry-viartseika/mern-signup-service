@@ -71,7 +71,7 @@ const isLoggedIn = (req, res, next) => {
     }
 }
 
-app.get("/api/success",isLoggedIn, (req, res) => {
+app.get("/api",isLoggedIn, (req, res) => {
     console.log('req.user successsuccesssuccess', req.user);
     res.send({
         message: 'wertey  sucecess',
@@ -91,7 +91,7 @@ app.get('/auth/google/callback',
         failureRedirect: '/failed',
     }),
     function (req, res) {
-        res.redirect('http://localhost:8080/success')
+        res.redirect('http://localhost:8080/')
     }
 );
 
