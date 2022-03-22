@@ -7,24 +7,24 @@
       <div class="app-calendar-section__settings">
         <checkbox
           name="hide-sunday"
-          :value="isVisibleSunday"
+          :value.sync="filterQuery.isVisibleSunday"
           :label="$t('calendarPage.hideSunday')"
-          v-model="isVisibleSunday"
+          @changeCheckBox="changeCheckBox($event)"
           id="hide-sunday"
         />
+<!--        // TODO fix naming value-->
         <checkbox
           name="hide-weekend"
-          :value="isVisibleWeekends"
+          :value.sync="filterQuery.isVisibleWeekends"
           :label="$t('calendarPage.hideWeekend')"
-          v-model="isVisibleWeekends"
+          @changeCheckBox="changeCheckBox($event)"
           id="hide-weekend"
         />
-        isVisibleYearSelector={{ isVisibleYearSelector }}
         <checkbox
           name="year-selector"
-          :value="isVisibleYearSelector"
+          :value.sync="filterQuery.isVisibleYearSelector"
           :label="$t('calendarPage.showYearSelector')"
-          v-model="isVisibleYearSelector"
+          @changeCheckBox="changeCheckBox($event)"
           id="year-selector"
         />
       </div>
@@ -34,9 +34,9 @@
         :active-dates.sync="activeDates"
         @toggleDate="toggleDate"
         :active-class="'calendar--selected'"
-        :show-year-selector="isVisibleYearSelector"
-        :hide-sunday="isVisibleSunday"
-        :hide-weekend="isVisibleWeekends"
+        :show-year-selector="filterQuery.isVisibleYearSelector"
+        :hide-sunday="filterQuery.isVisibleSunday"
+        :hide-weekend="filterQuery.isVisibleWeekends"
       ></YearCalendar>
       <div class="app-calendar-section__legend">
         <div class="calendar__day"><div class="day work">28</div></div>
@@ -91,9 +91,9 @@ export default class Calendar extends Vue {
 
   serverStateDays: any[] = [];
 
-  isVisibleSunday = false;
-  isVisibleWeekends = false;
-  isVisibleYearSelector = false;
+  isVisibleSunday: boolean| null = null;
+  isVisibleWeekends: boolean| null = null;
+  isVisibleYearSelector: boolean| null = null;
 
   filterQuery = {};
 
@@ -101,8 +101,8 @@ export default class Calendar extends Vue {
     { date: '2022-01-01' },
     { date: '2022-02-14' },
     { date: '2022-02-15' },
-    { date: '2022-02-16' }
-  ]
+    { date: '2022-02-16' },
+  ];
 
   // TODO 4 backend on 2022 year
   // "2022-01-01",
@@ -241,21 +241,39 @@ export default class Calendar extends Vue {
   async created() {
     this.year = this.yearsToSelect[2];
     const { location } = window;
-    const parsed = queryString.parse(location.search);
-    console.log(parsed);
-    this.isVisibleSunday = !!parsed.isVisibleSunday;
-    this.isVisibleWeekends = !!parsed.isVisibleWeekends;
-    this.isVisibleYearSelector = !!parsed.isVisibleYearSelector;
-    console.log('this.isVisibleWeekends', this.isVisibleYearSelector);
+    const parsed = queryString.parse(location.search, { parseBooleans: true });
+    const {
+      isVisibleSunday = this.filterQuery.isVisibleSunday,
+      isVisibleWeekends = this.filterQuery.isVisibleWeekends,
+      isVisibleYearSelector = this.filterQuery.isVisibleYearSelector,
+    } = parsed;
+    this.filterQuery = {
+      isVisibleSunday,
+      isVisibleWeekends,
+      isVisibleYearSelector,
+    };
+    this.isVisibleWeekends = isVisibleWeekends;
+    this.isVisibleSunday = isVisibleSunday;
+    this.isVisibleYearSelector = isVisibleYearSelector;
     // http://localhost:8080/crm/calendar-working-days?isVisibleYearSelector=true
+    //?ownersCompanyAmount=1&director=ME&activityAreas=HOTELS&activityAreas=FRANCHISE
+    //http://localhost:8080/crm/calendar-working-days?isVisibleYearSelector=true&isVisibleWeekends=true&isVisibleSunday=true
   }
 
   addingParameterToLink() {
+    console.log('this.filterQuery', this.filterQuery);
     this.$router.push({
       query: {
         ...this.filterQuery,
       },
     }).catch(() => {});
+  }
+
+  changeCheckBox() {
+    this.filterQuery = {
+      ...this.filterQuery,
+    };
+    this.addingParameterToLink();
   }
 
   async createWeekBasedWorkingCalendarDate() {

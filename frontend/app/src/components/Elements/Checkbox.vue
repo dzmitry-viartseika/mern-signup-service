@@ -8,6 +8,7 @@
            :checked="checked"
            :required="required"
            @change="updateInput"
+           v-model="statusCheckbox"
     >
     <label v-bind:for="id">{{ label }}</label>
   </div>
@@ -29,7 +30,7 @@ export default class Checkbox extends Vue {
   id: string;
 
   @Prop({ required: false, type: Boolean })
-  value: boolean = false;
+  value: boolean;
 
   @Prop({ required: false, type: Boolean })
   required: boolean = false;
@@ -43,9 +44,22 @@ export default class Checkbox extends Vue {
   @Prop({ required: true, type: String })
   label: string;
 
+  get statusCheckbox(): boolean {
+    return  this.value;
+  }
+
+  set statusCheckbox(data) {
+    console.log('data', data);
+    this.$emit('update:value', data);
+    this.$emit('changeCheckBox', event.target.checked);
+  }
 
   updateInput(event): void {
     this.$emit('input', event.target.checked);
+  }
+
+  created() {
+    console.log('isVisibleWeekends', this.value);
   }
 }
 </script>
