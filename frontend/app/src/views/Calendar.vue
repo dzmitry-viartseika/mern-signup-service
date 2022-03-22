@@ -31,7 +31,7 @@
       <YearCalendar
         v-model="year.label"
         :lang="$i18n.locale"
-        :active-dates.sync="serverStateDays"
+        :activeDates.sync="serverStateDays"
         @toggleDate="toggleDate"
         :active-class="'calendar--selected'"
         :show-year-selector="filterQuery.isVisibleYearSelector"
@@ -90,7 +90,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 export default class Calendar extends Vue {
   year: IItemDropdown | null = null;
 
-  serverStateDays: any[] = [];
+  // serverStateDays: any[] = [];
 
   isVisibleSunday: boolean| null = null;
   isVisibleWeekends: boolean| null = null;
@@ -98,12 +98,11 @@ export default class Calendar extends Vue {
 
   filterQuery = {};
 
-  activeDates = [
-    { date: '2022-01-01' },
-    { date: '2022-02-14' },
-    { date: '2022-02-15' },
-    { date: '2022-02-16' },
-  ];
+  activeDates: any[] = [];
+
+  get serverStateDays() {
+    return this.activeDates.filter((item) => item.intervalType !== 'working');
+  }
 
   private prepareDate(date) {
     return { label: date, value: date };
@@ -138,11 +137,13 @@ export default class Calendar extends Vue {
     this.isVisibleYearSelector = isVisibleYearSelector;
     try {
       const response = await WorkingDaysService.getWorkingDaysList();
-      this.serverStateDays = response.data.map((date) => {
+      this.activeDates = response.data.map((date) => {
         return {
-          date: date,
+          date: date.calendar,
+          id: date._id,
+          intervalType: date.intervalType,
         };
-      });
+      }).filter((item) => item.intervalType !== 'working');
     } catch (e) {
       console.error(e);
     }
@@ -160,7 +161,7 @@ export default class Calendar extends Vue {
   }
 
   checkDaysForIntervalType(dateInfo): string {
-    const date = new Date(dateInfo.date)
+    const date = new Date(dateInfo.date);
 
     if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())){
       return 'working';
@@ -176,23 +177,38 @@ export default class Calendar extends Vue {
     this.addingParameterToLink();
   }
 
-  async createWeekBasedWorkingCalendarDate() {
-    // API
-    const response = { date: '2022-02-16' };
-    return response;
-  }
-
-  async toggleDate (dateInfo): void {
-    console.log(dateInfo);  // { date: '2010-10-23', selected: true }
+  async createWeekBasedWorkingCalendarDate(dateInfo) {
     try {
       const { date } = dateInfo;
       console.log('date', date);
       const response = await WorkingDaysService.changeWorkingDate(date);
-      console.log('response', response);
+      return response;
     } catch (e) {
       console.error(e);
     }
-    this.serverStateDays.push(await this.createWeekBasedWorkingCalendarDate(dateInfo));
+  }
+
+  async toggleDate (dateInfo): void {
+    console.log(dateInfo);  // { date: '2010-10-23', selected: true }
+
+    // const existedDayChangeForState = this.serverStateDays.find((item) => formatDate(item.date(), DATE_FORMAT) == dateInfo.date);
+    //
+    // if (existedDayChangeForState) {
+    //   existedDayChangeForState.uow.remove(existedDayChangeForState);
+    //   await this.uow.saveAsync();
+    //   return this.serverStateDays = this.uow.all() as WeekBasedWorkingCalendarDateInterval[]; // !!!
+    // }
+    const response = await this.createWeekBasedWorkingCalendarDate(dateInfo);
+    console.log('response', response);
+    const currentDateIndex = this.activeDates.findIndex((item) => item.id === response.data._id);
+    console.log('currentDateIndex', currentDateIndex);
+    if (currentDateIndex === -1) {
+      console.log('=-11111')
+      this.activeDates.push(response.data);
+      console.log('this.activeDates', this.activeDates);
+    } else {
+      this.activeDates.splice(currentDateIndex, 1, response.data);
+    }
   }
 }
 </script>

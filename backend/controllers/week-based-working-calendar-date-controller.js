@@ -15,8 +15,10 @@ class WeekBasedWorkingCalendarDateController {
 
     async changeWorkingDate(req, res, next) {
         try {
-            const list = await WeekBasedWorkingCalendarDate.changeWorkingDate();
-            return res.json(list)
+            const data = req.body.date;
+            console.log('data', data);
+            const dataInfo = await WeekBasedWorkingCalendarDate.changeWorkingDate(data);
+            return res.json(dataInfo)
         } catch (e) {
             next(e);
             console.log(e);
