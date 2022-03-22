@@ -157,6 +157,7 @@ export default class AsideTemplate extends Vue {
     left: 0;
     height: 100vh;
     width: 250px;
+    min-width: 250px;
     padding: 10px 14px;
     background: #E4E9F7;
     transition: all 0.3s ease;
@@ -164,6 +165,7 @@ export default class AsideTemplate extends Vue {
   }
   .sidebar.close{
     width: 88px;
+    min-width: 88px;
   }
 
   /* ===== Reusable code - Here ===== */

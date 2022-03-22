@@ -12,6 +12,10 @@
 
 .app {
 
+  &__title {
+    font-size: 30px;
+  }
+
   &--flex {
     display: flex;
   }

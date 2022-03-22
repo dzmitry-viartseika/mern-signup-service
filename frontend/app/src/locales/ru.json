@@ -51,5 +51,11 @@
     "notification": "Уведомления",
     "analytics": "Аналитика",
     "logout": "Выйти"
+  },
+  "calendarPage": {
+    "pageTitle": "Производственный календарь",
+    "hideSunday": "Спрятать воскресенье",
+    "hideWeekend": "Спрятать выходные",
+    "showYearSelector": "Показать выбор года?"
   }
 }

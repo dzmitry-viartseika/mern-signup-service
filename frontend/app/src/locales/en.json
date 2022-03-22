@@ -50,5 +50,11 @@
     "notification": "Notifications",
     "analytics": "Analytics",
     "logout": "Logout"
+  },
+  "calendarPage": {
+    "pageTitle": "Calendar",
+    "hideSunday": "Hide sunday",
+    "hideWeekend": "Hide weekend",
+    "showYearSelector": "Show year selector?"
   }
 }
