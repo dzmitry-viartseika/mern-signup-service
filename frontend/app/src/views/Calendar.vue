@@ -62,7 +62,6 @@ import YearCalendar from 'vue-material-year-calendar';
 import IItemDropdown from '@/model/IItemDropdown';
 import Checkbox from '@/components/Elements/Checkbox.vue';
 import { formatDate } from '@/utils/ComponentUtils';
-import sort from 'fast-sort';
 import queryString from 'query-string';
 import '@/assets/icons/Eye';
 import WorkingDaysService from "@/services/WorkingDays/WorkingDays";
@@ -92,16 +91,20 @@ export default class Calendar extends Vue {
 
   // serverStateDays: any[] = [];
 
-  isVisibleSunday: boolean| null = null;
-  isVisibleWeekends: boolean| null = null;
-  isVisibleYearSelector: boolean| null = null;
+  isVisibleSunday: boolean | null = null;
+  isVisibleWeekends: boolean | null = null;
+  isVisibleYearSelector: boolean | null = null;
 
   filterQuery = {};
 
   activeDates: any[] = [];
 
   get serverStateDays() {
-    return this.activeDates.filter((item) => item.intervalType !== 'working');
+    return this.activeDates;
+  }
+
+  set serverStateDays(data) {
+    this.activeDates = data;
   }
 
   private prepareDate(date) {
@@ -120,8 +123,8 @@ export default class Calendar extends Vue {
 
   async created() {
     this.year = this.yearsToSelect[2];
-    const { location } = window;
-    const parsed = queryString.parse(location.search, { parseBooleans: true });
+    const {location} = window;
+    const parsed = queryString.parse(location.search, {parseBooleans: true});
     const {
       isVisibleSunday = this.filterQuery.isVisibleSunday,
       isVisibleWeekends = this.filterQuery.isVisibleWeekends,
@@ -139,11 +142,10 @@ export default class Calendar extends Vue {
       const response = await WorkingDaysService.getWorkingDaysList();
       this.activeDates = response.data.map((date) => {
         return {
-          date: date.calendar,
-          id: date._id,
-          intervalType: date.intervalType,
+          date: formatDate(new Date(date.calendar), DATE_FORMAT),
+          className: 'calendar--selected'
         };
-      }).filter((item) => item.intervalType !== 'working');
+      })
     } catch (e) {
       console.error(e);
     }
@@ -157,13 +159,16 @@ export default class Calendar extends Vue {
       query: {
         ...this.filterQuery,
       },
-    }).catch(() => {});
+    }).catch(() => {
+    });
   }
 
   checkDaysForIntervalType(dateInfo): string {
-    const date = new Date(dateInfo.date);
-
-    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())){
+    const date = new Date(dateInfo);
+    console.log('date.getDay()', date.getDay());
+    console.log('www', WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay()))
+    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())) {
+      console.log('work');
       return 'working';
     }
 
@@ -177,20 +182,18 @@ export default class Calendar extends Vue {
     this.addingParameterToLink();
   }
 
-  async createWeekBasedWorkingCalendarDate(dateInfo) {
-    try {
-      const { date } = dateInfo;
-      console.log('date', date);
-      const response = await WorkingDaysService.changeWorkingDate(date);
-      return response;
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  // async createWeekBasedWorkingCalendarDate(dateInfo) {
+  //   try {
+  //     const { date } = dateInfo;
+  //     const response = await WorkingDaysService.changeWorkingDate(date);
+  //     return response;
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }
 
-  async toggleDate (dateInfo): void {
-    console.log(dateInfo);  // { date: '2010-10-23', selected: true }
-
+  async toggleDate(dateInfo): Promise<any | never> {
+    const { date } = dateInfo;
     // const existedDayChangeForState = this.serverStateDays.find((item) => formatDate(item.date(), DATE_FORMAT) == dateInfo.date);
     //
     // if (existedDayChangeForState) {
@@ -198,17 +201,21 @@ export default class Calendar extends Vue {
     //   await this.uow.saveAsync();
     //   return this.serverStateDays = this.uow.all() as WeekBasedWorkingCalendarDateInterval[]; // !!!
     // }
-    const response = await this.createWeekBasedWorkingCalendarDate(dateInfo);
-    console.log('response', response);
-    const currentDateIndex = this.activeDates.findIndex((item) => item.id === response.data._id);
-    console.log('currentDateIndex', currentDateIndex);
-    if (currentDateIndex === -1) {
-      console.log('=-11111')
-      this.activeDates.push(response.data);
-      console.log('this.activeDates', this.activeDates);
-    } else {
-      this.activeDates.splice(currentDateIndex, 1, response.data);
+    const obj = {
+      calendar: new Date(date),
+      intervalType: this.checkDaysForIntervalType(date)
     }
+    const response = await WorkingDaysService.changeWorkingDate(obj);
+    console.log('response', response);
+    // const currentDateIndex= this.activeDates.findIndex((item) => item.id === response!.data!._id);
+    // console.log('currentDate', currentDate);
+    // if (currentDateIndex === -1) {
+    //   console.log('currentDate UNDEFINED')
+    //   // this.activeDates.push(response.data);
+    //   console.log('this.activeDates', this.activeDates);
+    // } else {
+    //   this.serverStateDays.splice(currentDateIndex, 1);
+    // }
   }
 }
 </script>
@@ -328,11 +335,11 @@ export default class Calendar extends Vue {
     font-size: 12px !important;
   }
 
-  //.day.calendar--selected {
-  //  background-color: ghostwhite !important;
-  //  border-radius: 100% !important;
-  //  color: white !important;
-  //}
+  .day.calendar--selected {
+    background-color: white !important;
+    border-radius: 100% !important;
+    color: black !important;
+  }
 }
 
 .vue-calendar__container .container__year .year__chooser:hover {

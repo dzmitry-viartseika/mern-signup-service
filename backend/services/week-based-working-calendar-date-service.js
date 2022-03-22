@@ -138,18 +138,17 @@ class WeekBasedWorkingCalendarDate {
         // ]
     }
 
-    async changeWorkingDate(date) {
-        const data = await WeekBasedWorkingCalendarDateModel.findOne({ calendar: date, intervalType: 'holiday' });
-        console.log('data', data);
+    async changeWorkingDate(dateInfo) {
+        if (!dateInfo) {
+            throw ApiError.badRequest('Некорректная дата');
+        }
+        const data = await WeekBasedWorkingCalendarDateModel.findOne({ calendar: dateInfo.calendar });
         if(!data) {
-            const user = await WeekBasedWorkingCalendarDateModel.create({ intervalType: 'holiday', calendar: date });
+            const user = await WeekBasedWorkingCalendarDateModel.create({ intervalType: dateInfo.intervalType, calendar: dateInfo.calendar });
             await user.save();
             return user;
-            // throw ApiError.badRequest('Некорректная дата');
         } else {
-            data.intervalType = 'working';
-            await data.save();
-            return data;
+            await WeekBasedWorkingCalendarDateModel.deleteOne({ _id: data._id });
         }
     }
 }
