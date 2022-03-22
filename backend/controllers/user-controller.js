@@ -145,6 +145,16 @@ class UserController {
             console.log(e);
         }
     }
+
+    async getWorkingDaysList(req, res, next) {
+        try {
+            const list = await WeekBasedWorkingCalendarDate.getWorkingDaysList();
+            return res.json(list)
+        } catch (e) {
+            next(e);
+            console.log(e);
+        }
+    }
 }
 
 module.exports = new UserController();

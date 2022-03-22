@@ -55,6 +55,8 @@
     "pageTitle": "Calendar",
     "hideSunday": "Hide sunday",
     "hideWeekend": "Hide weekend",
-    "showYearSelector": "Show year selector?"
+    "showYearSelector": "Show year selector?",
+    "workingDay": "working day",
+    "dayOff": "day off"
   }
 }

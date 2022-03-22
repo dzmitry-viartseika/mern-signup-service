@@ -31,23 +31,24 @@
       <YearCalendar
         v-model="year.label"
         :lang="$i18n.locale"
-        :active-dates.sync="activeDates"
+        :active-dates.sync="serverStateDays"
         @toggleDate="toggleDate"
         :active-class="'calendar--selected'"
         :show-year-selector="filterQuery.isVisibleYearSelector"
         :hide-sunday="filterQuery.isVisibleSunday"
         :hide-weekend="filterQuery.isVisibleWeekends"
+        prefix-class="calendar--selected"
       ></YearCalendar>
       <div class="app-calendar-section__legend">
         <div class="calendar__day"><div class="day work">28</div></div>
         <div>
-          - будний день
+          - {{ $t('calendarPage.workingDay') }}
         </div>
       </div>
       <div class="app-calendar-section__legend">
         <div class="calendar__day"><div class="day holiday">28</div></div>
         <div>
-          - выходной день
+          - {{ $t('calendarPage.dayOff') }}
         </div>
       </div>
     </div>
@@ -64,6 +65,8 @@ import { formatDate } from '@/utils/ComponentUtils';
 import sort from 'fast-sort';
 import queryString from 'query-string';
 import '@/assets/icons/Eye';
+import WorkingDaysService from "@/services/WorkingDays/WorkingDays";
+import WeekBasedWorkingCalendarDateInterval from '@/model/WeekBasedWorkingCalendarDateInterval';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -87,8 +90,6 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 export default class Calendar extends Vue {
   year: IItemDropdown | null = null;
 
-  activeClass = 'red';
-
   serverStateDays: any[] = [];
 
   isVisibleSunday: boolean| null = null;
@@ -103,126 +104,6 @@ export default class Calendar extends Vue {
     { date: '2022-02-15' },
     { date: '2022-02-16' },
   ];
-
-  // TODO 4 backend on 2022 year
-  // "2022-01-01",
-  // "2022-01-02",
-  // "2022-01-03",
-  // "2022-01-04",
-  // "2022-01-05",
-  // "2022-01-06",
-  // "2022-01-07",
-  // "2022-01-08",
-  // "2022-01-09",
-  // "2022-01-15",
-  // "2022-01-16",
-  // "2022-01-22",
-  // "2022-01-23",
-  // "2022-01-29",
-  // "2022-01-30",
-  // "2022-02-05",
-  // "2022-02-06",
-  // "2022-02-12",
-  // "2022-02-13",
-  // "2022-02-19",
-  // "2022-02-20",
-  // "2022-02-23",
-  // "2022-02-26",
-  // "2022-02-27",
-  // "2022-03-06",
-  // "2022-03-07",
-  // "2022-03-08",
-  // "2022-03-12",
-  // "2022-03-13",
-  // "2022-03-19",
-  // "2022-03-20",
-  // "2022-03-26",
-  // "2022-03-27",
-  // "2022-04-02",
-  // "2022-04-03",
-  // "2022-04-09",
-  // "2022-04-10",
-  // "2022-04-16",
-  // "2022-04-17",
-  // "2022-04-23",
-  // "2022-04-24",
-  // "2022-04-30",
-  // "2022-05-01",
-  // "2022-05-02",
-  // "2022-05-03",
-  // "2022-05-07",
-  // "2022-05-08",
-  // "2022-05-09",
-  // "2022-05-10",
-  // "2022-05-14",
-  // "2022-05-15",
-  // "2022-05-21",
-  // "2022-05-22",
-  // "2022-05-28",
-  // "2022-05-29",
-  // "2022-06-04",
-  // "2022-06-05",
-  // "2022-06-11",
-  // "2022-06-12",
-  // "2022-06-13",
-  // "2022-06-18",
-  // "2022-06-19",
-  // "2022-06-25",
-  // "2022-06-26",
-  // "2022-07-02",
-  // "2022-07-03",
-  // "2022-07-09",
-  // "2022-07-10",
-  // "2022-07-16",
-  // "2022-07-17",
-  // "2022-07-23",
-  // "2022-07-24",
-  // "2022-07-30",
-  // "2022-07-31",
-  // "2022-08-06",
-  // "2022-08-07",
-  // "2022-08-13",
-  // "2022-08-14",
-  // "2022-08-20",
-  // "2022-08-21",
-  // "2022-08-27",
-  // "2022-08-28",
-  // "2022-09-03",
-  // "2022-09-04",
-  // "2022-09-10",
-  // "2022-09-11",
-  // "2022-09-17",
-  // "2022-09-18",
-  // "2022-09-24",
-  // "2022-09-25",
-  // "2022-10-01",
-  // "2022-10-02",
-  // "2022-10-08",
-  // "2022-10-09",
-  // "2022-10-15",
-  // "2022-10-16",
-  // "2022-10-22",
-  // "2022-10-23",
-  // "2022-10-29",
-  // "2022-10-30",
-  // "2022-11-04",
-  // "2022-11-05",
-  // "2022-11-06",
-  // "2022-11-12",
-  // "2022-11-13",
-  // "2022-11-19",
-  // "2022-11-20",
-  // "2022-11-26",
-  // "2022-11-27",
-  // "2022-12-03",
-  // "2022-12-04",
-  // "2022-12-10",
-  // "2022-12-11",
-  // "2022-12-17",
-  // "2022-12-18",
-  // "2022-12-24",
-  // "2022-12-25",
-  // "2022-12-31"
 
   private prepareDate(date) {
     return { label: date, value: date };
@@ -255,18 +136,37 @@ export default class Calendar extends Vue {
     this.isVisibleWeekends = isVisibleWeekends;
     this.isVisibleSunday = isVisibleSunday;
     this.isVisibleYearSelector = isVisibleYearSelector;
+    try {
+      const response = await WorkingDaysService.getWorkingDaysList();
+      this.serverStateDays = response.data.map((date) => {
+        return {
+          date: date,
+        };
+      });
+    } catch (e) {
+      console.error(e);
+    }
     // http://localhost:8080/crm/calendar-working-days?isVisibleYearSelector=true
     //?ownersCompanyAmount=1&director=ME&activityAreas=HOTELS&activityAreas=FRANCHISE
     //http://localhost:8080/crm/calendar-working-days?isVisibleYearSelector=true&isVisibleWeekends=true&isVisibleSunday=true
   }
 
   addingParameterToLink() {
-    console.log('this.filterQuery', this.filterQuery);
     this.$router.push({
       query: {
         ...this.filterQuery,
       },
     }).catch(() => {});
+  }
+
+  checkDaysForIntervalType(dateInfo): string {
+    const date = new Date(dateInfo.date)
+
+    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())){
+      return 'working';
+    }
+
+    return 'holiday';
   }
 
   changeCheckBox() {
@@ -284,6 +184,14 @@ export default class Calendar extends Vue {
 
   async toggleDate (dateInfo): void {
     console.log(dateInfo);  // { date: '2010-10-23', selected: true }
+    try {
+      const { date } = dateInfo;
+      console.log('date', date);
+      const response = await WorkingDaysService.changeWorkingDate(date);
+      console.log('response', response);
+    } catch (e) {
+      console.error(e);
+    }
     this.serverStateDays.push(await this.createWeekBasedWorkingCalendarDate(dateInfo));
   }
 }
@@ -310,19 +218,15 @@ export default class Calendar extends Vue {
       }
     }
 
-    //&__settings {
-    //  padding: 0 10px;
-    //}
+    &__settings {
+      display: flex;
+      margin-bottom: 20px;
+      //padding: 0 10px;
+      .app-checkbox + .app-checkbox {
+        margin-left: 10px;
+      }
+    }
   }
-}
-.red {
-  background-color: red;
-  color: white;
-}
-
-.blue {
-  background-color: blue;
-  color: white;
 }
 
 //.vue-calendar__container {
@@ -408,11 +312,11 @@ export default class Calendar extends Vue {
     font-size: 12px !important;
   }
 
-  .day.calendar--selected {
-    background-color: ghostwhite !important;
-    border-radius: 100% !important;
-    color: white !important;
-  }
+  //.day.calendar--selected {
+  //  background-color: ghostwhite !important;
+  //  border-radius: 100% !important;
+  //  color: white !important;
+  //}
 }
 
 .vue-calendar__container .container__year .year__chooser:hover {

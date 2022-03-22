@@ -3,7 +3,7 @@
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
       <div class="app-modal__logo">
-        <img src="../assets/images/logo.png" alt="logo">
+        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="logo">
       </div>
       <h2 class="app-modal__title">
         {{ $t('signInPage.signInTitle') }}

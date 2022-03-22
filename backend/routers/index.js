@@ -1,5 +1,6 @@
 const Router = require('express');
 const UserController = require('../controllers/user-controller');
+const WeekBasedWorkingCalendarDateController = require('../controllers/week-based-working-calendar-date-controller');
 const authMiddleWare = require('../middleware/auth-middleware');
 const { body } = require('express-validator');
 
@@ -19,5 +20,7 @@ router.get('/forgot-password/:link', UserController.resetPassword);
 router.get('/users', authMiddleWare, UserController.getUsers);
 router.patch('/update-user', UserController.updateUser);
 router.get('/me', UserController.getCurrentUser);
+router.get('/working-days', WeekBasedWorkingCalendarDateController.getWorkingDaysList);
+router.patch('/changed-working-days', WeekBasedWorkingCalendarDateController.changeWorkingDate);
 
 module.exports = router;
