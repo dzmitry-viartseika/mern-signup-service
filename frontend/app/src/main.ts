@@ -17,6 +17,7 @@ Vue.config.productionTip = false;
 
 Vue.use(Toasted);
 Vue.use(VueTelInput);
+Vue.use(VueShortKey);
 
 Vue.use(Meta, {
   keyName: 'metaInfo',

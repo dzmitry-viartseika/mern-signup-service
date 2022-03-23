@@ -56,7 +56,7 @@
       <div class="bottom-content">
         <li>
           <a
-            @click.prevent="openSupportModal"
+            @click.prevent="wishesModalActions(true)"
           >
             <svgicon
               class="icon"
@@ -108,19 +108,24 @@
 <!--        is  located.</p>-->
 <!--    </portal>-->
 <!--    <portal-target name="notification-outlet"></portal-target>-->
-    <modal-template
-      width="400px"
-      v-if="false"
-    >
-      <div slot="content">
-        msg={{ msg }}
-        <textarea-template
-          :value.sync="msg"
-          :maxLenght="2000"
-          :label="$t('supportTeam.wishes')"
-        />
-      </div>
-    </modal-template>
+    <transition name="fade-el">
+<!--      // TODO проверить placeholder-->
+      <modal-template-with-action
+        v-if="isVisibleWishesModal"
+        @wishesModalActions="wishesModalActions"
+        :modal-title="$t('supportTeam.wishes')"
+        placeholder="Describe yourself here..."
+      >
+        <div slot="content">
+          <h2 class="app-modal__subtitle app-modal__subtitle--middle">{{ $t('supportTeam.modalTitle') }}</h2>
+          <textarea-template
+            :value.sync="msg"
+            :maxLenght="2000"
+            :label="$t('supportTeam.wishes')"
+          />
+        </div>
+      </modal-template-with-action>
+    </transition>
   </nav>
 </template>
 
@@ -140,18 +145,20 @@ import asideMenuItems from '@/constants/AsideMenuItems';
 import { IUser } from '@/model/IUser';
 import { IAsideItem } from '../../model/constants/IAsideItem';
 import UsersService from "@/services/Users/UsersService";
-import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
+import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 
 @Component({
   components: {
-    ModalTemplate,
+    ModalTemplateWithAction,
     TextareaTemplate,
   }
 })
 export default class AsideTemplate extends Vue {
 
   isShortAside: boolean | null = false;
+
+  isVisibleWishesModal: boolean | null = false;
 
   navList: IAsideItem[] = [];
 
@@ -176,6 +183,11 @@ export default class AsideTemplate extends Vue {
     // this.setUser(null);
     localStorage.removeItem('token');
     this.$router.push('/sign-in');
+  }
+
+  wishesModalActions(data: boolean): void {
+    console.log('data', data);
+    this.isVisibleWishesModal = data;
   }
 
   proceedTo(route: string) {

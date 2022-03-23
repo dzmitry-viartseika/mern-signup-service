@@ -4,6 +4,7 @@
 @import "toasted-notification";
 @import "buttons";
 @import "landing";
+@import "modal";
 @import "vue-input-tel";
 
 .form-field {
@@ -126,6 +127,15 @@
     margin: auto;
     flex-direction: column;
     background: #fff;
+
+    &__subtitle {
+      font-size: 16px;
+      margin-bottom: 15px;
+
+      &--middle {
+        text-align: center;
+      }
+    }
 
     &__agreement {
       text-align: center;
