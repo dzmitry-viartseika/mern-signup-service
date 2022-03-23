@@ -1,6 +1,8 @@
 <template>
   <div class="app-notification">
-    Notification
+    <h1 class="app__title">
+      Notification
+    </h1>
   </div>
 </template>
 

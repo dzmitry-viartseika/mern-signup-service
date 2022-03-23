@@ -56,7 +56,24 @@
       <div class="bottom-content">
         <li>
           <a
-             @click.prevent="logOut"
+            @click.prevent="openSupportModal"
+          >
+            <svgicon
+              class="icon"
+              name="Message"
+              width="22"
+              height="22"
+            />
+            <span
+              class="text nav-text"
+            >
+              {{ $t('supportTeam.improveService') }}
+            </span>
+          </a>
+        </li>
+        <li>
+          <a
+            @click.prevent="logOut"
           >
             <svgicon
               class="icon icon--logout"
@@ -86,7 +103,24 @@
 
       </div>
     </div>
-
+<!--    <portal to="notification-outlet">-->
+<!--      <p>This slot content will be rendered wherever the with name 'destination'-->
+<!--        is  located.</p>-->
+<!--    </portal>-->
+<!--    <portal-target name="notification-outlet"></portal-target>-->
+    <modal-template
+      width="400px"
+      v-if="false"
+    >
+      <div slot="content">
+        msg={{ msg }}
+        <textarea-template
+          :value.sync="msg"
+          :maxLenght="2000"
+          :label="$t('supportTeam.wishes')"
+        />
+      </div>
+    </modal-template>
   </nav>
 </template>
 
@@ -99,19 +133,29 @@ import '@/assets/icons/Person';
 import '@/assets/icons/Chart';
 import '@/assets/icons/Calendar';
 import '@/assets/icons/LogOut';
+import '@/assets/icons/Message';
 import '@/assets/icons/ChevronBarLeft';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
 import { IUser } from '@/model/IUser';
 import { IAsideItem } from '../../model/constants/IAsideItem';
 import UsersService from "@/services/Users/UsersService";
+import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 
-@Component({})
+@Component({
+  components: {
+    ModalTemplate,
+    TextareaTemplate,
+  }
+})
 export default class AsideTemplate extends Vue {
 
   isShortAside: boolean | null = false;
 
   navList: IAsideItem[] = [];
+
+  msg = '';
 
   // async mounted() {
   //   if (Object.keys(this.$store.getters.user).length === 0) {
@@ -135,8 +179,11 @@ export default class AsideTemplate extends Vue {
   }
 
   proceedTo(route: string) {
-    console.log('this', this.$route.path);
     this.$router.push(route);
+  }
+
+  openSupportModal(): void {
+    console.log('openSupportModal');
   }
 }
 </script>
@@ -166,6 +213,14 @@ export default class AsideTemplate extends Vue {
   .sidebar.close{
     width: 88px;
     min-width: 88px;
+
+    .icon--logout {
+      top: 2px;
+    }
+  }
+
+  .icon--logout {
+    left: 4px;
   }
 
   /* ===== Reusable code - Here ===== */

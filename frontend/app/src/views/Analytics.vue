@@ -1,6 +1,8 @@
 <template>
   <div class="app-analytics">
-    Analytics
+    <h1 class="app__title">
+      Analytics
+    </h1>
   </div>
 </template>
 

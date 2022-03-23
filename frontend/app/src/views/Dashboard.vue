@@ -1,6 +1,8 @@
 <template>
   <div class="app-dashboard">
-    Dashboard
+    <h1 class="app__title">
+      Dashboard
+    </h1>
   </div>
 </template>
 
