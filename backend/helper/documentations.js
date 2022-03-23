@@ -1,5 +1,6 @@
 // https://editor.swagger.io/
 const authDocs = require('../routers/auth.doc');
+const WorkingDays = require('../routers/working-days.doc');
 
 const swaggerDocumentation = {
     openapi: '3.0.0',
@@ -25,6 +26,7 @@ const swaggerDocumentation = {
     ],
     paths: {
         ...authDocs,
+        ...WorkingDays,
     }
 }
 

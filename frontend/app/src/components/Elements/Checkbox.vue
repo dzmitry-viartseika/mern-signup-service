@@ -49,17 +49,12 @@ export default class Checkbox extends Vue {
   }
 
   set statusCheckbox(data) {
-    console.log('data', data);
     this.$emit('update:value', data);
     this.$emit('changeCheckBox', event.target.checked);
   }
 
   updateInput(event): void {
     this.$emit('input', event.target.checked);
-  }
-
-  created() {
-    console.log('isVisibleWeekends', this.value);
   }
 }
 </script>
