@@ -19,9 +19,9 @@
         <div class="landing-page-modal-wrap-footer__item">
           <button
             class="app__btn app__btn--primary"
-            @click="closeModal"
+            @click="sendAction"
           >
-            ok
+            Отправить
           </button>
         </div>
       </div>
@@ -51,6 +51,11 @@ export default class ModalTemplateWithAction extends Vue {
   closeModal(): void {
     console.log('wishesModalActions');
     this.$emit('wishesModalActions', false);
+  }
+
+  sendAction(): void {
+    console.log('actionButton');
+    this.$emit('actionButton');
   }
 }
 </script>

@@ -1,5 +1,7 @@
 <template>
-  <div class="app-textarea">
+  <div class="app-textarea"
+       :class="{'app-textarea--validation': errorStatus}"
+  >
     <label class="app-textarea__label">
       {{ label }}
     </label>
@@ -7,6 +9,7 @@
       class="app-textarea__input"
       cols="30"
       rows="5"
+      :autofocus="true"
       :placeholder="placeholder"
       v-model="textAreaValue"/>
     <p class='text-right text-small'>{{ maxLenght }}</p>
@@ -29,6 +32,9 @@ export default class TextareaTemplate extends Vue {
 
   @Prop({ required: false, type: String })
   placeholder: string;
+
+  @Prop({ type: Boolean, default: false })
+  errorStatus: boolean;
 
   get textAreaValue() {
     return this.value;
@@ -54,6 +60,14 @@ export default class TextareaTemplate extends Vue {
       color: #A9A9A9;
       font: 10px Ubuntu-medium, sans-serif;
       line-height: 1.55;
+    }
+
+    &--validation {
+
+      textarea {
+        transition: border-color .15s ease-in;
+        border: 1px solid $color-cardinal;
+      }
     }
 
     &__input {

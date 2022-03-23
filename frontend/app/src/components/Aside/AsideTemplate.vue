@@ -113,16 +113,28 @@
       <modal-template-with-action
         v-if="isVisibleWishesModal"
         @wishesModalActions="wishesModalActions"
+        @actionButton="sendWishes"
         :modal-title="$t('supportTeam.wishes')"
         placeholder="Describe yourself here..."
       >
         <div slot="content">
           <h2 class="app-modal__subtitle app-modal__subtitle--middle">{{ $t('supportTeam.modalTitle') }}</h2>
-          <textarea-template
-            :value.sync="msg"
-            :maxLenght="2000"
-            :label="$t('supportTeam.wishes')"
-          />
+          <div class="form-field">
+            <textarea-template
+              :value.sync="wishesValue"
+              :maxLenght="2000"
+              :label="$t('supportTeam.wishes')"
+              :errorStatus="$validator.errors.has('wishesValue')"
+            />
+            <transition name="fade-el">
+              <div
+                v-if="$validator.errors.has('wishesValue')"
+                class="validation validation--textarea"
+              >
+                {{ $validator.errors.first('wishesValue') }}
+              </div>
+            </transition>
+          </div>
         </div>
       </modal-template-with-action>
     </transition>
@@ -147,6 +159,7 @@ import { IAsideItem } from '../../model/constants/IAsideItem';
 import UsersService from "@/services/Users/UsersService";
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
+import validationErrorMessage from "@/locales/validationErrorMessage";
 
 @Component({
   components: {
@@ -162,7 +175,38 @@ export default class AsideTemplate extends Vue {
 
   navList: IAsideItem[] = [];
 
-  msg = '';
+  wishesValue = '';
+
+  beforeMount() {
+    const dict = {
+      en: {
+        custom: {
+          wishesValue: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+        },
+      },
+      ru: {
+        custom: {
+          wishesValue: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+        },
+      },
+    };
+    this.$validator.localize(dict);
+    this.$validator.attach({ name: 'wishesValue', rules: { required: true } });
+  }
+
+  async sendWishes(): Promise<void> {
+    const result = await this.$validator.validateAll({
+      wishesValue: this.wishesValue,
+    });
+    console.log('result', result);
+    if (result) {
+      console.log('w');
+    }
+  }
 
   // async mounted() {
   //   if (Object.keys(this.$store.getters.user).length === 0) {

@@ -228,7 +228,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  top: 58px;
+
+  &--input {
+    top: 58px;
+  }
+
+  &--textarea {
+    bottom: 0;
+  }
 }
 
 .account {

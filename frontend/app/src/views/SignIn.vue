@@ -20,7 +20,7 @@
           <transition name="fade-el">
             <div
               v-if="$validator.errors.has('userEmail')"
-              class="validation"
+              class="validation validation--input"
             >
               {{ $validator.errors.first('userEmail') }}
             </div>
@@ -58,7 +58,7 @@
           <transition name="fade-el">
           <div
             v-if="$validator.errors.has('userPassword')"
-            class="validation"
+            class="validation validation--input"
           >
             {{ $validator.errors.first('userPassword') }}
           </div>
