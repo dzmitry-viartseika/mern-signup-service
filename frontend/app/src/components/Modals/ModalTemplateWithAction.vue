@@ -54,12 +54,10 @@ export default class ModalTemplateWithAction extends Vue {
   modalTitle: string;
 
   closeModal(): void {
-    console.log('wishesModalActions');
     this.$emit('wishesModalActions', false);
   }
 
   sendAction(): void {
-    console.log('actionButton');
     this.$emit('actionButton');
   }
 }
