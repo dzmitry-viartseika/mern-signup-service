@@ -16,8 +16,6 @@ class MailService {
         })
     }
     async sendActivationMail(to, link) {
-        console.log('log #2');
-        console.log('link', link);
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,
@@ -32,8 +30,24 @@ class MailService {
         })
     }
 
+    async sendWishesText(to, text) {
+        console.log('email', to);
+        console.log('text3', text);
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to,
+            subject: 'Пожеланию по улучшения приложения:',
+            text: '',
+            html: `
+                <div>
+                    <h1>Пожелание от пользователя</h1>
+                    <p>${text}</p>
+                </div>
+            `
+        })
+    }
+
     async sendForgotMail(to, link) {
-        console.log('link', link);
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,
