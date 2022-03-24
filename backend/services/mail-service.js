@@ -31,16 +31,14 @@ class MailService {
     }
 
     async sendWishesText(to, text) {
-        console.log('email', to);
-        console.log('text3', text);
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
-            to,
+            to: process.env.SMTP_USER,
             subject: 'Пожеланию по улучшения приложения:',
             text: '',
             html: `
                 <div>
-                    <h1>Пожелание от пользователя</h1>
+                    <h1>Пожелание от пользователя ${to}</h1>
                     <p>${text}</p>
                 </div>
             `
