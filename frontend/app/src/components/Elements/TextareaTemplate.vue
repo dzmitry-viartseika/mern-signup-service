@@ -12,7 +12,7 @@
       :autofocus="true"
       :placeholder="placeholder"
       v-model="textAreaValue"/>
-    <p class='text-right text-small'>{{ maxLenght }}</p>
+    <p v-if="maxLenght" class='text-right text-small'>{{ maxLenght }}</p>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default class TextareaTemplate extends Vue {
   @Prop({ required: true, type: String })
   label: string;
 
-  @Prop({ required: true, type: Number })
+  @Prop({ required: false, type: Number })
   maxLenght: number;
 
   @Prop({ required: false, type: String })

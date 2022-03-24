@@ -122,7 +122,6 @@
           <div class="form-field">
             <textarea-template
               :value.sync="wishesValue"
-              :maxLenght="2000"
               :label="$t('supportTeam.wishes')"
               :errorStatus="$validator.errors.has('wishesValue')"
             />
