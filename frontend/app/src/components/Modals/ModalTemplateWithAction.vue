@@ -9,7 +9,11 @@
           class="admin-modal-wrap-header__close"
           @click="closeModal"
         >
-          x
+          <svgicon
+            name="Close"
+            width="18"
+            height="18"
+          />
         </div>
       </div>
       <div class="admin-modal-wrap-content">
@@ -38,6 +42,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ClickOutside from 'vue-click-outside';
+import '@/assets/icons/Close';
 
 @Component({
   directives: {

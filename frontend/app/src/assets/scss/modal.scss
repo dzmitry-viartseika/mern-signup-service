@@ -49,19 +49,9 @@
         }
       }
 
-      &__icon {
-        color: $color-dodger-blue;
-        background: rgba($color-dodger-blue, .08);
-        width: 24px;
-        height: 24px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-
-        &:before {
-          font-size: $font-size-icon-extra-md;
-        }
+      svg {
+        color: $color-black;
+        fill: rgba($color-dodger-blue, .8);
       }
     }
 
