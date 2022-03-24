@@ -14,6 +14,7 @@
             :value.sync="userEmail"
             :errorStatus="$validator.errors.has('userEmail')"
             input-type="email"
+            :required="true"
             :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
             :label-text="$t('signInPage.email')"
           />
@@ -51,6 +52,7 @@
           <text-input
             :value.sync="userPassword"
             :input-type="isVisiblePassword ? 'text' : 'password'"
+            :required="true"
             :label-text="$t('signInPage.password')"
             :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
             :errorStatus="$validator.errors.has('userPassword')"

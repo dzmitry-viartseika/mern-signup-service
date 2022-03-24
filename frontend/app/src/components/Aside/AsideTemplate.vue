@@ -123,6 +123,7 @@
             <textarea-template
               :value.sync="wishesValue"
               :label="$t('supportTeam.wishes')"
+              :required="true"
               :errorStatus="$validator.errors.has('wishesValue')"
             />
             <transition name="fade-el">

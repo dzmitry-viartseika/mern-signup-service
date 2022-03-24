@@ -2,7 +2,9 @@
   <div class="text-field"
        :class="{'text-field--validation': errorStatus}"
   >
-    <label class="text-field__label">
+    <label class="text-field__label"
+           :class="{'validation--required': required}"
+    >
       {{ labelText }}
     </label>
     <div class="text-field-wrapper">
@@ -52,6 +54,9 @@ export default class TextInput extends Vue {
 
     @Prop({ type: Boolean, default: false })
     errorStatus: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  required: boolean;
 }
 </script>
 

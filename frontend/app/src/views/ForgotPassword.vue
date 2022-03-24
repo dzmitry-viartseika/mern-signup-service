@@ -2,6 +2,9 @@
   <div class="app-container">
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
+      <div class="app-modal__logo">
+        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="">
+      </div>
       <h2 class="app-modal__title">
         {{ $t('forgotPasswordPage.forgotPasswordTitle') }}
       </h2>
@@ -12,6 +15,7 @@
             :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
             :label-text="$t('signInPage.email')"
             input-type="email"
+            :required="true"
             :errorStatus="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">

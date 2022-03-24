@@ -2,7 +2,9 @@
   <div class="app-textarea"
        :class="{'app-textarea--validation': errorStatus}"
   >
-    <label class="app-textarea__label">
+    <label class="app-textarea__label"
+           :class="{'validation--required': required}"
+    >
       {{ label }}
     </label>
     <textarea
@@ -35,6 +37,9 @@ export default class TextareaTemplate extends Vue {
 
   @Prop({ type: Boolean, default: false })
   errorStatus: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  required: boolean;
 
   get textAreaValue() {
     return this.value;

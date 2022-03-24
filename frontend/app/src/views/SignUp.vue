@@ -15,6 +15,7 @@
             :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
             :label-text="$t('signInPage.email')"
             input-type="email"
+            :required="true"
             :errorStatus="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
@@ -50,6 +51,7 @@
               :value.sync="userPassword"
               :errorStatus="$validator.errors.has('userPassword')"
               :label-text="$t('signInPage.password')"
+              :required="true"
               :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
               :input-type="isVisiblePassword ? 'text' : 'password'"
             />

@@ -2,6 +2,9 @@
   <div class="app-container">
     <loader-template v-if="isLoader"/>
     <div class="app-modal">
+      <div class="app-modal__logo">
+        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="">
+      </div>
       <h2 class="app-modal__title">
         {{ $t('resetPasswordPage.resetPasswordTitle') }}
       </h2>
@@ -12,6 +15,7 @@
             :placeholder-text="$t('resetPasswordPage.inputEmailPlaceholder')"
             :label-text="$t('resetPasswordPage.oldEmailAddress')"
             input-type="email"
+            :required="true"
             :errorStatus="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
@@ -46,6 +50,7 @@
             :value.sync="userPassword"
             :input-type="isVisiblePassword ? 'text' : 'password'"
             :label-text="$t('resetPasswordPage.newPassword')"
+            :required="true"
             :placeholder-text="$t('resetPasswordPage.inputNewPasswordPlaceholder')"
             :errorStatus="$validator.errors.has('userPassword')"
           />

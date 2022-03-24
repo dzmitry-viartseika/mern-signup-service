@@ -229,6 +229,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  &--required {
+    position: relative;
+
+    &:after {
+      content: " *";
+      color: $color-cardinal;
+      font-weight: bold;
+      padding-left: 2px;
+    }
+  }
+
   &--input {
     top: 58px;
   }
