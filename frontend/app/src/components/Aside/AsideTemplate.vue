@@ -160,6 +160,7 @@ import UsersService from "@/services/Users/UsersService";
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from "@/locales/validationErrorMessage";
+import WishesService from "@/services/Wishes/Wishes";
 
 @Component({
   components: {
@@ -176,6 +177,10 @@ export default class AsideTemplate extends Vue {
   navList: IAsideItem[] = [];
 
   wishesValue = '';
+
+  get userInfo() {
+    return this.$store.getters.user;
+  }
 
   beforeMount() {
     const dict = {
@@ -202,9 +207,17 @@ export default class AsideTemplate extends Vue {
     const result = await this.$validator.validateAll({
       wishesValue: this.wishesValue,
     });
-    console.log('result', result);
     if (result) {
-      console.log('w');
+      try {
+        const email = this.userInfo.email;
+        await WishesService.sendWishesTextToEmail(email, this.wishesValue);
+      } catch (e) {
+        console.error(e);
+      }
+      finally {
+        console.log('finally')
+        this.isVisibleWishesModal = false;
+      }
     }
   }
 

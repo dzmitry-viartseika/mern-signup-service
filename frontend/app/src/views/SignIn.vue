@@ -66,7 +66,7 @@
           <transition name="fade-el">
             <div
               v-show="validationError.status"
-              class="validation"
+              class="validation validation--input"
             >
               {{ validationError.text }}
             </div>

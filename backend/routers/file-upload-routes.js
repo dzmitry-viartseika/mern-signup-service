@@ -1,7 +1,7 @@
 const express = require('express');
-const {upload} = require('../helper/filehelper');
-const {singleFileUpload, multipleFileUpload,
-    getallSingleFiles, getallMultipleFiles} = require('../controllers/fileuploaderController');
+const { upload } = require('../helper/filehelper');
+const { singleFileUpload, multipleFileUpload,
+    getallSingleFiles, getallMultipleFiles } = require('../controllers/fileuploaderController');
 const router = express.Router();
 
 
