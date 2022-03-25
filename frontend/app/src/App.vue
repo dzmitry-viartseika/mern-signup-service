@@ -57,7 +57,7 @@ export default class App extends Vue {
     if (token) {
       try {
         const response = await UsersService.getCurrentUser();
-        this.$store.dispatch('setUser', response.data);
+        await this.$store.dispatch('setUser', response.data);
       } catch (e) {
         console.error(e);
       }

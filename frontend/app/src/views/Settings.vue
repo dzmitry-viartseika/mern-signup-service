@@ -1,6 +1,10 @@
 <template>
   <div class="app-profile">
-    <div class="app-profile-form">
+    <loader-template v-if="!Object.keys(userData).length"/>
+    <div
+      class="app-profile-form"
+      v-else
+    >
 <!--      <div class="avatar">-->
 <!--        <input class="avatar__file" type="file">-->
 <!--        <img class="avatar__image" src="../assets/images/placeholders/avatar.jpg" alt="">-->
@@ -51,7 +55,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="userData.firstName"
+            :value="userData.firstName"
             input-type="text"
             label-text="Имя"
             :disabled="!isEditMode"
@@ -59,7 +63,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="userData.lastName"
+            :value="userData.lastName"
             input-type="text"
             label-text="Фамилия"
             :disabled="!isEditMode"
@@ -80,7 +84,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value.sync="userData.email"
+            :value="userData.email"
             input-type="email"
             label-text="Почта"
             :disabled="true"
@@ -169,6 +173,7 @@ import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
 import UploadService from '@/services/Upload/UploadService';
 // import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
 import '@/assets/icons/Delete';
@@ -178,6 +183,7 @@ import '@/assets/icons/Delete';
     TextInput,
     // ModalTemplate,
     VueTelInput,
+    LoaderTemplate,
   },
   metaInfo() {
     return {
@@ -205,18 +211,22 @@ export default class Settings extends Vue {
   async mounted() {
     if (Object.keys(this.$store.getters.user).length === 0) {
       const response = await UsersService.getCurrentUser();
-      console.log('response', response.data);
       this.userData = response.data;
     } else {
       this.userData = this.user;
-      console.log('userData', this.userData);
       this.cachedUser =  JSON.parse(JSON.stringify(this.$store.getters.user));
     }
   }
 
-  deletePhoto(): void {
-    console.log('deletePhoto');
-    this.userData.avatar = '';
+  async deletePhoto(): void {
+    try {
+      const id = this.userData.avatar;
+      console.log('id', id);
+      await UploadService.deleteFile(id)
+      this.userData.avatar = '';
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   editProfile(): void {
@@ -232,15 +242,14 @@ export default class Settings extends Vue {
   }
 
   async imageHandler(e): void {
+    this.isEditMode = true;
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        const { file = [] } = this.$refs.file.files[0];
-        this.file = file;
+        this.file = this.$refs.file.files[0];
         this.userData.avatar = reader.result;
       }
     };
-    await UploadService.upload(this.file)
     reader.readAsDataURL(e.target.files[0]);
   }
 
@@ -254,7 +263,12 @@ export default class Settings extends Vue {
     try {
       const formData = new FormData();
       formData.append('file', this.file);
-      // const file = await UploadService.upload(formData);
+      if (this.file) {
+        const file = await UploadService.upload(formData);
+        console.log('file', file);
+        // this.userData.avatar = file.id;
+      }
+
       // console.log('file', file.data.id);
       // updatedUser.avatar = file.data.id;
       const response = await UsersService.updateUser(this.$store.getters.user.email, this.userData);

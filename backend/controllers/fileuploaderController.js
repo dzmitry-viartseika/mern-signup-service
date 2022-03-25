@@ -58,6 +58,30 @@ const getallMultipleFiles = async (req, res, next) => {
     }
 }
 
+const getFileById = async (req,res, next) => {
+    try{
+        const { _id } = req.body;
+        const file = await SingleFile.findOne({ _id });
+        console.log('file', file);
+        res.status(200).send(file);
+    } catch(error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const deleteFile = async (req,res, next) => {
+    try{
+        const { _id } = req.body;
+        const test = await SingleFile.deleteOne({ _id });
+        console.log('test', test);
+        res.status(200).send({
+            message: 'File was deleted'
+        });
+    } catch(error) {
+        res.status(400).send(error.message);
+    }
+}
+
 const fileSizeFormatter = (bytes, decimal) => {
     if(bytes === 0){
         return '0 Bytes';
@@ -73,5 +97,7 @@ module.exports = {
     singleFileUpload,
     multipleFileUpload,
     getallSingleFiles,
-    getallMultipleFiles
+    getallMultipleFiles,
+    deleteFile,
+    getFileById,
 }

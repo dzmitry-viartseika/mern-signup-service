@@ -55,8 +55,8 @@ export default class TextInput extends Vue {
     @Prop({ type: Boolean, default: false })
     errorStatus: boolean;
 
-  @Prop({ type: Boolean, default: false })
-  required: boolean;
+    @Prop({ type: Boolean, default: false })
+    required: boolean;
 }
 </script>
 
