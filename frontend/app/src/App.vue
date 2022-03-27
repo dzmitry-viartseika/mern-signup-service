@@ -5,21 +5,26 @@
     <template v-if="showSidebar">
       <aside-template />
     </template>
-    <main class="app-main"
-         :class="[
+      <main class="app-main"
+            :class="[
         {'admin-main': showSidebar},
       ]"
-    >
-<!--      //  "husky": {-->
-<!--      //    "hooks": {-->
-<!--      //      "pre-commit": "npm run lint",-->
-<!--      //      "pre-push": "npm run lint"-->
-<!--      //    }-->
-<!--      //  }-->
-      <keep-alive>
-        <router-view />
-      </keep-alive>
-    </main>
+      >
+        <!--      //  "husky": {-->
+        <!--      //    "hooks": {-->
+        <!--      //      "pre-commit": "npm run lint",-->
+        <!--      //      "pre-push": "npm run lint"-->
+        <!--      //    }-->
+        <!--      //  }-->
+        <transition
+          name="fade"
+          mode="out-in"
+        >
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+        </transition>
+      </main>
   </div>
 </template>
 
@@ -73,5 +78,17 @@ export default class App extends Vue {
   background: $color-alabaster;
   flex-grow: 1;
   padding: 20px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
 }
 </style>

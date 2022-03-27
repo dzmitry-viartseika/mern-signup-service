@@ -102,19 +102,19 @@
           {{ $t('signUpPage.signUpTitle') }}
         </a>
       </div>
-        <div class="app-modal__agreement">
-          {{ $t('signUpPage.agreementRulesAccept') }}
-          <span class="app-modal__agreement-link"
-                @click="$router.push('/terms')"
-          >
+          <div class="app-modal__agreement">
+            {{ $t('signUpPage.agreementRulesAccept') }}
+            <span class="app-modal__agreement-link"
+                  @click="$router.push('/terms')"
+            >
             {{ $t('signUpPage.termsOfService') }}</span>.
-          {{ $t('signUpPage.learnMore') }}
-          <span
-            class="app-modal__agreement-link"
-            @click="$router.push('/privacy')"
-          >{{ $t('signUpPage.privacyPolicy') }}
+            {{ $t('signUpPage.learnMore') }}
+            <span
+              class="app-modal__agreement-link"
+              @click="$router.push('/privacy')"
+            >{{ $t('signUpPage.privacyPolicy') }}
           </span> {{ $t('signUpPage.protectData') }}.
-        </div>
+          </div>
     </div>
   </div>
   </div>
