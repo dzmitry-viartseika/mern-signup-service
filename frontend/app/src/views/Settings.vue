@@ -263,16 +263,13 @@ export default class Settings extends Vue {
     try {
       const formData = new FormData();
       formData.append('file', this.file);
-      if (this.file) {
-        const file = await UploadService.upload(formData);
-        console.log('file', file);
-        // this.userData.avatar = file.id;
-      }
-
-      // console.log('file', file.data.id);
-      // updatedUser.avatar = file.data.id;
+      // if (this.file) {
+      //   console.log('formData', formData);
+      //   const file = await UploadService.upload(formData);
+      //   console.log('file', file);
+      //   // this.userData.avatar = file.id;
+      // }
       const response = await UsersService.updateUser(this.$store.getters.user.email, this.userData);
-      console.log('user', response.data);
       this.user = response.data;
     } catch (e) {
       console.error(e);

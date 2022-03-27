@@ -10,7 +10,7 @@ router.post('/multipleFiles', upload.array('files'), multipleFileUpload);
 router.get('/getSingleFiles', getallSingleFiles);
 router.get('/getMultipleFiles', getallMultipleFiles);
 router.delete('/delete-file', deleteFile);
-router.get('/get-file', getFileById);
+router.get('/get-file/:id', getFileById);
 
 
 module.exports = {

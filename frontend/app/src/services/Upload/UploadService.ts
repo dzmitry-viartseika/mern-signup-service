@@ -8,10 +8,11 @@ export default class UploadService {
   }
 
   static async getFileById(id: string): Promise<AxiosResponse<IAuthResponse>> {
-    return $api.get<IAuthResponse>('/get-file', id);
+    console.log('id,', id);
+    return $api.get<IAuthResponse>(`/get-file/${id}`);
   }
 
   static async deleteFile(id: string): Promise<AxiosResponse<IAuthResponse>> {
-    return $api.delete<any>('/delete-file', id);
+    return $api.delete<any>(`/delete-file/${id}`);
   }
 }

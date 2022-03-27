@@ -60,8 +60,10 @@ const getallMultipleFiles = async (req, res, next) => {
 
 const getFileById = async (req,res, next) => {
     try{
-        const { _id } = req.body;
-        const file = await SingleFile.findOne({ _id });
+        console.log('req.params', req.params.id);
+        const { id } = req.params;
+        console.log('id', id)
+        const file = await SingleFile.findOne({ _id: id });
         console.log('file', file);
         res.status(200).send(file);
     } catch(error) {
