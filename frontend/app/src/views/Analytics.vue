@@ -1,8 +1,11 @@
 <template>
   <div class="app-analytics">
-    <h1 class="app__title">
-      Analytics
-    </h1>
+    <div class="app-analytics-header">
+      <h1 class="app__title">
+        Analytics
+      </h1>
+      <button class="app__btn app__btn--primary">filter</button>
+    </div>
     <div class="app-analytics-section">
       <highcharts class="hc" :options="chartOptions" ref="chart"></highcharts>
     </div>
@@ -106,5 +109,14 @@ export default class Analytics extends Vue {
 </script>
 
 <style scoped lang="scss">
+.app-analytics {
 
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+  }
+}
 </style>

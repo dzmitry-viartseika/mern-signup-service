@@ -1,8 +1,12 @@
 <template>
   <div class="app-dashboard">
-    <h1 class="app__title">
-      Dashboard
-    </h1>
+    <div class="app-dashboard-header">
+      <h1 class="app__title">
+        Dashboard
+      </h1>
+      <button class="app__btn app__btn--primary">Add user</button>
+    </div>
+
 <!--    <Radio name='wertey' :value.sync="test"/>-->
 <!--    <Radio name='wertey' :value.sync="test"/>-->
 <!--    pagi-->
@@ -110,7 +114,7 @@ export default class Dashboard extends Vue {
       });
     });
     return newArr;
-  },
+  }
 
   get typeServiceSelectSettings() {
     return {
@@ -191,5 +195,14 @@ export default class Dashboard extends Vue {
 </script>
 
 <style scoped lang="scss">
+  .app-dashboard {
 
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      width: 100%;
+    }
+  }
 </style>
