@@ -3,15 +3,21 @@
     <h1 class="app__title">
       Dashboard
     </h1>
-    <Radio name='wertey' :value.sync="test"/>
-    <Radio name='wertey' :value.sync="test"/>
-    pagi
-    <Pagination
-      v-if="false"
-      :data="fullInfo"
-      :getQuery="getRequests"
-      :limit="queryParams.perPage"
-    />
+<!--    <Radio name='wertey' :value.sync="test"/>-->
+<!--    <Radio name='wertey' :value.sync="test"/>-->
+<!--    pagi-->
+<!--    <Pagination-->
+<!--      v-if="false"-->
+<!--      :data="fullInfo"-->
+<!--      :getQuery="getRequests"-->
+<!--      :limit="queryParams.perPage"-->
+<!--    />-->
+<!--    select-->
+<!--    <SelectWithKeyTemplate-->
+<!--      :settings="typeServiceSelectSettings"-->
+<!--      :class="{'error': errors.has('setActiveTypeService')}"-->
+<!--      @changeSelect="changeTypeService($event)"-->
+<!--    />-->
   </div>
 </template>
 
@@ -21,6 +27,7 @@ import Component from 'vue-class-component';
 import '@/assets/icons/Eye';
 import UsersService from "@/services/Users/UsersService";
 import Radio from '@/components/Elements/Radio.vue';
+import SelectWithKeyTemplate from '@/components/Elements/SelectWithKeyTemplate.vue';
 import Pagination from '@/components/Paginations/Pagination.vue';
 
 @Component({
@@ -38,6 +45,7 @@ import Pagination from '@/components/Paginations/Pagination.vue';
   components: {
     Radio,
     Pagination,
+    SelectWithKeyTemplate,
   }
 })
 export default class Dashboard extends Vue {
@@ -45,6 +53,8 @@ export default class Dashboard extends Vue {
   test = '';
 
   fullInfo = {};
+
+  allTypeServicesList: any[] = [];
 
   servicesList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 
@@ -65,6 +75,52 @@ export default class Dashboard extends Vue {
       nextPage,
       prevPage,
       totalDocs,
+    };
+  }
+
+  mounted() {
+    this.allTypeServicesList = [
+      {
+        id: '1',
+        name: 'wertey'
+      },
+      {
+        id: '2',
+        name: 'test'
+      },
+      {
+        id: '3',
+        name: 'gdfgdfgd'
+      },
+    ]
+  }
+
+  currentService = {};
+
+  changeTypeService(key) {
+    this.currentService.country = 2;
+  }
+
+  selectTypeServicesList() {
+    const newArr = [];
+    this.allTypeServicesList.forEach((item) => {
+      newArr.push({
+        text: item.name,
+        key: item.id,
+      });
+    });
+    return newArr;
+  },
+
+  get typeServiceSelectSettings() {
+    return {
+      optionList: this.selectTypeServicesList,
+      placeholderText: this.$t('servicesPage.addServiceModal.typeServicePlaceholder'),
+      selectedKey: '2',
+      disable: false,
+      toTop: false,
+      tabindex: 1,
+      selectClass: '',
     };
   }
 
