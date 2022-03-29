@@ -19,4 +19,8 @@ export default class UsersService {
   static async success() {
     return $api.get('/');
   }
+
+  static getUsers() {
+    return $api.get('/get-users');
+  }
 }

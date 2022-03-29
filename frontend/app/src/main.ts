@@ -12,6 +12,7 @@ import store from './store';
 import i18n from './i18n';
 import PortalVue from 'portal-vue';
 import 'vue-tel-input/dist/vue-tel-input.css';
+import 'vue-search-select/dist/VueSearchSelect.css';
 
 Vue.config.productionTip = false;
 

@@ -24,5 +24,6 @@ router.get('/me', UserController.getCurrentUser);
 router.get('/working-days', WeekBasedWorkingCalendarDateController.getWorkingDaysList);
 router.patch('/changed-working-days', WeekBasedWorkingCalendarDateController.changeWorkingDate);
 router.post('/send-wishes', WishesController.sendWishesToEmail);
+router.get('/get-users', UserController.getUsers);
 
 module.exports = router;

@@ -7,6 +7,7 @@ const uuid = require('uuid');
 const mailService = require('./mail-service');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
+const UsersDto = require('../dtos/users-dto');
 const ApiError = require('../exceptions/api-error');
 const passport = require('passport');
 
@@ -142,6 +143,16 @@ class UserService {
     async getCurrentUser(token) {
         const user = await UserModel.findOne({});
         return user;
+    }
+
+    async getUsers() {
+        const users = await UserModel.find({});
+        const modifiedUsersList = users.map((item) => {
+            const usersDto = new UsersDto(item);
+            return usersDto;
+
+        })
+        return modifiedUsersList;
     }
 
     async updateUser(email, updatedUser) {
