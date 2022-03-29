@@ -45,7 +45,7 @@
                 height="20"
               />
               <span class="text nav-text">
-                {{ item.name }}
+                {{ $t(`${item.name}`) }}
               </span>
             </a>
           </li>
@@ -213,7 +213,6 @@ export default class AsideTemplate extends Vue {
         console.error(e);
       }
       finally {
-        console.log('finally')
         this.isVisibleWishesModal = false;
       }
     }

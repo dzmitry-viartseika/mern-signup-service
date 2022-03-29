@@ -6,6 +6,7 @@
     <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">
       {{ $t('global.signInButton') }}
     </button>
+<!--    // TODO class-->
     <dropDown
       :dropdownOptions="dropdownOptions"
       :customClass="'ub-dropdown_landing'"
@@ -81,7 +82,7 @@ export default class LandingPage extends Vue {
   changeLanguage(code: string) {
     this.language = code;
     localStorage.setItem('language', code);
-    this.$i18n.locale = code;
+    this.$root.$i18n.locale= code;
   }
 
   async created() {

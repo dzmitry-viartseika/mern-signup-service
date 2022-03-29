@@ -4,31 +4,31 @@ import { IAsideItem } from '../model/aside/IAsideItem';
 const asideMenuItems: IAsideItem[] = [
   {
     id: 1,
-    name: i18n.t('asideMenu.dashboard') as string,
+    name: 'asideMenu.dashboard',
     route: '/crm/dashboard',
     icon: 'House',
   },
   {
     id: 2,
-    name: i18n.t('asideMenu.settings') as string,
+    name: 'asideMenu.settings',
     route: '/crm/settings',
     icon: 'Person',
   },
   {
     id: 3,
-    name: i18n.t('asideMenu.calendar') as string,
+    name: 'asideMenu.calendar',
     route: '/crm/calendar-working-days',
     icon: 'Calendar',
   },
   {
     id: 4,
-    name: i18n.t('asideMenu.notification') as string,
+    name: 'asideMenu.notification',
     route: '/crm/notifications',
     icon: 'Bell',
   },
   {
     id: 5,
-    name: i18n.t('asideMenu.analytics') as string,
+    name: 'asideMenu.analytics',
     route: '/crm/analytics',
     icon: 'Chart',
   },

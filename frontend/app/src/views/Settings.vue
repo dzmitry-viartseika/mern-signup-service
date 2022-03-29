@@ -53,6 +53,14 @@
           width="200"
         >
       </div>
+      <div class="app-profile-form app-profile--language">
+        <h2>Язык интерфейса</h2>
+        <dropDown
+          :dropdownOptions="dropdownOptions"
+          custom-class="app-dropdown--profile"
+          @changeDropdown="changeLanguage"
+        />
+      </div>
       <div class="app-profile-form app-content">
         <div class="app-edit">
           <h2>Основные сведения</h2>
@@ -183,10 +191,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { VueTelInput } from 'vue-tel-input';
 import { IUser } from '@/model/IUser';
-import Component from 'vue-class-component';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
 import UploadService from '@/services/Upload/UploadService';
@@ -195,6 +202,7 @@ import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
 import '@/assets/icons/Delete';
+import DropDown from '@/components/Elements/DropDown.vue';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -206,6 +214,7 @@ interface HTMLInputEvent extends Event {
     // ModalTemplate,
     VueTelInput,
     LoaderTemplate,
+    DropDown
   },
   metaInfo() {
     return {
@@ -224,6 +233,36 @@ export default class Settings extends Vue {
 
   isEditMode = false;
 
+  get language(): string {
+    return this.$i18n.locale;
+  }
+
+  set language(data: string) {
+    this.$i18n.locale = data;
+  }
+
+  get dropdownOptions() {
+    return {
+      list: [
+        {
+          code: 'ru',
+          text: 'Russian',
+        },
+        {
+          code: 'en',
+          text: 'English',
+        },
+      ],
+      value: this.language,
+    };
+  }
+
+  changeLanguage(code: string) {
+    this.language = code;
+    localStorage.setItem('language', code);
+    this.$root.$i18n.locale= code;
+  }
+
   showModalChangingPassword = false;
 
   cachedUser: IUser = {} as IUser;
@@ -231,6 +270,7 @@ export default class Settings extends Vue {
   userData: IUser = {} as IUser;
 
   async mounted() {
+    this.language = localStorage.getItem('language') || this.$i18n.locale;
     if (Object.keys(this.$store.getters.user).length === 0) {
       const response = await UsersService.getCurrentUser();
       this.userData = response.data;
@@ -306,6 +346,18 @@ export default class Settings extends Vue {
     max-width: 600px;
     margin: 50px auto;
     width: 100%;
+
+    &--language {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+
+      h2 {
+        margin-bottom: 10px;
+      }
+    }
 
     &-form {
       padding-top: 50px;

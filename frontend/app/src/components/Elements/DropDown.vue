@@ -325,4 +325,17 @@ export default {
     color: blue;
   }
 }
+
+.app-dropdown--profile {
+  min-width: auto;
+  max-width: 100%;
+
+  .ub-dropdown__wrap {
+    align-items: center;
+  }
+
+  .ub-dropdown-modal__list {
+    left: 0;
+  }
+}
 </style>
