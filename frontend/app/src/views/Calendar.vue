@@ -12,7 +12,7 @@
           @changeCheckBox="changeCheckBox($event)"
           id="hide-sunday"
         />
-<!--        // TODO fix naming value-->
+        <!--        // TODO fix naming value-->
         <checkbox
           name="hide-weekend"
           :value.sync="filterQuery.isVisibleWeekends"
