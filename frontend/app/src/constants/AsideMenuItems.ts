@@ -1,5 +1,5 @@
 import i18n from '@/i18n';
-import { IAsideItem } from '../model/constants/IAsideItem';
+import { IAsideItem } from '../model/aside/IAsideItem';
 
 const asideMenuItems: IAsideItem[] = [
   {

@@ -137,34 +137,6 @@
       }
     }
 
-    &__agreement {
-      text-align: center;
-      font-size: 12px;
-      max-width: 330px;
-
-      &-link {
-        color: $color-denim;
-        font-weight: 600;
-        transition: color .15s ease-in;
-        cursor: pointer;
-
-        &:hover {
-          color: rgba($color-denim, .6);
-        }
-      }
-
-      div {
-        margin-top: 5px;
-        font-weight: bold;
-        color: $color-dodger-blue;
-        cursor: pointer;
-        transition: color .15s ease-in;
-        &:hover {
-          color: $color-cornflower-blue;
-        }
-      }
-    }
-
     &__form {
       margin-bottom: 10px;
     }

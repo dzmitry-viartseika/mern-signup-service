@@ -76,7 +76,6 @@
         </div>
         <checkbox
           name="remember-me"
-          :value="isRememberMe"
           :label="$t('signInPage.rememberMe')"
           v-model="isRememberMe"
           id="remember-me"
@@ -102,19 +101,7 @@
           {{ $t('signUpPage.signUpTitle') }}
         </a>
       </div>
-          <div class="app-modal__agreement">
-            {{ $t('signUpPage.agreementRulesAccept') }}
-            <span class="app-modal__agreement-link"
-                  @click="$router.push('/terms')"
-            >
-            {{ $t('signUpPage.termsOfService') }}</span>.
-            {{ $t('signUpPage.learnMore') }}
-            <span
-              class="app-modal__agreement-link"
-              @click="$router.push('/privacy')"
-            >{{ $t('signUpPage.privacyPolicy') }}
-          </span> {{ $t('signUpPage.protectData') }}.
-          </div>
+      <agreement />
     </div>
   </div>
   </div>
@@ -128,6 +115,7 @@ import Checkbox from '@/components/Elements/Checkbox.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import AuthService from '../services/Auth/AuthService';
+import Agreement from '@/components/Shared/Agreement.vue';
 import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
 import validationErrorMessage from '../locales/validationErrorMessage';
 import '@/assets/icons/Eye';
@@ -141,6 +129,7 @@ import '@/assets/icons/Eye-hidden';
     LoaderTemplate,
     OauthGoogle,
     Checkbox,
+    Agreement,
   },
   metaInfo() {
     return {

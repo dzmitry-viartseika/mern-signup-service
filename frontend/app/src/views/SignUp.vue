@@ -86,6 +86,7 @@
           {{ $t('global.signInButton') }}
         </a>
       </div>
+      <agreement />
     </div>
   </div>
 </template>
@@ -96,6 +97,7 @@ import Component from 'vue-class-component';
 import TextInput from '@/components/Elements/TextInput.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
+import Agreement from '@/components/Shared/Agreement.vue';
 import AuthService from '../services/Auth/AuthService';
 import OauthGoogle from '../components/Oauths/OauthGoogle.vue';
 import '@/assets/icons/Eye';
@@ -108,6 +110,7 @@ import validationErrorMessage from '../locales/validationErrorMessage';
     TextInput,
     LoaderTemplate,
     OauthGoogle,
+    Agreement,
   },
   metaInfo() {
     return {

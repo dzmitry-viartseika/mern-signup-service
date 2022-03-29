@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueTelInput from 'vue-tel-input';
 import SvgIcon from 'vue-svgicon';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import Meta from 'vue-meta';
 import VeeValidate from 'vee-validate';
 import VueShortKey from 'vue-shortkey';

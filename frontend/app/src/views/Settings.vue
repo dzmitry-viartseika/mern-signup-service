@@ -1,20 +1,23 @@
 <template>
   <div class="app-profile">
-    <loader-template v-if="!Object.keys(userData).length"/>
+    <loader-template v-if="!Object.keys(userData).length" />
     <div
-      class="app-profile-form"
       v-else
+      class="app-profile-form"
     >
-<!--      <div class="avatar">-->
-<!--        <input class="avatar__file" type="file">-->
-<!--        <img class="avatar__image" src="../assets/images/placeholders/avatar.jpg" alt="">-->
-<!--      </div>-->
-      <div class="profile-pic"
-           :class="{'disabled': !isEditMode}"
+      <!--      <div class="avatar">-->
+      <!--        <input class="avatar__file" type="file">-->
+      <!--        <img class="avatar__image" src="../assets/images/placeholders/avatar.jpg" alt="">-->
+      <!--      </div>-->
+      <div
+        class="profile-pic"
+        :class="{'disabled': !isEditMode}"
       >
-        <label class="-label"
-               :class="{'active': isEditMode}"
-               for="file">
+        <label
+          class="-label"
+          :class="{'active': isEditMode}"
+          for="file"
+        >
           <span>
             <svgicon
               class="camera"
@@ -33,15 +36,22 @@
           height="50"
           @click="deletePhoto"
         />
-        <input type="file" id="file" ref="file" @change="imageHandler($event)"/>
+        <input
+          id="file"
+          ref="file"
+          type="file"
+          @change="imageHandler($event)"
+        >
         <img
           v-if="!userData.avatar"
           src="../assets/images/placeholders/avatar.jpg"
-          width="200" />
+          width="200"
+        >
         <img
           v-else
           :src="userData.avatar"
-          width="200" />
+          width="200"
+        >
       </div>
       <div class="app-profile-form app-content">
         <div class="app-edit">
@@ -92,7 +102,10 @@
         </div>
       </div>
       <hr>
-      <div class="app-edit" v-if="!isEditMode">
+      <div
+        v-if="!isEditMode"
+        class="app-edit"
+      >
         <h2>Пароль</h2>
         <svgicon
           name="Edit"
@@ -101,66 +114,71 @@
           @click="showModalChangingPassword = true"
         />
       </div>
-      <div class="app-action"
-           v-if="isEditMode"
+      <div
+        v-if="isEditMode"
+        class="app-action"
       >
         <button
           class="app__btn app__btn--primary"
           @click="cancelEdit"
-        >Отменить</button>
+        >
+          Отменить
+        </button>
         <button
           class="app__btn app__btn--primary"
           @click="saveProfile"
-        >Сохранить</button>
+        >
+          Сохранить
+        </button>
       </div>
     </div>
-<!--    <modal-template-->
-<!--      v-if="showModalChangingPassword"-->
-<!--      width="400px"-->
-<!--    >-->
-<!--      <div slot="content" class="app-modal__content">-->
-<!--        <div>-->
-<!--          <span>-->
-<!--            <template v-if="!$validator.errors.has('userPassword')">-->
-<!--              <template v-if="isVisiblePassword">-->
-<!--                <svgicon-->
-<!--                  name="Eye"-->
-<!--                  width="16"-->
-<!--                  height="16"-->
-<!--                />-->
-<!--              </template>-->
-<!--              <template v-else>-->
-<!--                <svgicon-->
-<!--                  name="Eye-hidden"-->
-<!--                  width="16"-->
-<!--                  height="16"-->
-<!--                />-->
-<!--              </template>-->
-<!--            </template>-->
-<!--          </span>-->
-<!--&lt;!&ndash;          <text-input&ndash;&gt;-->
-<!--&lt;!&ndash;            :value.sync="userPassword"&ndash;&gt;-->
-<!--&lt;!&ndash;            :input-type="isVisiblePassword ? 'text' : 'password'"&ndash;&gt;-->
-<!--&lt;!&ndash;            :label-text="$t('signInPage.password')"&ndash;&gt;-->
-<!--&lt;!&ndash;            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"&ndash;&gt;-->
-<!--&lt;!&ndash;            :errorStatus="$validator.errors.has('userPassword')"&ndash;&gt;-->
-<!--&lt;!&ndash;          />&ndash;&gt;-->
-<!--&lt;!&ndash;          <transition name="fade-el">&ndash;&gt;-->
-<!--&lt;!&ndash;            <div&ndash;&gt;-->
-<!--&lt;!&ndash;              v-if="$validator.errors.has('userPassword')"&ndash;&gt;-->
-<!--&lt;!&ndash;              class="validation"&ndash;&gt;-->
-<!--&lt;!&ndash;            >&ndash;&gt;-->
-<!--&lt;!&ndash;              {{ $validator.errors.first('userPassword') }}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;          </transition>&ndash;&gt;-->
-<!--        </div>-->
-<!--&lt;!&ndash;        <button&ndash;&gt;-->
-<!--&lt;!&ndash;          class="app__btn app__btn&#45;&#45;primary"&ndash;&gt;-->
-<!--&lt;!&ndash;        >&ndash;&gt;-->
-<!--&lt;!&ndash;          {{ $t('global.agreeButton') }}&ndash;&gt;-->
-<!--&lt;!&ndash;        </button>&ndash;&gt;-->
-<!--      </div>-->
-<!--    </modal-template>-->
+    <!--    <modal-template-->
+    <!--      v-if="showModalChangingPassword"-->
+    <!--      width="400px"-->
+    <!--    >-->
+    <!--      <div slot="content" class="app-modal__content">-->
+    <!--        <div>-->
+    <!--          <span>-->
+    <!--            <template v-if="!$validator.errors.has('userPassword')">-->
+    <!--              <template v-if="isVisiblePassword">-->
+    <!--                <svgicon-->
+    <!--                  name="Eye"-->
+    <!--                  width="16"-->
+    <!--                  height="16"-->
+    <!--                />-->
+    <!--              </template>-->
+    <!--              <template v-else>-->
+    <!--                <svgicon-->
+    <!--                  name="Eye-hidden"-->
+    <!--                  width="16"-->
+    <!--                  height="16"-->
+    <!--                />-->
+    <!--              </template>-->
+    <!--            </template>-->
+    <!--          </span>-->
+    <!--&lt;!&ndash;          <text-input&ndash;&gt;-->
+    <!--&lt;!&ndash;            :value.sync="userPassword"&ndash;&gt;-->
+    <!--&lt;!&ndash;            :input-type="isVisiblePassword ? 'text' : 'password'"&ndash;&gt;-->
+    <!--&lt;!&ndash;            :label-text="$t('signInPage.password')"&ndash;&gt;-->
+    <!--&lt;!&ndash;            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"&ndash;&gt;-->
+    <!--&lt;!&ndash;            :errorStatus="$validator.errors.has('userPassword')"&ndash;&gt;-->
+    <!--&lt;!&ndash;          />&ndash;&gt;-->
+    <!--&lt;!&ndash;          <transition name="fade-el">&ndash;&gt;-->
+    <!--&lt;!&ndash;            <div&ndash;&gt;-->
+    <!--&lt;!&ndash;              v-if="$validator.errors.has('userPassword')"&ndash;&gt;-->
+    <!--&lt;!&ndash;              class="validation"&ndash;&gt;-->
+    <!--&lt;!&ndash;            >&ndash;&gt;-->
+    <!--&lt;!&ndash;              {{ $validator.errors.first('userPassword') }}&ndash;&gt;-->
+    <!--&lt;!&ndash;            </div>&ndash;&gt;-->
+    <!--&lt;!&ndash;          </transition>&ndash;&gt;-->
+    <!--        </div>-->
+    <!--&lt;!&ndash;        <button&ndash;&gt;-->
+    <!--&lt;!&ndash;          class="app__btn app__btn&#45;&#45;primary"&ndash;&gt;-->
+    <!--&lt;!&ndash;        >&ndash;&gt;-->
+    <!--&lt;!&ndash;          {{ $t('global.agreeButton') }}&ndash;&gt;-->
+    <!--&lt;!&ndash;        </button>&ndash;&gt;-->
+    <!--      </div>-->
+    <!--    </modal-template>-->
   </div>
 </template>
 
@@ -177,6 +195,10 @@ import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
 import '@/assets/icons/Delete';
+
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
 
 @Component({
   components: {
@@ -204,9 +226,9 @@ export default class Settings extends Vue {
 
   showModalChangingPassword = false;
 
-  cachedUser: IUser = {};
+  cachedUser: IUser = {} as IUser;
 
-  userData: IUser = {};
+  userData: IUser = {} as IUser;
 
   async mounted() {
     if (Object.keys(this.$store.getters.user).length === 0) {
@@ -218,15 +240,8 @@ export default class Settings extends Vue {
     }
   }
 
-  async deletePhoto(): void {
-    try {
-      const id = this.userData.avatar;
-      console.log('id', id);
-      await UploadService.deleteFile(id)
-      this.userData.avatar = '';
-    } catch (e) {
-      console.error(e);
-    }
+  deletePhoto(): void {
+    this.userData.avatar = '';
   }
 
   editProfile(): void {
@@ -241,16 +256,20 @@ export default class Settings extends Vue {
     this.$store.dispatch('setUser', data);
   }
 
-  async imageHandler(e): void {
+  async imageHandler(event?: HTMLInputEvent): Promise<void> {
     this.isEditMode = true;
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        this.file = this.$refs.file.files[0];
+        this.file = this.$refs!.file.files[0];
         this.userData.avatar = reader.result;
       }
     };
-    reader.readAsDataURL(e.target.files[0]);
+    if (event) {
+      const target = event.target as HTMLInputElement;
+      const files = target.files;
+      reader.readAsDataURL(files![0]);
+    }
   }
 
   cancelEdit(): void {

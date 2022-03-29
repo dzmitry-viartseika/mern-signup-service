@@ -81,9 +81,11 @@ export default class LandingPage extends Vue {
   changeLanguage(code: string) {
     this.language = code;
     localStorage.setItem('language', code);
+    this.$i18n.locale = code;
   }
 
   async created() {
+    console.log('this.$i18n.locale', this.$i18n.locale);
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
     try {

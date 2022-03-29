@@ -49,7 +49,13 @@ export default class App extends Vue {
   async created() {
     const lang = localStorage.getItem('language');
     const token = localStorage.getItem('token');
-
+    // const language = window.navigator ? (window.navigator.language
+    //   || window.navigator.systemLanguage
+    //   || window.navigator.userLanguage) : 'ru';
+    // const systemLanguage = language ? language.substr(0, 2).toLowerCase() : 'ru';
+    // if (systemLanguage !== 'ru') {
+    //   this.$i18n.locale = 'en';
+    // }
     if (lang) {
       this.$i18n.locale = lang;
     } else {

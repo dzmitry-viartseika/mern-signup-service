@@ -1,7 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+import dotenv from "dotenv";
 
-const api_key = process.env.OAUTH2_GOOGLE_CLIENT_ID;
+dotenv.config();
 
 module.exports = {
   runtimeCompiler: true,
@@ -20,8 +21,8 @@ module.exports = {
   },
   pluginOptions: {
     i18n: {
-      locale: 'ru', // The locale of project localization
-      fallbackLocale: 'ru', // The fallback locale of project localization
+      locale: process.env.VUE_APP_I18N_LOCALE,
+      fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE,
       localeDir: 'locales', // The directory where store localization messages of project
       enableInSFC: false, // Enable locale messages in Single file components
     },

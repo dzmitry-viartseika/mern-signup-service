@@ -10,7 +10,7 @@
 
         <div class="text logo-text">
           <span class="name">Codinglab</span>
-          <span class="profession">Web developer</span>
+<!--          <span class="profession">Web developer</span>-->
         </div>
       </div>
 
@@ -154,9 +154,7 @@ import '@/assets/icons/Message';
 import '@/assets/icons/ChevronBarLeft';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
-import { IUser } from '@/model/IUser';
-import { IAsideItem } from '../../model/constants/IAsideItem';
-import UsersService from "@/services/Users/UsersService";
+import { IAsideItem } from '../../model/aside/IAsideItem';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from "@/locales/validationErrorMessage";
@@ -239,6 +237,7 @@ export default class AsideTemplate extends Vue {
   logOut(): void {
     // this.setUser(null);
     localStorage.removeItem('token');
+    this.$store.dispatch('setUser', {});
     this.$router.push('/sign-in');
   }
 

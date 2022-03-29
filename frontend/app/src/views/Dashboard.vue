@@ -31,12 +31,6 @@
     <!--      :getQuery="getRequests"-->
     <!--      :limit="queryParams.perPage"-->
     <!--    />-->
-    <!--    select-->
-    <!--    <SelectWithKeyTemplate-->
-    <!--      :settings="typeServiceSelectSettings"-->
-    <!--      :class="{'error': errors.has('setActiveTypeService')}"-->
-    <!--      @changeSelect="changeTypeService($event)"-->
-    <!--    />-->
   </div>
 </template>
 
@@ -150,35 +144,6 @@ export default class Dashboard extends Vue {
         name: 'gdfgdfgd',
       },
     ];
-  }
-
-  currentService = {};
-
-  changeTypeService(key) {
-    this.currentService.country = 2;
-  }
-
-  selectTypeServicesList() {
-    const newArr = [];
-    this.allTypeServicesList.forEach((item) => {
-      newArr.push({
-        text: item.name,
-        key: item.id,
-      });
-    });
-    return newArr;
-  }
-
-  get typeServiceSelectSettings() {
-    return {
-      optionList: this.selectTypeServicesList,
-      placeholderText: this.$t('servicesPage.addServiceModal.typeServicePlaceholder'),
-      selectedKey: '2',
-      disable: false,
-      toTop: false,
-      tabindex: 1,
-      selectClass: '',
-    };
   }
 
   getRequests(queryParams) {
