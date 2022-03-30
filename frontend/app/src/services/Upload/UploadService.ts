@@ -8,7 +8,6 @@ export default class UploadService {
   }
 
   static async getFileById(id: string): Promise<AxiosResponse<IAuthResponse>> {
-    console.log('id,', id);
     return $api.get<IAuthResponse>(`/get-file/${id}`);
   }
 

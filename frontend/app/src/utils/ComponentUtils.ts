@@ -31,5 +31,5 @@ export function getWeekday(date: Date): string {
 }
 
 export function getMonthDay(date: Date): string {
-  return date ? `${moment(date).date()} ${moment(date).format('MMMM')}` : ''
+  return date ? `${moment(date).date()} ${moment(date).format('MMMM')}` : '';
 }

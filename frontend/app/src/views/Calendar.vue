@@ -6,47 +6,55 @@
     <div class="app-calendar-section">
       <div class="app-calendar-section__settings">
         <checkbox
+          id="hide-sunday"
           name="hide-sunday"
           :value.sync="filterQuery.isVisibleSunday"
           :label="$t('calendarPage.hideSunday')"
           @changeCheckBox="changeCheckBox($event)"
-          id="hide-sunday"
         />
         <!--        // TODO fix naming value-->
         <checkbox
+          id="hide-weekend"
           name="hide-weekend"
           :value.sync="filterQuery.isVisibleWeekends"
           :label="$t('calendarPage.hideWeekend')"
           @changeCheckBox="changeCheckBox($event)"
-          id="hide-weekend"
         />
         <checkbox
+          id="year-selector"
           name="year-selector"
           :value.sync="filterQuery.isVisibleYearSelector"
           :label="$t('calendarPage.showYearSelector')"
           @changeCheckBox="changeCheckBox($event)"
-          id="year-selector"
         />
       </div>
       <YearCalendar
         v-model="year.label"
         :lang="$i18n.locale"
-        :activeDates.sync="serverStateDays"
-        @toggleDate="toggleDate"
+        :active-dates.sync="serverStateDays"
         :active-class="'calendar--selected'"
         :show-year-selector="filterQuery.isVisibleYearSelector"
         :hide-sunday="filterQuery.isVisibleSunday"
         :hide-weekend="filterQuery.isVisibleWeekends"
         prefix-class="calendar--selected"
-      ></YearCalendar>
+        @toggleDate="toggleDate"
+      />
       <div class="app-calendar-section__legend">
-        <div class="calendar__day"><div class="day work">28</div></div>
+        <div class="calendar__day">
+          <div class="day work">
+            28
+          </div>
+        </div>
         <div>
           - {{ $t('calendarPage.workingDay') }}
         </div>
       </div>
       <div class="app-calendar-section__legend">
-        <div class="calendar__day"><div class="day holiday">28</div></div>
+        <div class="calendar__day">
+          <div class="day holiday">
+            28
+          </div>
+        </div>
         <div>
           - {{ $t('calendarPage.dayOff') }}
         </div>
@@ -64,10 +72,25 @@ import Checkbox from '@/components/Elements/Checkbox.vue';
 import { formatDate } from '@/utils/ComponentUtils';
 import queryString from 'query-string';
 import '@/assets/icons/Eye';
-import WorkingDaysService from "@/services/WorkingDays/WorkingDays";
+import WorkingDaysService from '@/services/WorkingDays/WorkingDays';
 import WeekBasedWorkingCalendarDateInterval from '@/model/WeekBasedWorkingCalendarDateInterval';
+import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
+import { DayIntervalType } from '@/model/types/DayIntervalType';
+import IWorkingDayResponse from '@/model/response/IWorkingDayResponse';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
+const CALENDAR_SELECTED_CLASS = 'calendar--selected';
+
+interface IActiveDates {
+  className: string;
+  date: Date;
+  selected?: boolean;
+}
+
+interface IPrepareDate {
+  labe: number;
+  value: number;
+}
 
 @Component({
   components: {
@@ -88,43 +111,16 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 })
 export default class Calendar extends Vue {
   year: IItemDropdown | null = null;
+  isVisibleSunday: boolean | undefined = undefined;
+  isVisibleWeekends: boolean | undefined = undefined;
+  isVisibleYearSelector: boolean | undefined = undefined;
+  filterQuery: IFilterQueryCalendar = {} as IFilterQueryCalendar;
+  activeDates: IActiveDates[] = [];
 
-  // serverStateDays: any[] = [];
-
-  isVisibleSunday: boolean | null = null;
-  isVisibleWeekends: boolean | null = null;
-  isVisibleYearSelector: boolean | null = null;
-
-  filterQuery = {};
-
-  activeDates: any[] = [];
-
-  get serverStateDays() {
-    return this.activeDates;
-  }
-
-  set serverStateDays(data) {
-    this.activeDates = data;
-  }
-
-  private prepareDate(date) {
-    return { label: date, value: date };
-  }
-
-  // get activeDates (): string[] {
-  //   return this.serverStateDays.map((data) => formatDate(data.date(), DATE_FORMAT));
-  // }
-
-  get yearsToSelect(): IItemDropdown[] {
-    const firstYearGenerator = new Date().getFullYear() - 2;
-    const createdYearsArray = [...Array(5).keys()];
-    return createdYearsArray.map((i) => this.prepareDate(i + firstYearGenerator)) as IItemDropdown[];
-  }
-
-  async created() {
+  async created(): Promise<any> {
     this.year = this.yearsToSelect[2];
-    const {location} = window;
-    const parsed = queryString.parse(location.search, {parseBooleans: true});
+    const { location } = window;
+    const parsed = queryString.parse(location.search, { parseBooleans: true });
     const {
       isVisibleSunday = this.filterQuery.isVisibleSunday,
       isVisibleWeekends = this.filterQuery.isVisibleWeekends,
@@ -134,100 +130,83 @@ export default class Calendar extends Vue {
       isVisibleSunday,
       isVisibleWeekends,
       isVisibleYearSelector,
-    };
-    this.isVisibleWeekends = isVisibleWeekends;
-    this.isVisibleSunday = isVisibleSunday;
-    this.isVisibleYearSelector = isVisibleYearSelector;
+    } as IFilterQueryCalendar;
+    this.isVisibleWeekends = isVisibleWeekends as boolean | undefined;
+    this.isVisibleSunday = isVisibleSunday as boolean | undefined;
+    this.isVisibleYearSelector = isVisibleYearSelector as boolean | undefined;
     try {
-      const response = await WorkingDaysService.getWorkingDaysList();
-      this.activeDates = response.data.map((date) => {
-        return {
-          date: formatDate(new Date(date.calendar), DATE_FORMAT),
-          className: 'calendar--selected'
-        };
-      })
+      const { data } = await WorkingDaysService.getWorkingDaysList() as IWorkingDayResponse[];
+      const result = data.map((date) => ({
+        date: formatDate(new Date(date.calendar), DATE_FORMAT),
+        className: CALENDAR_SELECTED_CLASS,
+      })) as IActiveDates[];
+      this.activeDates = result;
     } catch (e) {
       console.error(e);
     }
-    // http://localhost:8080/crm/calendar-working-days?isVisibleYearSelector=true
-    //?ownersCompanyAmount=1&director=ME&activityAreas=HOTELS&activityAreas=FRANCHISE
-    //http://localhost:8080/crm/calendar-working-days?isVisibleYearSelector=true&isVisibleWeekends=true&isVisibleSunday=true
   }
 
-  addingParameterToLink() {
+  addingParameterToLink(): void {
     this.$router.push({
       query: {
         ...this.filterQuery,
       },
-    }).catch(() => {
+    }).catch((e) => {
+      console.error(e);
     });
   }
 
-  checkDaysForIntervalType(dateInfo): string {
-    const date = new Date(dateInfo);
-    console.log('date.getDay()', date.getDay());
-    console.log('www', WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay()))
-    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())) {
-      console.log('work');
-      return 'working';
-    }
-
-    return 'holiday';
-  }
-
-  changeCheckBox() {
+  changeCheckBox(): void {
     this.filterQuery = {
       ...this.filterQuery,
     };
     this.addingParameterToLink();
   }
 
-  // async createWeekBasedWorkingCalendarDate(dateInfo) {
-  //   try {
-  //     const { date } = dateInfo;
-  //     const response = await WorkingDaysService.changeWorkingDate(date);
-  //     return response;
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // }
-
-  async toggleDate(dateInfo): Promise<any | never> {
+  async toggleDate(dateInfo: IActiveDates): Promise<any | never> {
     const { date } = dateInfo;
-    // const existedDayChangeForState = this.serverStateDays.find((item) => formatDate(item.date(), DATE_FORMAT) == dateInfo.date);
-    //
-    // if (existedDayChangeForState) {
-    //   existedDayChangeForState.uow.remove(existedDayChangeForState);
-    //   await this.uow.saveAsync();
-    //   return this.serverStateDays = this.uow.all() as WeekBasedWorkingCalendarDateInterval[]; // !!!
-    // }
-    const obj = {
-      calendar: new Date(date),
-      intervalType: this.checkDaysForIntervalType(date)
+    const changedDate = {
+      calendar: new Date(date) as Date,
+      intervalType: this.checkDaysForIntervalType(date),
+    };
+    await WorkingDaysService.changeWorkingDate(changedDate);
+  }
+
+  checkDaysForIntervalType(dateInfo: string): string {
+    const date = new Date(dateInfo);
+    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())) {
+      return DayIntervalType.WORKING;
     }
-    const response = await WorkingDaysService.changeWorkingDate(obj);
-    console.log('response', response);
-    // const currentDateIndex= this.activeDates.findIndex((item) => item.id === response!.data!._id);
-    // console.log('currentDate', currentDate);
-    // if (currentDateIndex === -1) {
-    //   console.log('currentDate UNDEFINED')
-    //   // this.activeDates.push(response.data);
-    //   console.log('this.activeDates', this.activeDates);
-    // } else {
-    //   this.serverStateDays.splice(currentDateIndex, 1);
-    // }
+
+    return DayIntervalType.HOLIDAY;
+  }
+
+  get serverStateDays(): IActiveDates[] {
+    return this.activeDates;
+  }
+
+  set serverStateDays(data: IActiveDates[]) {
+    this.activeDates = data;
+  }
+
+  private prepareDate(data: number): IPrepareDate {
+    return {
+      label: data,
+      value: data,
+    };
+  }
+
+  get yearsToSelect(): IItemDropdown[] {
+    const firstYearGenerator = new Date().getFullYear() - 2;
+    const createdYearsArray = [...Array(5).keys()];
+    return createdYearsArray.map((i) => this.prepareDate(i + firstYearGenerator));
   }
 }
 </script>
 
 <style lang="scss">
 
-//.container__year {
-//  margin: 0 10px !important;
-//}
-
 .app-calendar {
-
 
   &-section {
     padding-top: 20px;
@@ -244,122 +223,11 @@ export default class Calendar extends Vue {
     &__settings {
       display: flex;
       margin-bottom: 20px;
-      //padding: 0 10px;
+
       .app-checkbox + .app-checkbox {
         margin-left: 10px;
       }
     }
-  }
-}
-
-//.vue-calendar__container {
-//  background-color: #FCFCFC!important;
-//  box-shadow: none!important;
-//
-//  & .container__months {
-//    padding-left: 0!important;
-//    padding-right: 0!important;
-//  }
-//}
-//
-.calendar {
-  box-shadow: none!important;
-}
-//.calendar--active {
-//  background: #695CFE;
-//}
-
-
-.vue-calendar__container {
-  border-radius: 0 !important;
-  background-color: #FCFCFC!important;
-  box-shadow: none!important;
-}
-
-.vue-calendar__container {
-  background-color: #FCFCFC!important;
-  box-shadow: none!important;
-
-  & .container__months {
-    padding-left: 0!important;
-    padding-right: 0!important;
-  }
-}
-
-.vue-calendar__container .container__year .year__chooser {
-  transition: all .15s ease-in;
-}
-
-.vue-calendar__container .container__year .year__chooser:nth-child(3) {
-  box-shadow: inset 0 -3px #695CFE !important;
-}
-
-.vue-calendar__container .container__months {
-  //position: relative;
-  //left: -6px;
-}
-
-.calendar {
-  &__title {
-    border-bottom: none !important;
-  }
-
-  &__day--otherMonth {
-    display: none !important;
-  }
-
-  .day {
-    background-color: ghostwhite !important;
-    border-radius: 100% !important;
-    color: black !important;
-  }
-
-  &:hover {
-    transform: scale(1) !important;
-    box-shadow: none !important;
-  }
-
-  & .day.calendar--selected {
-    background-color: #695CFE !important;
-    color: white !important;
-    border-radius: 100% !important;
-    font-size: 12px !important;
-  }
-}
-
-.calendar__day:nth-of-type(7n), .calendar__day:nth-of-type(7n-1) {
-  .day {
-    background-color: #695CFE!important;
-    color: white !important;
-    border-radius: 100% !important;
-    font-size: 12px !important;
-  }
-
-  .day.calendar--selected {
-    background-color: white !important;
-    border-radius: 100% !important;
-    color: black !important;
-  }
-}
-
-.vue-calendar__container .container__year .year__chooser:hover {
-  background-color: #695CFE!important;
-  color: white!important;
-}
-
-.calendar__day {
-
-  & .holiday {
-    font-size:12px;
-    padding: 3px;
-    border-radius: 100%;
-    background-color: #695CFE !important;
-    color: #fff !important;
-  }
-  & .work {
-    font-size:12px;
-    padding: 3px;
-    background-color: ghostwhite;
   }
 }
 </style>

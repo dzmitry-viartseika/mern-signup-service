@@ -214,7 +214,7 @@ interface HTMLInputEvent extends Event {
     // ModalTemplate,
     VueTelInput,
     LoaderTemplate,
-    DropDown
+    DropDown,
   },
   metaInfo() {
     return {
@@ -322,12 +322,6 @@ export default class Settings extends Vue {
     try {
       const formData = new FormData();
       formData.append('file', this.file);
-      // if (this.file) {
-      //   console.log('formData', formData);
-      //   const file = await UploadService.upload(formData);
-      //   console.log('file', file);
-      //   // this.userData.avatar = file.id;
-      // }
       const response = await UsersService.updateUser(this.$store.getters.user.email, this.userData);
       this.user = response.data;
     } catch (e) {

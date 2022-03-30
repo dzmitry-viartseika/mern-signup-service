@@ -29,7 +29,7 @@
   ],
 
   "rules": {
-    "no-console": "warn",
+    "no-console": ["error", {"allow": ["warn", "error"]}],
     "no-debugger": "warn",
     "@typescript-eslint/adjacent-overload-signatures": "warn",
     "@typescript-eslint/array-type": "warn",

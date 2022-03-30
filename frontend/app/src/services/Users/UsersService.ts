@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import $api from '../../api/api';
 import { IUser } from '../../model/IUser';
+import {IUsersListResponse} from "@/model/response/IUsersListResponse";
 
 export default class UsersService {
   static fetchUsers(): Promise<AxiosResponse<IUser[]>> {
@@ -20,7 +21,7 @@ export default class UsersService {
     return $api.get('/');
   }
 
-  static getUsers() {
+  static getUsers(): Promise<AxiosResponse<IUsersListResponse[]>> {
     return $api.get('/get-users');
   }
 }

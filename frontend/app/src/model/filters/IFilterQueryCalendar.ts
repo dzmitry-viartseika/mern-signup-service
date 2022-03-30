@@ -1,5 +1,5 @@
 export default interface IFilterQueryCalendar {
-  isVisibleSunday: string | boolean | (string | boolean)[] | null;
-  isVisibleWeekends: string | boolean | (string | boolean)[] | null;
-  isVisibleYearSelector: string | boolean | (string | boolean)[] | null;
+  isVisibleSunday: string | boolean | (string | boolean)[] | undefined;
+  isVisibleWeekends: string | boolean | (string | boolean)[] | undefined;
+  isVisibleYearSelector: string | boolean | (string | boolean)[] | undefined;
 }

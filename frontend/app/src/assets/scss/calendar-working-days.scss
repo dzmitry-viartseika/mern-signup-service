@@ -1,0 +1,91 @@
+.vue-calendar__container {
+  border-radius: 0 !important;
+  background-color: #FCFCFC!important;
+  box-shadow: none!important;
+}
+
+.vue-calendar__container {
+  background-color: #FCFCFC!important;
+  box-shadow: none!important;
+
+  & .container__months {
+    padding-left: 0!important;
+    padding-right: 0!important;
+  }
+}
+
+.vue-calendar__container .container__year .year__chooser {
+  transition: all .15s ease-in;
+}
+
+.vue-calendar__container .container__year .year__chooser:nth-child(3) {
+  box-shadow: inset 0 -3px #695CFE !important;
+}
+
+.calendar {
+  &__title {
+    border-bottom: none !important;
+  }
+
+  &__day--otherMonth {
+    display: none !important;
+  }
+
+  .day {
+    background-color: ghostwhite !important;
+    border-radius: 100% !important;
+    color: black !important;
+  }
+
+  &:hover {
+    transform: scale(1) !important;
+    box-shadow: none !important;
+  }
+
+  & .day.calendar--selected {
+    background-color: #695CFE !important;
+    color: white !important;
+    border-radius: 100% !important;
+    font-size: 12px !important;
+  }
+}
+
+.calendar__day:nth-of-type(7n), .calendar__day:nth-of-type(7n-1) {
+  .day {
+    background-color: #695CFE!important;
+    color: white !important;
+    border-radius: 100% !important;
+    font-size: 12px !important;
+  }
+
+  .day.calendar--selected {
+    background-color: white !important;
+    border-radius: 100% !important;
+    color: black !important;
+  }
+}
+
+.vue-calendar__container .container__year .year__chooser:hover {
+  background-color: #695CFE!important;
+  color: white!important;
+}
+
+.calendar {
+  box-shadow: none!important;
+
+  &__day {
+
+    & .holiday {
+      font-size:12px;
+      padding: 3px;
+      border-radius: 100%;
+      background-color: #695CFE !important;
+      color: #fff !important;
+    }
+    & .work {
+      font-size:12px;
+      padding: 3px;
+      background-color: ghostwhite;
+    }
+  }
+}

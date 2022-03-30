@@ -98,8 +98,8 @@ class UserController {
 
     async changedPassword(req, res, next) {
         try {
-            const users = await UserService.changePassword(req);
-            return res.json(users)
+            const user = await UserService.changePassword(req);
+            return res.json(user);
         } catch (e) {
             next(e);
             console.log(e);

@@ -1,13 +1,13 @@
 import { AxiosResponse } from 'axios';
 import $api from '@/api/api';
-import { IAuthResponse } from '@/model/response/IAuthResponse';
+import IWorkingDayResponse from '@/model/response/IWorkingDayResponse';
 
 export default class WorkingDaysService {
-  static async getWorkingDaysList(): Promise<AxiosResponse<IAuthResponse>> {
-    return $api.get<IAuthResponse>('/working-days');
+  static async getWorkingDaysList(): Promise<AxiosResponse<IWorkingDayResponse>> {
+    return $api.get<IWorkingDayResponse>('/working-days');
   }
 
-  static async changeWorkingDate(date): Promise<AxiosResponse<IAuthResponse>> {
-    return $api.patch<IAuthResponse>('/changed-working-days', { date });
+  static async changeWorkingDate(date: IWorkingDayResponse): Promise<AxiosResponse<IWorkingDayResponse>> {
+    return $api.patch<IWorkingDayResponse>('/changed-working-days', { date });
   }
 }
