@@ -1,6 +1,4 @@
 const WeekBasedWorkingCalendarDate = require('../services/week-based-working-calendar-date-service');
-// const { validationResult } = require('express-validator');
-// const ApiError = require('../exceptions/api-error')
 
 class WeekBasedWorkingCalendarDateController {
     async getWorkingDaysList(req, res, next) {
