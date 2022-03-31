@@ -196,10 +196,9 @@
 <script lang="ts">
 import { VueTelInput } from 'vue-tel-input';
 import { IUser } from '@/model/IUser';
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
-import UploadService from '@/services/Upload/UploadService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import '@/assets/icons/Edit';
@@ -209,6 +208,16 @@ import DropDown from '@/components/Elements/DropDown.vue';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
+}
+
+interface IDropDownOptions {
+  list: IItemDropDown[];
+  value: string;
+}
+
+interface IItemDropDown {
+  code: string;
+  text: string;
 }
 
 @Component({
@@ -236,6 +245,12 @@ export default class Settings extends Vue {
 
   isEditMode = false;
 
+  showModalChangingPassword = false;
+
+  cachedUser: IUser = {} as IUser;
+
+  userData: IUser = {} as IUser;
+
   get language(): string {
     return this.$i18n.locale;
   }
@@ -244,7 +259,7 @@ export default class Settings extends Vue {
     this.$i18n.locale = data;
   }
 
-  get dropdownOptions() {
+  get dropdownOptions(): IDropDownOptions {
     return {
       list: [
         {
@@ -260,19 +275,13 @@ export default class Settings extends Vue {
     };
   }
 
-  changeLanguage(code: string) {
+  changeLanguage(code: string): void {
     this.language = code;
     localStorage.setItem('language', code);
     this.$root.$i18n.locale= code;
   }
 
-  showModalChangingPassword = false;
-
-  cachedUser: IUser = {} as IUser;
-
-  userData: IUser = {} as IUser;
-
-  async mounted() {
+  async mounted(): Promise<any> {
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     if (Object.keys(this.$store.getters.user).length === 0) {
       const response = await UsersService.getCurrentUser();
@@ -291,11 +300,11 @@ export default class Settings extends Vue {
     this.isEditMode = !this.isEditMode;
   }
 
-  get user() {
+  get user(): IUser {
     return this.$store.getters.user;
   }
 
-  set user(data) {
+  set user(data: IUser) {
     this.$store.dispatch('setUser', data);
   }
 
