@@ -1,9 +1,13 @@
 <template>
   <div class="app-container">
-    <loader-template v-if="isLoader"/>
+    <loader-template v-if="isLoader" />
     <div class="app-modal">
       <div class="app-modal__logo">
-        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="">
+        <img
+          src="../assets/images/logo.png"
+          alt="logo"
+          @click="$router.push('/')"
+        >
       </div>
       <h2 class="app-modal__title">
         {{ $t('resetPasswordPage.resetPasswordTitle') }}
@@ -16,7 +20,7 @@
             :label-text="$t('resetPasswordPage.oldEmailAddress')"
             input-type="email"
             :required="true"
-            :errorStatus="$validator.errors.has('userEmail')"
+            :error-status="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
             <div
@@ -28,8 +32,12 @@
           </transition>
         </div>
         <div class="app-modal__form-wrapper">
-          <span  @click="isVisiblePassword = !isVisiblePassword">
-          <template v-if="!$validator.errors.has('userPassword')">
+          <span
+            @click="isVisiblePassword = !isVisiblePassword"
+          >
+            <template
+              v-if="!$validator.errors.has('userPassword')"
+            >
               <template v-if="isVisiblePassword">
                 <svgicon
                   name="Eye"
@@ -52,7 +60,7 @@
             :label-text="$t('resetPasswordPage.newPassword')"
             :required="true"
             :placeholder-text="$t('resetPasswordPage.inputNewPasswordPlaceholder')"
-            :errorStatus="$validator.errors.has('userPassword')"
+            :error-status="$validator.errors.has('userPassword')"
           />
           <transition name="fade-el">
             <div
@@ -64,7 +72,10 @@
           </transition>
         </div>
       </div>
-      <button class="app__btn app__btn--primary" @click="restorePassword">
+      <button
+        class="app__btn app__btn--primary"
+        @click="restorePassword"
+      >
         {{ $t('global.sendButton') }}
       </button>
     </div>
@@ -81,6 +92,7 @@ import { IAuthResponse } from '@/model/response/IAuthResponse';
 import TextInput from '../components/Elements/TextInput.vue';
 import '@/assets/icons/Eye';
 import '@/assets/icons/Eye-hidden';
+import { AxiosResponse } from 'axios';
 
 @Component({
   components: {
@@ -110,7 +122,7 @@ export default class ForgotPassword extends Vue {
 
   validator = null;
 
-  beforeMount() {
+  beforeMount(): void {
     const dict = {
       en: {
         custom: {
@@ -147,7 +159,7 @@ export default class ForgotPassword extends Vue {
     if (result) {
       try {
         this.isLoader = true;
-        const { data } = await AuthService.changePassword(this.userEmail, this.userPassword);
+        const { data } = await AuthService.changePassword(this.userEmail, this.userPassword) as AxiosResponse;
         this.isLoader = false;
         const { accessToken } = data as IAuthResponse;
         localStorage.setItem('token', accessToken);

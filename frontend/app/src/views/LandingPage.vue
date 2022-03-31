@@ -1,24 +1,33 @@
 <template>
   <div class="lp">
-    <div class="lp__container" v-if="false">
+    <div
+      v-if="false"
+      class="lp__container"
+    >
       <header-template />
     </div>
-    <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">
+    <button
+      class="app__btn app__btn--primary"
+      @click="$router.push('/sign-in')"
+    >
       {{ $t('global.signInButton') }}
     </button>
-<!--    // TODO class-->
+    <!--    // TODO class-->
     <dropDown
-      :dropdownOptions="dropdownOptions"
-      :customClass="'ub-dropdown_landing'"
-      :arrowAlt="true"
+      :dropdown-options="dropdownOptions"
+      :custom-class="'ub-dropdown_landing'"
+      :arrow-alt="true"
       @changeDropdown="changeLanguage"
     />
     <modal-template
       v-if="!isAgreePolicy"
-      position='bottom'
+      position="bottom"
       width="100%"
     >
-      <div slot="content" class="app-modal__content">
+      <div
+        slot="content"
+        class="app-modal__content"
+      >
         {{ $t('modalsTextContent.cookies') }}
         <button
           class="app__btn app__btn--primary"
@@ -37,7 +46,7 @@ import Component from 'vue-class-component';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import DropDown from '@/components/Elements/DropDown.vue';
 import HeaderTemplate from '@/components/Landing/Header/HeaderTemplate.vue';
-import UsersService from "@/services/Users/UsersService";
+import UsersService from '@/services/Users/UsersService';
 
 @Component({
   components: {
@@ -85,8 +94,7 @@ export default class LandingPage extends Vue {
     this.$root.$i18n.locale= code;
   }
 
-  async created() {
-    console.log('this.$i18n.locale', this.$i18n.locale);
+  async created(): Promise<any> {
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
     try {

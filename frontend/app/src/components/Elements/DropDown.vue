@@ -22,8 +22,7 @@
             <i
               class="ub-icon-arrow ub-dropdown__arrow"
               :class="{'ub-dropdown__arrow_down': !visible}"
-            >
-            </i>
+            />
           </template>
           <template v-else>
             <i
@@ -32,8 +31,7 @@
                 {'ub-dropdown__arrow_down': !visible},
                 {'ub-dropdown__arrow_up': visible}
               ]"
-            >
-            </i>
+            />
           </template>
         </div>
       </div>
@@ -63,8 +61,7 @@
             <i
               v-if="item.code === dropDownValue"
               class="ub-icon-check-mark-select ub-dropdown-modal__item-icon"
-            >
-            </i>
+            />
           </div>
         </div>
       </div>

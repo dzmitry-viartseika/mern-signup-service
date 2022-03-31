@@ -1,15 +1,19 @@
 <template>
-  <div class="app-checkbox" v-bind:class="{ inverted: inverted }">
-    <input type="checkbox"
-           :name="name"
-           :class="className"
-           :id="id"
-           :value="value"
-           :checked="checked"
-           :required="required"
-           @change="updateInput"
+  <div
+    class="app-checkbox"
+    :class="{ inverted: inverted }"
+  >
+    <input
+      :id="id"
+      type="checkbox"
+      :name="name"
+      :class="className"
+      :value="value"
+      :checked="checked"
+      :required="required"
+      @change="updateInput"
     >
-    <label v-bind:for="id">{{ label }}</label>
+    <label :for="id">{{ label }}</label>
   </div>
 </template>
 

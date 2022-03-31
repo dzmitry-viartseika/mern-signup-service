@@ -1,7 +1,10 @@
 <template>
   <div class="app-container">
     <div class="app-error-page">
-      <img src="../assets/images/placeholders/page-404.svg" alt="">
+      <img
+        src="../assets/images/placeholders/page-404.svg"
+        alt=""
+      >
       <h2 class="app-error-page__title app__title">
         {{ $t('page404.titlePage') }}
       </h2>
@@ -10,8 +13,8 @@
       </div>
       <div class="app-error-page__action">
         <button
-          @click="$router.push('/')"
           class="app__btn app__btn--primary"
+          @click="$router.push('/')"
         >
           {{ $t('global.homePageButton') }}
         </button>

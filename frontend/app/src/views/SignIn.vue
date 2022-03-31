@@ -1,9 +1,13 @@
 <template>
   <div class="app-container">
-    <loader-template v-if="isLoader"/>
+    <loader-template v-if="isLoader" />
     <div class="app-modal">
       <div class="app-modal__logo">
-        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="logo">
+        <img
+          src="../assets/images/logo.png"
+          alt="logo"
+          @click="$router.push('/')"
+        >
       </div>
       <h2 class="app-modal__title">
         {{ $t('signInPage.signInTitle') }}
@@ -12,7 +16,7 @@
         <div class="form-field">
           <text-input
             :value.sync="userEmail"
-            :errorStatus="$validator.errors.has('userEmail')"
+            :error-status="$validator.errors.has('userEmail')"
             input-type="email"
             :required="true"
             :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
@@ -28,10 +32,13 @@
           </transition>
         </div>
         <div class="app-modal__form-wrapper">
-          <a class="app__link" @click.prevent="$router.push('/forgot-password')">
+          <a
+            class="app__link"
+            @click.prevent="$router.push('/forgot-password')"
+          >
             {{ $t('signInPage.forgotPasswordText') }}
           </a>
-          <span  @click="isVisiblePassword = !isVisiblePassword">
+          <span @click="isVisiblePassword = !isVisiblePassword">
             <template v-if="!$validator.errors.has('userPassword')">
               <template v-if="isVisiblePassword">
                 <svgicon
@@ -55,15 +62,15 @@
             :required="true"
             :label-text="$t('signInPage.password')"
             :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
-            :errorStatus="$validator.errors.has('userPassword')"
+            :error-status="$validator.errors.has('userPassword')"
           />
           <transition name="fade-el">
-          <div
-            v-if="$validator.errors.has('userPassword')"
-            class="validation validation--input"
-          >
-            {{ $validator.errors.first('userPassword') }}
-          </div>
+            <div
+              v-if="$validator.errors.has('userPassword')"
+              class="validation validation--input"
+            >
+              {{ $validator.errors.first('userPassword') }}
+            </div>
           </transition>
           <transition name="fade-el">
             <div
@@ -75,10 +82,10 @@
           </transition>
         </div>
         <checkbox
+          id="remember-me"
+          v-model="isRememberMe"
           name="remember-me"
           :label="$t('signInPage.rememberMe')"
-          v-model="isRememberMe"
-          id="remember-me"
         />
       </div>
       <div class="app-divider">
@@ -90,20 +97,26 @@
         <oauth-google />
       </div>
       <div class="app-actions">
-        <button class="app__btn app__btn--primary" @click="signIn">
+        <button
+          class="app__btn app__btn--primary"
+          @click="signIn"
+        >
           {{ $t('global.signInButton') }}
         </button>
       </div>
       <div>
-      <div class="app-modal__footer">
-        {{ $t('signInPage.createAccount') }}
-        <a class="app__link" @click.prevent="$router.push('/sign-up')">
-          {{ $t('signUpPage.signUpTitle') }}
-        </a>
+        <div class="app-modal__footer">
+          {{ $t('signInPage.createAccount') }}
+          <a
+            class="app__link"
+            @click.prevent="$router.push('/sign-up')"
+          >
+            {{ $t('signUpPage.signUpTitle') }}
+          </a>
+        </div>
+        <agreement />
       </div>
-      <agreement />
     </div>
-  </div>
   </div>
 </template>
 

@@ -1,9 +1,15 @@
 <template>
   <div class="app-container">
-    <loader-template v-if="isLoader"/>
+    <loader-template
+      v-if="isLoader"
+    />
     <div class="app-modal">
       <div class="app-modal__logo">
-        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="">
+        <img
+          src="../assets/images/logo.png"
+          alt="logo"
+          @click="$router.push('/')"
+        >
       </div>
       <h2 class="app-modal__title">
         {{ $t('forgotPasswordPage.forgotPasswordTitle') }}
@@ -16,7 +22,7 @@
             :label-text="$t('signInPage.email')"
             input-type="email"
             :required="true"
-            :errorStatus="$validator.errors.has('userEmail')"
+            :error-status="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
             <div
@@ -28,12 +34,18 @@
           </transition>
         </div>
       </div>
-      <button class="app__btn app__btn--primary" @click="restorePassword">
+      <button
+        class="app__btn app__btn--primary"
+        @click="restorePassword"
+      >
         {{ $t('global.sendButton') }}
       </button>
       <div class="app-modal__footer">
         {{ $t('signInPage.createAccount') }}
-        <a class="app__link" @click.prevent="$router.push('/sign-up')">
+        <a
+          class="app__link"
+          @click.prevent="$router.push('/sign-up')"
+        >
           {{ $t('global.signUpButton') }}
         </a>
       </div>
@@ -49,6 +61,7 @@ import { IAuthResponse } from '@/model/response/IAuthResponse';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import TextInput from '../components/Elements/TextInput.vue';
 import validationErrorMessage from '../locales/validationErrorMessage';
+import { AxiosResponse } from 'axios';
 
 @Component({
   components: {
@@ -79,7 +92,7 @@ export default class ForgotPassword extends Vue {
 
   validator = null;
 
-  beforeMount() {
+  beforeMount(): void {
     const dict = {
       en: {
         custom: {
@@ -108,7 +121,7 @@ export default class ForgotPassword extends Vue {
     if (result) {
       try {
         this.isLoader = true;
-        const { data } = await AuthService.restorePassword(this.userEmail);
+        const { data } = await AuthService.restorePassword(this.userEmail) as AxiosResponse;
         this.isLoader = false;
         const { accessToken } = data as IAuthResponse;
         localStorage.setItem('token', accessToken);

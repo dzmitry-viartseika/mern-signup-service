@@ -21,10 +21,16 @@
       </div>
     </nav>
     <div class="lp-header__actions">
-      <button class="app__btn app__btn--primary" @click="$router.push('/sign-in')">
+      <button
+        class="app__btn app__btn--primary"
+        @click="$router.push('/sign-in')"
+      >
         {{ $t('global.signInButton') }}
       </button>
-      <button class="app__btn app__btn--primary" @click="$router.push('/sign-up')">
+      <button
+        class="app__btn app__btn--primary"
+        @click="$router.push('/sign-up')"
+      >
         {{ $t('global.signUpButton') }}
       </button>
     </div>

@@ -1,25 +1,33 @@
 <template>
-  <div class="app-textarea"
-       :class="{'app-textarea--validation': errorStatus}"
+  <div
+    class="app-textarea"
+    :class="{'app-textarea--validation': errorStatus}"
   >
-    <label class="app-textarea__label"
-           :class="{'validation--required': required}"
+    <label
+      class="app-textarea__label"
+      :class="{'validation--required': required}"
     >
       {{ label }}
     </label>
     <textarea
+      v-model="textAreaValue"
       class="app-textarea__input"
       cols="30"
       rows="5"
       :autofocus="true"
       :placeholder="placeholder"
-      v-model="textAreaValue"/>
-    <p v-if="maxLenght" class='text-right text-small'>{{ maxLenght }}</p>
+    />
+    <p
+      v-if="maxLenght"
+      class="text-right text-small"
+    >
+      {{ maxLenght }}
+    </p>
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class TextareaTemplate extends Vue {

@@ -9,21 +9,22 @@
     ]"
     @click.stop="statusRadio"
   >
-    <input type="radio"
-           class="ub-radio__text-field"
-           :name="name"
-           :id="id"
-           :value="value"
-           :checked="checked"
-           v-model="radioTextModel"
+    <input
+      :id="id"
+      v-model="radioTextModel"
+      type="radio"
+      class="ub-radio__text-field"
+      :name="name"
+      :value="value"
+      :checked="checked"
     >
-<!--    <span-->
-<!--      v-else-if="radioText"-->
-<!--      class="ub-radio__text"-->
-<!--      :class="{'ub-radio__text_active': checked}"-->
-<!--    >-->
-<!--      {{ radioText }}-->
-<!--    </span>-->
+    <!--    <span-->
+    <!--      v-else-if="radioText"-->
+    <!--      class="ub-radio__text"-->
+    <!--      :class="{'ub-radio__text_active': checked}"-->
+    <!--    >-->
+    <!--      {{ radioText }}-->
+    <!--    </span>-->
   </div>
 </template>
 

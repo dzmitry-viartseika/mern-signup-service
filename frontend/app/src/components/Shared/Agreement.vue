@@ -1,16 +1,17 @@
 <template>
   <div class="app__agreement">
     {{ $t('signUpPage.agreementRulesAccept') }}
-    <span class="app__agreement-link"
-          @click="$router.push('/terms')"
+    <span
+      class="app__agreement-link"
+      @click="$router.push('/terms')"
     >
-            {{ $t('signUpPage.termsOfService') }}</span>.
+      {{ $t('signUpPage.termsOfService') }}</span>.
     {{ $t('signUpPage.learnMore') }}
     <span
       class="app__agreement-link"
       @click="$router.push('/privacy')"
     >{{ $t('signUpPage.privacyPolicy') }}
-          </span> {{ $t('signUpPage.protectData') }}.
+    </span> {{ $t('signUpPage.protectData') }}.
   </div>
 </template>
 

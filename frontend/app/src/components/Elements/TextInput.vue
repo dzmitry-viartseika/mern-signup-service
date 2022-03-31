@@ -1,9 +1,11 @@
 <template>
-  <div class="text-field"
-       :class="{'text-field--validation': errorStatus}"
+  <div
+    class="text-field"
+    :class="{'text-field--validation': errorStatus}"
   >
-    <label class="text-field__label"
-           :class="{'validation--required': required}"
+    <label
+      class="text-field__label"
+      :class="{'validation--required': required}"
     >
       {{ labelText }}
     </label>
@@ -13,10 +15,10 @@
         :type="inputType"
         class="text-field__input"
         :value="value"
-        @input="$emit('update:value', $event.target.value)"
         :placeholder="placeholderText"
         :disabled="disabled"
-      />
+        @input="$emit('update:value', $event.target.value)"
+      >
       <i
         v-if="errorStatus"
         class="text-field__validation"
@@ -37,26 +39,26 @@ import '@/assets/icons/Caution-sign';
 
 @Component({})
 export default class TextInput extends Vue {
-    @Prop({ required: false, type: String })
-    labelText: string;
+  @Prop({ required: false, type: String })
+  labelText: string;
 
-    @Prop({ type: String, required: true })
-    value: string;
+  @Prop({ type: String, required: true })
+  value: string;
 
-    @Prop({ type: String, required: false })
-    placeholderText: string;
+  @Prop({ type: String, required: false })
+  placeholderText: string;
 
-    @Prop({ type: String, default: 'text' })
-    inputType: string;
+  @Prop({ type: String, default: 'text' })
+  inputType: string;
 
-    @Prop({ type: Boolean, default: false })
-    disabled: boolean;
+  @Prop({ type: Boolean, default: false })
+  disabled: boolean;
 
-    @Prop({ type: Boolean, default: false })
-    errorStatus: boolean;
+  @Prop({ type: Boolean, default: false })
+  errorStatus: boolean;
 
-    @Prop({ type: Boolean, default: false })
-    required: boolean;
+  @Prop({ type: Boolean, default: false })
+  required: boolean;
 }
 </script>
 

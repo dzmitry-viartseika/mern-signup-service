@@ -1,9 +1,13 @@
 <template>
   <div class="app-container">
-    <loader-template v-if="isLoader"/>
+    <loader-template v-if="isLoader" />
     <div class="app-modal">
       <div class="app-modal__logo">
-        <img @click="$router.push('/')" src="../assets/images/logo.png" alt="">
+        <img
+          src="../assets/images/logo.png"
+          alt=""
+          @click="$router.push('/')"
+        >
       </div>
       <h2 class="app-modal__title">
         {{ $t('signUpPage.signUpTitle') }}
@@ -16,7 +20,7 @@
             :label-text="$t('signInPage.email')"
             input-type="email"
             :required="true"
-            :errorStatus="$validator.errors.has('userEmail')"
+            :error-status="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">
             <div
@@ -28,7 +32,7 @@
           </transition>
         </div>
         <div class="app-modal__form-wrapper">
-          <span  @click="isVisiblePassword = !isVisiblePassword">
+          <span @click="isVisiblePassword = !isVisiblePassword">
             <template v-if="!$validator.errors.has('userPassword')">
               <template v-if="isVisiblePassword">
                 <svgicon
@@ -49,7 +53,7 @@
           <div class="form-field">
             <text-input
               :value.sync="userPassword"
-              :errorStatus="$validator.errors.has('userPassword')"
+              :error-status="$validator.errors.has('userPassword')"
               :label-text="$t('signInPage.password')"
               :required="true"
               :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
@@ -82,7 +86,10 @@
       </button>
       <div class="app-modal__footer">
         {{ $t('signUpPage.haveAccount') }}
-        <a class="app__link" @click.prevent="$router.push('/sign-in')">
+        <a
+          class="app__link"
+          @click.prevent="$router.push('/sign-in')"
+        >
           {{ $t('global.signInButton') }}
         </a>
       </div>

@@ -1,16 +1,20 @@
 <template>
-  <nav class="sidebar"
-       :class="{'close': isShortAside}"
+  <nav
+    class="sidebar"
+    :class="{'close': isShortAside}"
   >
     <header>
       <div class="image-text">
-                <span class="image">
-                    <img src="../../assets/images/logo.png" alt="">
-                </span>
+        <span class="image">
+          <img
+            src="../../assets/images/logo.png"
+            alt=""
+          >
+        </span>
 
         <div class="text logo-text">
           <span class="name">Codinglab</span>
-<!--          <span class="profession">Web developer</span>-->
+          <!--          <span class="profession">Web developer</span>-->
         </div>
       </div>
 
@@ -22,21 +26,20 @@
         @click="hideAside"
       />
 
-<!--      <i class='bx bx-chevron-right toggle'></i>-->
+      <!--      <i class='bx bx-chevron-right toggle'></i>-->
     </header>
 
     <div class="menu-bar">
       <div class="menu">
-
         <ul class="menu-links">
-
-          <li class="nav-link"
-              v-for="item in navList"
-              :key="item.id"
-              :class="{'active': item.route === $route.path}"
+          <li
+            v-for="item in navList"
+            :key="item.id"
+            class="nav-link"
+            :class="{'active': item.route === $route.path}"
           >
             <a
-               @click.prevent="proceedTo(item.route)"
+              @click.prevent="proceedTo(item.route)"
             >
               <svgicon
                 class="icon"
@@ -49,7 +52,6 @@
               </span>
             </a>
           </li>
-
         </ul>
       </div>
 
@@ -91,40 +93,41 @@
 
         <li class="mode">
           <div class="sun-moon">
-            <i class='bx bx-moon icon moon'></i>
-            <i class='bx bx-sun icon sun'></i>
+            <i class="bx bx-moon icon moon" />
+            <i class="bx bx-sun icon sun" />
           </div>
           <span class="mode-text text">Dark mode</span>
 
           <div class="toggle-switch">
-            <span class="switch"></span>
+            <span class="switch" />
           </div>
         </li>
-
       </div>
     </div>
-<!--    <portal to="notification-outlet">-->
-<!--      <p>This slot content will be rendered wherever the with name 'destination'-->
-<!--        is  located.</p>-->
-<!--    </portal>-->
-<!--    <portal-target name="notification-outlet"></portal-target>-->
+    <!--    <portal to="notification-outlet">-->
+    <!--      <p>This slot content will be rendered wherever the with name 'destination'-->
+    <!--        is  located.</p>-->
+    <!--    </portal>-->
+    <!--    <portal-target name="notification-outlet"></portal-target>-->
     <transition name="fade-el">
-<!--      // TODO проверить placeholder-->
+      <!--      // TODO проверить placeholder-->
       <modal-template-with-action
         v-if="isVisibleWishesModal"
-        @wishesModalActions="wishesModalActions"
-        @actionButton="sendWishes"
         :modal-title="$t('supportTeam.wishes')"
         placeholder="Describe yourself here..."
+        @wishesModalActions="wishesModalActions"
+        @actionButton="sendWishes"
       >
         <div slot="content">
-          <h2 class="app-modal__subtitle app-modal__subtitle--middle">{{ $t('supportTeam.modalTitle') }}</h2>
+          <h2 class="app-modal__subtitle app-modal__subtitle--middle">
+            {{ $t('supportTeam.modalTitle') }}
+          </h2>
           <div class="form-field">
             <textarea-template
               :value.sync="wishesValue"
               :label="$t('supportTeam.wishes')"
               :required="true"
-              :errorStatus="$validator.errors.has('wishesValue')"
+              :error-status="$validator.errors.has('wishesValue')"
             />
             <transition name="fade-el">
               <div
@@ -157,14 +160,14 @@ import asideMenuItems from '@/constants/AsideMenuItems';
 import { IAsideItem } from '../../model/aside/IAsideItem';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
-import validationErrorMessage from "@/locales/validationErrorMessage";
-import WishesService from "@/services/Wishes/Wishes";
+import validationErrorMessage from '@/locales/validationErrorMessage';
+import WishesService from '@/services/Wishes/Wishes';
 
 @Component({
   components: {
     ModalTemplateWithAction,
     TextareaTemplate,
-  }
+  },
 })
 export default class AsideTemplate extends Vue {
 
@@ -180,7 +183,7 @@ export default class AsideTemplate extends Vue {
     return this.$store.getters.user;
   }
 
-  beforeMount() {
+  beforeMount(): void {
     const dict = {
       en: {
         custom: {
@@ -211,8 +214,7 @@ export default class AsideTemplate extends Vue {
         await WishesService.sendWishesTextToEmail(email, this.wishesValue);
       } catch (e) {
         console.error(e);
-      }
-      finally {
+      } finally {
         this.isVisibleWishesModal = false;
       }
     }
@@ -241,16 +243,11 @@ export default class AsideTemplate extends Vue {
   }
 
   wishesModalActions(data: boolean): void {
-    console.log('data', data);
     this.isVisibleWishesModal = data;
   }
 
-  proceedTo(route: string) {
+  proceedTo(route: string): void {
     this.$router.push(route);
-  }
-
-  openSupportModal(): void {
-    console.log('openSupportModal');
   }
 }
 </script>

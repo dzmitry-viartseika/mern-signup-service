@@ -1,8 +1,10 @@
 <template>
   <div class="app-select">
-    <model-select :options="options"
-                  v-model="itemValue"
-                  placeholder="select item" />
+    <model-select
+      v-model="itemValue"
+      :options="options"
+      placeholder="select item"
+    />
   </div>
 </template>
 

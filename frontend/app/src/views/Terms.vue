@@ -1,7 +1,11 @@
 <template>
   <div class="app-terms">
     <div class="app-terms__logo">
-      <img @click="$router.push('/')" src="../assets/images/logo.png" alt="">
+      <img
+        src="../assets/images/logo.png"
+        alt=""
+        @click="$router.push('/')"
+      >
     </div>
     <section class="app-terms__content">
       <h2>
@@ -41,12 +45,17 @@
 
       <ul>
         <li>Remember users’ custom preferences and help create more useful products</li>
-        <li>Allow users to opt out of certain types of modeling, tailoring, or personalization in
-          our products</li>
+        <li>
+          Allow users to opt out of certain types of modeling, tailoring, or personalization in
+          our products
+        </li>
         <li>Collect information on our users’ preferences in order to create more useful products</li>
-        <li>Cookies can also be used for online behavioural target advertising and to show adverts
-          relevant to something that the user searched for in the past</li>
-        <li>Advertising: We use cookies to enable advertising with our third-party Partners, which
+        <li>
+          Cookies can also be used for online behavioural target advertising and to show adverts
+          relevant to something that the user searched for in the past
+        </li>
+        <li>
+          Advertising: We use cookies to enable advertising with our third-party Partners, which
           in turn allows us to provide many of our services free of charge.
         </li>
       </ul>
@@ -55,17 +64,18 @@
       <h3>These cookies:</h3>
 
       <ul>
-        <li>    Customize the ad experience for our users, including tailoring job and display ads to
+        <li>
+          Customize the ad experience for our users, including tailoring job and display ads to
           the technologies a person has previously looked at, the communities a person has visited,
           and the job ads a person has already seen
         </li>
-        <li>    Allow direct communication between a 3rd party partner who hosts a promotional event
+        <li>
+          Allow direct communication between a 3rd party partner who hosts a promotional event
           with us, and users who have opted into the promotion
         </li>
         <li>
           Allow us to track when a GeeksforGeeks user sees or clicks on an ad or later visits a
           third-party website or purchases a product on a third-party website
-
         </li>
         <li>Collect impressions and click data for internal reporting and product optimization</li>
         <li>

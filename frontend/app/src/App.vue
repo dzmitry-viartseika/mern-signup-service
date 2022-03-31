@@ -13,12 +13,6 @@
         {'admin-main': showSidebar},
       ]"
     >
-      <!--      //  "husky": {-->
-      <!--      //    "hooks": {-->
-      <!--      //      "pre-commit": "npm run lint",-->
-      <!--      //      "pre-push": "npm run lint"-->
-      <!--      //    }-->
-      <!--      //  }-->
       <transition
         name="fade"
         mode="out-in"

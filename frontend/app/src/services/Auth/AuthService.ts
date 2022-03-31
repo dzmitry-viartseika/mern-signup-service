@@ -7,8 +7,8 @@ export default class AuthService {
     return $api.post<IAuthResponse>('/login', { email, password });
   }
 
-  static async registration(email: string, password: string)
-    : Promise<AxiosResponse<IAuthResponse>> {
+  static async registration(email: string, password: string):
+  Promise<AxiosResponse<IAuthResponse>> {
     return $api.post<IAuthResponse>('/registration', { email, password });
   }
 
@@ -16,11 +16,11 @@ export default class AuthService {
     return $api.post('/logout');
   }
 
-  static async restorePassword(email: string): Promise<void> {
-    return $api.post('/forgot-password', { email });
+  static async restorePassword(email: string): Promise<AxiosResponse<void>> {
+    return $api.post<void>('/forgot-password', { email });
   }
 
-  static async changePassword(email: string, newPassword: string): Promise<void> {
-    return $api.post('/change-password', { email, newPassword });
+  static async changePassword(email: string, newPassword: string): Promise<AxiosResponse<void>> {
+    return $api.post<void>('/change-password', { email, newPassword });
   }
 }

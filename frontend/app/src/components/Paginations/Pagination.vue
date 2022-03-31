@@ -11,7 +11,7 @@
         :class="{'ub-pagination-item_disabled': activePage === 0}"
         @click="clickPage(data.prevPage)"
       >
-        <i class="ub-icon-arrow-paginate icon-arrow icon-arrow_left ub-pagination__nav ub-pagination__nav_left"></i>
+        <i class="ub-icon-arrow-paginate icon-arrow icon-arrow_left ub-pagination__nav ub-pagination__nav_left" />
       </div>
       <div
         v-for="(page, index) in pages"
@@ -31,7 +31,7 @@
         :class="{'ub-pagination-item_disabled': activePage === pages.length - 1}"
         @click="clickPage(data.nextPage)"
       >
-        <i class="ub-icon-arrow-paginate icon-arrow icon-arrow_right ub-pagination__nav ub-pagination__nav_right"></i>
+        <i class="ub-icon-arrow-paginate icon-arrow icon-arrow_right ub-pagination__nav ub-pagination__nav_right" />
       </div>
     </div>
   </transition>
@@ -69,8 +69,8 @@ export default class Pagination extends Vue {
   }
 
   setPages({
-             totalPages, page, prevPage, nextPage,
-           }) {
+    totalPages, page, prevPage, nextPage,
+  }) {
     if (totalPages <= 3) {
       this.activePage = page - 1;
       const firstPages = [1, 2, 3];

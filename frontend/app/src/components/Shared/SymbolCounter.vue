@@ -1,6 +1,6 @@
 <template>
   <span class="document-editor-form__counter">
-   {{ valueLength }} / {{ validMaxLength }}
+    {{ valueLength }} / {{ validMaxLength }}
   </span>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
   <div class="app-loader">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div />
+    <div />
+    <div />
+    <div />
   </div>
 </template>
 

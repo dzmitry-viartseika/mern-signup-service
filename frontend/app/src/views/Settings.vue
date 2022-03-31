@@ -313,7 +313,10 @@ export default class Settings extends Vue {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        this.file = this.$refs!.file.files[0];
+        /* eslint-disable */
+        /* tslint:disable */
+        // @ts-ignore
+        this.file = this.$refs!.file!.files[0];
         this.userData.avatar = reader.result;
       }
     };

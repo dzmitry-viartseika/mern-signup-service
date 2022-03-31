@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="admin-modal-wrap-content">
-        <slot name="content"></slot>
+        <slot name="content" />
       </div>
       <div class="admin-modal-wrap-footer">
         <div class="landing-page-modal-wrap-footer__item">
@@ -35,7 +35,7 @@
       class="admin-modal__overlay"
       @click="closeModal"
       @shortkey="closeModal"
-    ></div>
+    />
   </div>
 </template>
 

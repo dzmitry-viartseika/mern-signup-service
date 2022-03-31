@@ -67,7 +67,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import YearCalendar from 'vue-material-year-calendar';
-import IItemDropdown from '@/model/IItemDropdown';
 import Checkbox from '@/components/Elements/Checkbox.vue';
 import { formatDate } from '@/utils/ComponentUtils';
 import queryString from 'query-string';
@@ -76,7 +75,7 @@ import WorkingDaysService from '@/services/WorkingDays/WorkingDays';
 import WeekBasedWorkingCalendarDateInterval from '@/model/WeekBasedWorkingCalendarDateInterval';
 import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
 import { DayIntervalType } from '@/model/types/DayIntervalType';
-import IWorkingDayResponse from '@/model/response/IWorkingDayResponse';
+import { AxiosResponse } from 'axios';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 const CALENDAR_SELECTED_CLASS = 'calendar--selected';
@@ -88,7 +87,7 @@ interface IActiveDates {
 }
 
 interface IPrepareDate {
-  labe: number;
+  label: number;
   value: number;
 }
 
@@ -110,7 +109,7 @@ interface IPrepareDate {
   },
 })
 export default class Calendar extends Vue {
-  year: IItemDropdown | null = null;
+  year: IPrepareDate | null  = null;
   isVisibleSunday: boolean | undefined = undefined;
   isVisibleWeekends: boolean | undefined = undefined;
   isVisibleYearSelector: boolean | undefined = undefined;
@@ -135,8 +134,8 @@ export default class Calendar extends Vue {
     this.isVisibleSunday = isVisibleSunday as boolean | undefined;
     this.isVisibleYearSelector = isVisibleYearSelector as boolean | undefined;
     try {
-      const { data } = await WorkingDaysService.getWorkingDaysList() as IWorkingDayResponse[];
-      const result = data.map((date) => ({
+      const { data } = await WorkingDaysService.getWorkingDaysList() as AxiosResponse;
+      const result: IActiveDates[] = data.map((date) => ({
         date: formatDate(new Date(date.calendar), DATE_FORMAT),
         className: CALENDAR_SELECTED_CLASS,
       })) as IActiveDates[];
@@ -148,6 +147,9 @@ export default class Calendar extends Vue {
 
   addingParameterToLink(): void {
     this.$router.push({
+      /* eslint-disable */
+      /* tslint:disable */
+      // @ts-ignore
       query: {
         ...this.filterQuery,
       },
@@ -167,14 +169,13 @@ export default class Calendar extends Vue {
     const { date } = dateInfo;
     const changedDate = {
       calendar: new Date(date) as Date,
-      intervalType: this.checkDaysForIntervalType(date),
+      intervalType: this.checkDaysForIntervalType(new Date(date)),
     };
     await WorkingDaysService.changeWorkingDate(changedDate);
   }
 
-  checkDaysForIntervalType(dateInfo: string): string {
-    const date = new Date(dateInfo);
-    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(date.getDay())) {
+  checkDaysForIntervalType(dateInfo: Date): string {
+    if (WeekBasedWorkingCalendarDateInterval.HOLYDAYS.includes(dateInfo.getDay())) {
       return DayIntervalType.WORKING;
     }
 
@@ -196,7 +197,7 @@ export default class Calendar extends Vue {
     };
   }
 
-  get yearsToSelect(): IItemDropdown[] {
+  get yearsToSelect(): IPrepareDate[] {
     const firstYearGenerator = new Date().getFullYear() - 2;
     const createdYearsArray = [...Array(5).keys()];
     return createdYearsArray.map((i) => this.prepareDate(i + firstYearGenerator));

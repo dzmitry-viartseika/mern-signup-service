@@ -1,5 +1,5 @@
 export default interface IWorkingDayResponse {
-  calendar: Date;
+  calendar: Date | string;
   intervalType: string;
   _id?: string;
   __v?: number;

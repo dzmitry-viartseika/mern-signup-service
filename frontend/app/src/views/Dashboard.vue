@@ -16,11 +16,15 @@
         :placeholder-text="'поиск'"
         :label-text="'Поиск'"
       />
-      <SelectTemplate :options="options" :item.sync="item"/>
+      <SelectTemplate
+        :options="options"
+        :item.sync="item"
+      />
     </div>
-    <vuetable ref="vuetable"
-              :data="usersList"
-              :fields="fields"
+    <vuetable
+      ref="vuetable"
+      :data="usersList"
+      :fields="fields"
     />
     <!--    <Radio name='wertey' :value.sync="test"/>-->
     <!--    <Radio name='wertey' :value.sync="test"/>-->
@@ -200,9 +204,8 @@ export default class Dashboard extends Vue {
 
   async created() {
     try {
-      const response = await UsersService.success();
+      await UsersService.success();
       const usersResponse = await UsersService.getUsers();
-      console.log('response', response.data);
       this.usersList = usersResponse.data;
       // this.userName = response.data.user.displayName;
       // this.avatar = response.data.user.photos[0].value;
