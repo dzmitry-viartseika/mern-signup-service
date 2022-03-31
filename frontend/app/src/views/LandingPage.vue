@@ -88,7 +88,7 @@ export default class LandingPage extends Vue {
     localStorage.setItem('isAgreePolicy', 'true');
   }
 
-  changeLanguage(code: string) {
+  changeLanguage(code: string): void {
     this.language = code;
     localStorage.setItem('language', code);
     this.$root.$i18n.locale= code;

@@ -175,7 +175,7 @@ export default class SignIn extends Vue {
 
   validator = null;
 
-  beforeMount() {
+  beforeMount(): void {
     const dict = {
       en: {
         custom: {
