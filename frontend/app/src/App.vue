@@ -1,30 +1,33 @@
 <template>
-  <div class="app"
-       :class="{'app--flex': showSidebar}"
+  <div
+    class="app"
+    :class="{'app--flex': showSidebar}"
   >
+    <portal-target name="popup" />
     <template v-if="showSidebar">
       <aside-template />
     </template>
-      <main class="app-main"
-            :class="[
+    <main
+      class="app-main"
+      :class="[
         {'admin-main': showSidebar},
       ]"
+    >
+      <!--      //  "husky": {-->
+      <!--      //    "hooks": {-->
+      <!--      //      "pre-commit": "npm run lint",-->
+      <!--      //      "pre-push": "npm run lint"-->
+      <!--      //    }-->
+      <!--      //  }-->
+      <transition
+        name="fade"
+        mode="out-in"
       >
-        <!--      //  "husky": {-->
-        <!--      //    "hooks": {-->
-        <!--      //      "pre-commit": "npm run lint",-->
-        <!--      //      "pre-push": "npm run lint"-->
-        <!--      //    }-->
-        <!--      //  }-->
-        <transition
-          name="fade"
-          mode="out-in"
-        >
         <keep-alive>
           <router-view />
         </keep-alive>
-        </transition>
-      </main>
+      </transition>
+    </main>
   </div>
 </template>
 
@@ -33,10 +36,12 @@ import Vue from 'vue';
 import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
+import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 
 @Component({
   components: {
     AsideTemplate,
+    ModalTemplate,
   },
 })
 export default class App extends Vue {

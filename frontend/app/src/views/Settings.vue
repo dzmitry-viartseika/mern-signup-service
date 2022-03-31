@@ -140,53 +140,53 @@
         </button>
       </div>
     </div>
-    <!--    <modal-template-->
-    <!--      v-if="showModalChangingPassword"-->
-    <!--      width="400px"-->
-    <!--    >-->
-    <!--      <div slot="content" class="app-modal__content">-->
-    <!--        <div>-->
-    <!--          <span>-->
-    <!--            <template v-if="!$validator.errors.has('userPassword')">-->
-    <!--              <template v-if="isVisiblePassword">-->
-    <!--                <svgicon-->
-    <!--                  name="Eye"-->
-    <!--                  width="16"-->
-    <!--                  height="16"-->
-    <!--                />-->
-    <!--              </template>-->
-    <!--              <template v-else>-->
-    <!--                <svgicon-->
-    <!--                  name="Eye-hidden"-->
-    <!--                  width="16"-->
-    <!--                  height="16"-->
-    <!--                />-->
-    <!--              </template>-->
-    <!--            </template>-->
-    <!--          </span>-->
-    <!--&lt;!&ndash;          <text-input&ndash;&gt;-->
-    <!--&lt;!&ndash;            :value.sync="userPassword"&ndash;&gt;-->
-    <!--&lt;!&ndash;            :input-type="isVisiblePassword ? 'text' : 'password'"&ndash;&gt;-->
-    <!--&lt;!&ndash;            :label-text="$t('signInPage.password')"&ndash;&gt;-->
-    <!--&lt;!&ndash;            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"&ndash;&gt;-->
-    <!--&lt;!&ndash;            :errorStatus="$validator.errors.has('userPassword')"&ndash;&gt;-->
-    <!--&lt;!&ndash;          />&ndash;&gt;-->
-    <!--&lt;!&ndash;          <transition name="fade-el">&ndash;&gt;-->
-    <!--&lt;!&ndash;            <div&ndash;&gt;-->
-    <!--&lt;!&ndash;              v-if="$validator.errors.has('userPassword')"&ndash;&gt;-->
-    <!--&lt;!&ndash;              class="validation"&ndash;&gt;-->
-    <!--&lt;!&ndash;            >&ndash;&gt;-->
-    <!--&lt;!&ndash;              {{ $validator.errors.first('userPassword') }}&ndash;&gt;-->
-    <!--&lt;!&ndash;            </div>&ndash;&gt;-->
-    <!--&lt;!&ndash;          </transition>&ndash;&gt;-->
-    <!--        </div>-->
-    <!--&lt;!&ndash;        <button&ndash;&gt;-->
-    <!--&lt;!&ndash;          class="app__btn app__btn&#45;&#45;primary"&ndash;&gt;-->
-    <!--&lt;!&ndash;        >&ndash;&gt;-->
-    <!--&lt;!&ndash;          {{ $t('global.agreeButton') }}&ndash;&gt;-->
-    <!--&lt;!&ndash;        </button>&ndash;&gt;-->
-    <!--      </div>-->
-    <!--    </modal-template>-->
+        <modal-template
+          v-if="showModalChangingPassword"
+          width="400px"
+        >
+          <div slot="content" class="app-modal__content">
+            <div>
+              <span>
+                <template v-if="!$validator.errors.has('userPassword')">
+                  <template v-if="isVisiblePassword">
+                    <svgicon
+                      name="Eye"
+                      width="16"
+                      height="16"
+                    />
+                  </template>
+                  <template v-else>
+                    <svgicon
+                      name="Eye-hidden"
+                      width="16"
+                      height="16"
+                    />
+                  </template>
+                </template>
+              </span>
+              <text-input
+                :value.sync="userPassword"
+                :input-type="isVisiblePassword ? 'text' : 'password'"
+                :label-text="$t('signInPage.password')"
+                :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
+                :errorStatus="$validator.errors.has('userPassword')"
+              />
+              <transition name="fade-el">
+                <div
+                  v-if="$validator.errors.has('userPassword')"
+                  class="validation"
+                >
+                  {{ $validator.errors.first('userPassword') }}
+                </div>
+              </transition>
+            </div>
+            <button
+              class="app__btn app__btn--primary"
+            >
+              {{ $t('global.agreeButton') }}
+            </button>
+          </div>
+        </modal-template>
   </div>
 </template>
 
@@ -197,7 +197,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import TextInput from '@/components/Elements/TextInput.vue';
 import UsersService from '@/services/Users/UsersService';
 import UploadService from '@/services/Upload/UploadService';
-// import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import '@/assets/icons/Edit';
 import '@/assets/icons/Camera';
@@ -211,7 +211,7 @@ interface HTMLInputEvent extends Event {
 @Component({
   components: {
     TextInput,
-    // ModalTemplate,
+    ModalTemplate,
     VueTelInput,
     LoaderTemplate,
     DropDown,

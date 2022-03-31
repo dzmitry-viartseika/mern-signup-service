@@ -1,9 +1,11 @@
 <template>
-  <div class="app-modal"
-       :class="position"
-       :style="{'width': width}">
-    <slot name="content"></slot>
-  </div>
+  <portal to="popup">
+    <div class="app-modal"
+         :class="position"
+         :style="{'width': width}">
+      <slot name="content"></slot>
+    </div>
+  </portal>
 </template>
 
 <script lang="ts">
@@ -25,6 +27,7 @@ export default class ModalTemplate extends Vue {
     position: fixed;
     z-index: 1;
     width: 100%;
+    transform: translate(-50%, -50%);
 
     &.center {
       top: 50%;
