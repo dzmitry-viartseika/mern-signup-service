@@ -1,9 +1,11 @@
 <template>
   <portal to="popup">
-    <div class="app-modal"
-         :class="position"
-         :style="{'width': width}">
-      <slot name="content"></slot>
+    <div
+      class="app-modal"
+      :class="position"
+      :style="{ 'width': width }"
+    >
+      <slot name="content" />
     </div>
   </portal>
 </template>

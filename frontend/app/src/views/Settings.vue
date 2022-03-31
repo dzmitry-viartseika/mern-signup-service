@@ -56,7 +56,7 @@
       <div class="app-profile-form app-profile--language">
         <h2>Язык интерфейса</h2>
         <dropDown
-          :dropdownOptions="dropdownOptions"
+          :dropdown-options="dropdownOptions"
           custom-class="app-dropdown--profile"
           @changeDropdown="changeLanguage"
         />
@@ -140,53 +140,56 @@
         </button>
       </div>
     </div>
-        <modal-template
-          v-if="showModalChangingPassword"
-          width="400px"
-        >
-          <div slot="content" class="app-modal__content">
-            <div>
-              <span>
-                <template v-if="!$validator.errors.has('userPassword')">
-                  <template v-if="isVisiblePassword">
-                    <svgicon
-                      name="Eye"
-                      width="16"
-                      height="16"
-                    />
-                  </template>
-                  <template v-else>
-                    <svgicon
-                      name="Eye-hidden"
-                      width="16"
-                      height="16"
-                    />
-                  </template>
-                </template>
-              </span>
-              <text-input
-                :value.sync="userPassword"
-                :input-type="isVisiblePassword ? 'text' : 'password'"
-                :label-text="$t('signInPage.password')"
-                :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
-                :errorStatus="$validator.errors.has('userPassword')"
-              />
-              <transition name="fade-el">
-                <div
-                  v-if="$validator.errors.has('userPassword')"
-                  class="validation"
-                >
-                  {{ $validator.errors.first('userPassword') }}
-                </div>
-              </transition>
-            </div>
-            <button
-              class="app__btn app__btn--primary"
+    <modal-template
+      v-if="showModalChangingPassword"
+      width="400px"
+    >
+      <div
+        slot="content"
+        class="app-modal__content"
+      >
+        <div>
+          <span>
+            <template v-if="!$validator.errors.has('userPassword')">
+              <template v-if="isVisiblePassword">
+                <svgicon
+                  name="Eye"
+                  width="16"
+                  height="16"
+                />
+              </template>
+              <template v-else>
+                <svgicon
+                  name="Eye-hidden"
+                  width="16"
+                  height="16"
+                />
+              </template>
+            </template>
+          </span>
+          <text-input
+            :value.sync="userPassword"
+            :input-type="isVisiblePassword ? 'text' : 'password'"
+            :label-text="$t('signInPage.password')"
+            :placeholder-text="$t('signInPage.inputPasswordPlaceholder')"
+            :error-status="$validator.errors.has('userPassword')"
+          />
+          <transition name="fade-el">
+            <div
+              v-if="$validator.errors.has('userPassword')"
+              class="validation"
             >
-              {{ $t('global.agreeButton') }}
-            </button>
-          </div>
-        </modal-template>
+              {{ $validator.errors.first('userPassword') }}
+            </div>
+          </transition>
+        </div>
+        <button
+          class="app__btn app__btn--primary"
+        >
+          {{ $t('global.agreeButton') }}
+        </button>
+      </div>
+    </modal-template>
   </div>
 </template>
 
