@@ -37,6 +37,11 @@ const UserSchema = new Schema({
         type: String,
         default: '',
     },
+    timestamps: true,
+});
+
+UserSchema.set('toJSON', {
+    virtuals: true,
 })
 
 module.exports = model('User', UserSchema);
