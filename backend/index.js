@@ -10,6 +10,9 @@ const errorMiddleWare = require('./middleware/error-middleware');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./graphql/schema.js');
+const resolver = require('./graphql/resolver.js');
 const passport = require('passport');
 const axios = require('axios');
 const authRoute = require("./routers/auth-google");
@@ -17,6 +20,7 @@ const swaggerDoc = require('swagger-ui-express');
 const fileRoutes = require('./routers/file-upload-routes');
 const swaggerDocumentation = require('./helper/documentations');
 const cookieSession = require('cookie-session');
+const allowedOrigins = ['http://localhost:5000', 'http://localhost:8080'];
 require('./config/passport');
 const PORT = process.env.PORT || 5000;
 
@@ -26,13 +30,28 @@ app.use(cookieSession({
     name: 'google-auth-session',
     keys: ['key1', 'key2']
 }))
-
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: resolver,
+    graphiql: true
+}))
 app.use(express.json({extended: true}));
 app.use(cookieParser());
 app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(cors({
     credentials: true,
-    origin: process.env.CLIENT_URL
+    // origin: process.env.CLIENT_URL
+    origin: function(origin, callback){
+        // allow requests with no origin
+        // (like mobile apps or curl requests)
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            const msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
 }));
 app.use('/api', router);
 app.use('/auth', authRoute);
@@ -72,7 +91,6 @@ const isLoggedIn = (req, res, next) => {
 }
 
 app.get("/api",isLoggedIn, (req, res) => {
-    console.log('req.user successsuccesssuccess', req.user);
     res.send({
         message: 'wertey  sucecess',
         user: req.user,

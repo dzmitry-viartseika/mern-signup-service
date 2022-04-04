@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import $api from '../../api/api';
 import { IUser } from '../../model/IUser';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
+import $api_graphql from '@/api/api_graphql';
 
 export default class UsersService {
   static fetchUsers(): Promise<AxiosResponse<IUser[]>> {
@@ -23,5 +24,12 @@ export default class UsersService {
 
   static getUsers(): Promise<AxiosResponse<IUsersListResponse[]>> {
     return $api.get('/get-users');
+  }
+
+  static getAllUsers({query}) {
+    return $api_graphql.post('/graphql', {
+      title: "Title of post",
+      body: query
+    });
   }
 }
