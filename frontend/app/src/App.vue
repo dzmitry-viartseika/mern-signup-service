@@ -34,6 +34,7 @@ import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import { getAllUsersGraphQl } from './graphql/querries';
 
 @Component({
   components: {
@@ -49,29 +50,29 @@ export default class App extends Vue {
   }
 
   async created(): Promise<any> {
-    try {
-      const query = `
-      query {
-        getAllUsers {
-          id title done createdAt updatedAt
-        }
-      }
-    `;
-      fetch('http://localhost:5000/graphql', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ query })
-      })
-        .then(res => res.json())
-        .then(response => {
-          this.test = response.data.getAllUsers(query);
-        })
-    } catch (e) {
-      console.error(e);
-    }
+    const res = await getAllUsersGraphQl();
+    //   const query = `
+    //   query {
+    //     getAllUsers {
+    //       id title done createdAt updatedAt
+    //     }
+    //   }
+    // `;
+    //   fetch('http://localhost:5000/graphql', {
+    //     method: 'post',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json'
+    //     },
+    //     body: JSON.stringify({ query })
+    //   })
+    //     .then(res => res.json())
+    //     .then(response => {
+    //       this.test = response.data.getAllUsers(query);
+    //     })
+    // } catch (e) {
+    //   console.error(e);
+    // }
     const lang = localStorage.getItem('language');
     const token = localStorage.getItem('token');
     if (lang) {
