@@ -27,9 +27,6 @@ export default class UsersService {
   }
 
   static getAllUsers({ query }) {
-    return $api_graphql.post('/graphql', {
-      title: 'Title of post',
-      body: query,
-    });
+    return $api_graphql.post('/', { query });
   }
 }
