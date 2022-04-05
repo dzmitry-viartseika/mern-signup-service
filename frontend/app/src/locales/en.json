@@ -4,7 +4,12 @@
     "signInButton": "Sign in",
     "signUpButton": "Sign up",
     "agreeButton": "Agree",
-    "homePageButton": "Home"
+    "homePageButton": "Home",
+    "back": "Back"
+  },
+  "links": {
+    "cookiePolicy": "Cookie Policy",
+    "privacyPolicy": "Privacy Policy"
   },
   "signInPage": {
     "signInTitle": "Sign in",
@@ -63,5 +68,20 @@
     "improveService": "Improve it",
     "modalTitle": "You can text your wishes how we can improve the service",
     "wishes": "Wishes"
+  },
+  "privacyPage": {
+    "title": "Application Privacy Statement",
+    "information": "We App Education Pvt. Ltd., are registered and headquartered at Test street hereinafter referred to as App. We also offer paid Courses managed by Sanchhaya Classes Pvt. Ltd. with registered office address 8th FLOOR TOWER B, B-809, ADVANT NAVIS BUSINESS PARK,Sector-142, Noida, Gautam Buddha Nagar, Uttar Pradesh, 201305. At App, we value your trust & respect your privacy. This privacy statement (“Privacy Statement”) applies to the treatment of personally identifiable information submitted by, or otherwise obtained from, you in connection with the associated application (“Application”). The Application is provided by App (and may be provided by Geeksforgeeks on behalf of a App licensor or partner (“Application Partner”). By using or otherwise accessing the Application, you acknowledge that you accept the practices and policies outlined in this Privacy Statement.",
+    "title2": "Information Collection and Use",
+    "information2": "Like many other Web sites, App may receive and store any information you submit to the Application (or otherwise authorize us to obtain – such as, from (for example) your Facebook account). These files merely logs visitors to the site – usually a standard procedure for hosting companies and a part of hosting services’ analytics. The information inside the log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date/time stamp, referring/exit pages, and possibly the number of clicks. This information is used to analyze trends, administer the site, track user’s movement around the site, and gather demographic information. IP addresses, and other such information are not linked to any information that is personally identifiable.\n"
+  },
+  "termsPage": {
+    "title": "HOW DOES App USE COOKIES?",
+    "information": "A cookie is a small piece of data that a website asks your browser to store on your computer or mobile device. The cookie allows the website to “remember” your actions or preferences over time. Most browsers support cookies, but users can set their browsers to decline them and can delete them whenever they like.",
+    "information1": "If you use App, both App and third parties will use cookies to track and monitor some of your activities on and off App, and store and access some data about you, your browsing history, and your usage of App.",
+    "information2": "This policy describes how both App and other third parties use cookies both within and without App and how you can exercise a better control over cookies. Please keep in mind that this may alter your experience with our platform, and may limit certain features (including being logged in as a user).",
+    "information3": "General Browsing: We use cookies that are important for certain technical features of our website, like logging into user accounts and implementing fixes and improvements to our platform.",
+    "title1": "CONTACT US",
+    "information4": "If you have any questions, comments, or concerns regarding this Cookies Policy, please contact App at:"
   }
 }
