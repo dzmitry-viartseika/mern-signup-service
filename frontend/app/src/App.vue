@@ -3,7 +3,6 @@
     class="app"
     :class="{'app--flex': showSidebar}"
   >
-    test={{ test }}
     <portal-target name="popup" />
     <template
       v-if="showSidebar"
