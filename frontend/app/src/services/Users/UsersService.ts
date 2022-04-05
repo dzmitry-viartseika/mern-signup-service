@@ -26,10 +26,10 @@ export default class UsersService {
     return $api.get('/get-users');
   }
 
-  static getAllUsers({query}) {
+  static getAllUsers({ query }) {
     return $api_graphql.post('/graphql', {
-      title: "Title of post",
-      body: query
+      title: 'Title of post',
+      body: query,
     });
   }
 }

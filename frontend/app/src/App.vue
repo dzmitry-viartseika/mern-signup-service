@@ -61,14 +61,14 @@ export default class App extends Vue {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
         },
-        body: JSON.stringify({ query })
+        body: JSON.stringify({ query }),
       })
-        .then(res => res.json())
-        .then(response => {
+        .then((res) => res.json())
+        .then((response) => {
           this.test = response.data.getAllUsers(query);
-        })
+        });
     } catch (e) {
       console.error(e);
     }
