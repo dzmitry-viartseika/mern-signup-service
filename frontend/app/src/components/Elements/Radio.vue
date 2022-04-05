@@ -1,11 +1,11 @@
 <template>
   <div
-    class="ub-radio"
+    class="app-radio"
     :class="[
       customClass,
-      {'ub-radio_checked': checked},
-      {'ub-radio_border': border},
-      {'ub-radio_border_active': checked}
+      {'app-radio--checked': checked},
+      {'app-radio--border': border},
+      {'app-radio--border--active': checked}
     ]"
     @click.stop="statusRadio"
   >
@@ -13,15 +13,15 @@
       :id="id"
       v-model="radioTextModel"
       type="radio"
-      class="ub-radio__text-field"
+      class="app-radio__text-field"
       :name="name"
       :value="value"
       :checked="checked"
     >
     <!--    <span-->
     <!--      v-else-if="radioText"-->
-    <!--      class="ub-radio__text"-->
-    <!--      :class="{'ub-radio__text_active': checked}"-->
+    <!--      class="app-radio__text"-->
+    <!--      :class="{'app-radio__text_active': checked}"-->
     <!--    >-->
     <!--      {{ radioText }}-->
     <!--    </span>-->
@@ -73,7 +73,7 @@ export default class Radio extends Vue {
 <style lang="scss" scoped>
 @import "../../assets/scss/variables";
 
-.ub-radio {
+.app-radio {
   position: relative;
   display: flex;
   align-items: center;
@@ -81,7 +81,7 @@ export default class Radio extends Vue {
   cursor: pointer;
   transition: 0.3s;
 
-  &_full {
+  &--full {
     width: 100%;
     height: 100%;
     padding: 12px;
@@ -179,13 +179,13 @@ export default class Radio extends Vue {
     }
   }
 
-  &_checked {
+  &--checked {
     span {
       color: $color-dodger-blue;
     }
   }
   &.render {
-    .ub-radio {
+    .app-radio {
       &__text {
         font-size: 14px;
         position: relative;

@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Settings from '@/views/Settings.vue';
-import { mapGetters } from 'vuex';
 
 const token = localStorage.getItem('token');
 import store from '../store/index';

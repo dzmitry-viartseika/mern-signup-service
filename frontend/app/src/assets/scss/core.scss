@@ -103,6 +103,11 @@
     transition: color .15s ease-in;
     cursor: pointer;
 
+    &--mt {
+      margin-top: 15px;
+      display: block;
+    }
+
     &:hover {
       color: rgba($color-denim, .8);
     }

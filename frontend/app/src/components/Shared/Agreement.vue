@@ -31,6 +31,7 @@ export default class Agreement extends Vue {}
       text-align: center;
       font-size: 12px;
       max-width: 330px;
+      line-height: 13px;
 
       &-link {
         color: $color-denim;

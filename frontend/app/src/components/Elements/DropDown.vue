@@ -1,35 +1,35 @@
 <template>
   <div
-    class="ub-dropdown"
+    class="app-dropdown"
     :class="customClass"
   >
-    <div class="ub-dropdown__select">
-      <div class="ub-dropdown__label">
+    <div class="app-dropdown__select">
+      <div class="app-dropdown__label">
         <div
-          class="ub-dropdown__wrap"
+          class="app-dropdown__wrap"
           @click="toggleDropdown()"
         >
-          <div class="ub-dropdown__image">
+          <div class="app-dropdown__image">
             <img
               :src="getOptionImage(dropDownValue)"
               :alt="dropDownValue"
             >
           </div>
-          <span class="ub-dropdown__text">
+          <span class="app-dropdown__text">
             {{ dropDownValue }}
           </span>
           <template v-if="!arrowAlt">
             <i
-              class="ub-icon-arrow ub-dropdown__arrow"
-              :class="{'ub-dropdown__arrow_down': !visible}"
+              class="app-icon-arrow app-dropdown__arrow"
+              :class="{'app-dropdown__arrow_down': !visible}"
             />
           </template>
           <template v-else>
             <i
-              class="ub-icon-rectangle ub-dropdown__arrow ub-dropdown__arrow_alt"
+              class="app-icon-rectangle app-dropdown__arrow app-dropdown__arrow_alt"
               :class="[
-                {'ub-dropdown__arrow_down': !visible},
-                {'ub-dropdown__arrow_up': visible}
+                {'app-dropdown__arrow_down': !visible},
+                {'app-dropdown__arrow_up': visible}
               ]"
             />
           </template>
@@ -38,20 +38,20 @@
     </div>
     <transition name="fade-el">
       <div
-        class="ub-dropdown-modal"
-        :class="!visible ? 'ub-dropdown-modal_hidden' : 'ub-dropdown-modal_visible'"
+        class="app-dropdown-modal"
+        :class="!visible ? 'app-dropdown-modal_hidden' : 'app-dropdown-modal_visible'"
       >
         <div
-          class="ub-dropdown-modal__list"
+          class="app-dropdown-modal__list"
         >
           <div
             v-for="item in list"
             :key="item.code"
-            class="ub-dropdown-modal__item"
-            :class="{'ub-dropdown-modal__item_current' : item.code === dropDownValue}"
+            class="app-dropdown-modal__item"
+            :class="{'app-dropdown-modal__item_current' : item.code === dropDownValue}"
             @click="changeDropdown(item.code)"
           >
-            <div class="ub-dropdown-modal__item-image">
+            <div class="app-dropdown-modal__item-image">
               <img
                 :src="getOptionImage(item.code)"
                 :alt="item.code"
@@ -60,7 +60,7 @@
             <span>{{ item.text }}</span>
             <i
               v-if="item.code === dropDownValue"
-              class="ub-icon-check-mark-select ub-dropdown-modal__item-icon"
+              class="app-icon-check-mark-select app-dropdown-modal__item-icon"
             />
           </div>
         </div>
@@ -132,7 +132,7 @@ export default {
 
 <style scoped lang="scss">
 
-.ub-dropdown {
+.app-dropdown {
   min-width: 164px;
   max-width: 164px;
   text-align: right;
@@ -176,7 +176,7 @@ export default {
       font-size: 4px;
       top: -3px;
       left: -5px;
-      &.ub-dropdown__arrow_up {
+      &.app-dropdown__arrow_up {
         left: -2px;
         top: -4px;
       }
@@ -255,13 +255,13 @@ export default {
       }
     }
   }
-  &_landing {
+  &--landing {
     padding-right: 7px;
     margin-left: auto;
     margin-right: 20px;
     position: relative;
     height: 100%;
-    .ub-dropdown__select {
+    .app-dropdown__select {
       height: 100%;
     }
     &:after {
@@ -278,7 +278,7 @@ export default {
         background: rgba(white, .07);
       }
     }
-    .ub-dropdown {
+    .app-dropdown {
       &__text {
         color: white;
         text-transform: uppercase;
@@ -315,10 +315,10 @@ export default {
   }
 }
 .landing-header_secondary {
-  .ub-dropdown__text {
+  .app-dropdown__text {
     color: blue;
   }
-  .ub-dropdown__arrow_alt {
+  .app-dropdown__arrow_alt {
     color: blue;
   }
 }
@@ -327,11 +327,11 @@ export default {
   min-width: auto;
   max-width: 100%;
 
-  .ub-dropdown__wrap {
+  .app-dropdown__wrap {
     align-items: center;
   }
 
-  .ub-dropdown-modal__list {
+  .app-dropdown-modal__list {
     left: 0;
   }
 }

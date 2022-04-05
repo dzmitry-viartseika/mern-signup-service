@@ -15,7 +15,7 @@
     <!--    // TODO class-->
     <dropDown
       :dropdown-options="dropdownOptions"
-      :custom-class="'ub-dropdown_landing'"
+      :custom-class="'app-dropdown--landing'"
       :arrow-alt="true"
       @changeDropdown="changeLanguage"
     />
