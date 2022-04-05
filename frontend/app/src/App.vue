@@ -34,7 +34,7 @@ import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import { gql } from 'graphql-tag';
-import {getAllUsersGraphQl} from "@/graphql/querries";
+import { getAllUsersGraphQl } from '@/graphql/querries';
 
 
 const GET_ALL_USERS = gql`
@@ -49,7 +49,7 @@ const GET_ALL_USERS = gql`
   components: {
     AsideTemplate,
     ModalTemplate,
-  }
+  },
 })
 export default class App extends Vue {
   test: any[] = [];
@@ -60,18 +60,18 @@ export default class App extends Vue {
 
   async created(): Promise<any> {
     fetch('http://localhost:5000/graphql', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
         query: `{
           user(id: 1) {
             name
           }
         }`,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => this.test = data);
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => this.test = data);
     const lang = localStorage.getItem('language');
 
     const token = localStorage.getItem('token');
