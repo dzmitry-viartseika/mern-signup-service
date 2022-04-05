@@ -3,6 +3,7 @@
     class="app"
     :class="{'app--flex': showSidebar}"
   >
+    test={{ test }}
     <portal-target name="popup" />
     <template
       v-if="showSidebar"
@@ -41,13 +42,36 @@ import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
   },
 })
 export default class App extends Vue {
-
+  test: any[] = [];
   get showSidebar(): boolean {
     const token = localStorage.getItem('token');
     return !!(this.$route.path.includes('crm') && token);
   }
 
   async created(): Promise<any> {
+    try {
+      const query = `
+      query {
+        getAllUsers {
+          id title done createdAt updatedAt
+        }
+      }
+    `;
+      fetch('http://localhost:5000/graphql', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ query })
+      })
+        .then(res => res.json())
+        .then(response => {
+          this.test = response.data.getAllUsers(query);
+        })
+    } catch (e) {
+      console.error(e);
+    }
     const lang = localStorage.getItem('language');
     const token = localStorage.getItem('token');
     if (lang) {
