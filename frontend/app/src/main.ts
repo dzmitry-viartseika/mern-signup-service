@@ -14,8 +14,8 @@ import i18n from './i18n';
 import PortalVue from 'portal-vue';
 import 'vue-tel-input/dist/vue-tel-input.css';
 import 'vue-search-select/dist/VueSearchSelect.css';
-import ApolloClient from "apollo-boost";
-import VueApollo from "vue-apollo";
+import ApolloClient from 'apollo-boost';
+import VueApollo from 'vue-apollo';
 
 Vue.config.productionTip = false;
 
@@ -32,11 +32,11 @@ Vue.use(Meta, {
 });
 
 const client = new ApolloClient({
-  uri: "http://localhost:5000/api/graphql"
+  uri: 'http://localhost:5000/api/graphql',
 });
 
 const apolloProvider = new VueApollo({
-  defaultClient: client
+  defaultClient: client,
 });
 
 Vue.use(SvgIcon, {
