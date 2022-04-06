@@ -4,11 +4,13 @@
       <h1 class="app__title">
         Dashboard
       </h1>
-      <button class="app__btn app__btn--primary">
-        Add user
+      <button
+        class="app__btn app__btn--primary"
+        @click="modalActions(true)"
+      >
+        Add Client
       </button>
     </div>
-    item={{ item }}
     <div>
       <text-input
         :value.sync="searchValue"
@@ -26,6 +28,72 @@
       :data="usersList"
       :fields="fields"
     />
+    <transition name="fade-el">
+      <modal-template-with-action
+        v-if="isVisibleAddUserModal"
+        :modal-title="$t('supportTeam.wishes')"
+        placeholder="Describe yourself here..."
+        @modalActions="modalActions"
+        @actionButton="addNewUser"
+      >
+        <div slot="content">
+          <div class="form-field">
+            <text-input
+              :value.sync="firstName"
+              :error-status="$validator.errors.has('firstName')"
+              input-type="email"
+              :required="true"
+              :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
+              :label-text="$t('signInPage.email')"
+            />
+            <transition name="fade-el">
+              <div
+                v-if="$validator.errors.has('firstName')"
+                class="validation validation--input"
+              >
+                {{ $validator.errors.first('firstName') }}
+              </div>
+            </transition>
+          </div>
+          <div class="form-field">
+            <text-input
+              :value.sync="userEmail"
+              :error-status="$validator.errors.has('userEmail')"
+              input-type="email"
+              :required="true"
+              :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
+              :label-text="$t('signInPage.email')"
+            />
+            <transition name="fade-el">
+              <div
+                v-if="$validator.errors.has('userEmail')"
+                class="validation validation--input"
+              >
+                {{ $validator.errors.first('userEmail') }}
+              </div>
+            </transition>
+          </div>
+          <div class="form-field">
+            <SelectTemplate
+              :options="options"
+              :item.sync="item"
+            />
+          </div>
+          <div class="form-field">
+            <div class="text-field">
+              <label class="text-field__label">
+                Телефон
+              </label>
+              <vue-tel-input
+                v-model="phoneNumber"
+                :show-dial-code-in-selection="true"
+                mode="international"
+              />
+            </div>
+          </div>
+        </div>
+      </modal-template-with-action>
+    </transition>
     <!--    <Radio name='wertey' :value.sync="test"/>-->
     <!--    <Radio name='wertey' :value.sync="test"/>-->
     <!--    pagi-->
@@ -48,8 +116,10 @@ import Pagination from '@/components/Paginations/Pagination.vue';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
 import Vuetable from 'vuetable-2';
+import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
+import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 
 @Component({
   metaInfo() {
@@ -69,6 +139,8 @@ import { GET_ALL_USERS } from '@/graphql/querries';
     SelectTemplate,
     Vuetable,
     TextInput,
+    ModalTemplateWithAction,
+    VueTelInput,
   },
 })
 export default class Dashboard extends Vue {
@@ -98,6 +170,8 @@ export default class Dashboard extends Vue {
   ];
 
   searchValue: string = '';
+
+  isVisibleAddUserModal: boolean = false;
 
   usersList: IUsersListResponse[] = [];
 
@@ -132,6 +206,15 @@ export default class Dashboard extends Vue {
       prevPage,
       totalDocs,
     };
+  }
+
+  addNewUser() {
+    // eslint-disable-next-line no-console
+    console.log('www');
+  }
+
+  modalActions(data: boolean): void {
+    this.isVisibleAddUserModal = data;
   }
 
   mounted() {

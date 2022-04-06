@@ -58,7 +58,7 @@
       <div class="bottom-content">
         <li>
           <a
-            @click.prevent="wishesModalActions(true)"
+            @click.prevent="modalActions(true)"
           >
             <svgicon
               class="icon"
@@ -115,7 +115,7 @@
         v-if="isVisibleWishesModal"
         :modal-title="$t('supportTeam.wishes')"
         placeholder="Describe yourself here..."
-        @wishesModalActions="wishesModalActions"
+        @modalActions="modalActions"
         @actionButton="sendWishes"
       >
         <div slot="content">
@@ -242,7 +242,7 @@ export default class AsideTemplate extends Vue {
     this.$router.push('/sign-in');
   }
 
-  wishesModalActions(data: boolean): void {
+  modalActions(data: boolean): void {
     this.isVisibleWishesModal = data;
   }
 
