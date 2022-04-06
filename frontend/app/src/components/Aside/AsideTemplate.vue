@@ -190,7 +190,7 @@ import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
-import {IUser} from "@/model/IUser";
+import { IUser } from '@/model/IUser';
 
 @Component({
   components: {
