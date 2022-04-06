@@ -49,6 +49,7 @@ import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
 import Vuetable from 'vuetable-2';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
+import { GET_ALL_USERS } from '@/graphql/querries';
 
 @Component({
   metaInfo() {
@@ -203,10 +204,16 @@ export default class Dashboard extends Vue {
   }
 
   async created() {
+    const { data } = await this.$apollo.query({
+      query: GET_ALL_USERS,
+    });
+    if (data.getAllUsers.length) {
+      this.usersList = data.getAllUsers;
+    }
     try {
       await UsersService.success();
-      const usersResponse = await UsersService.getUsers();
-      this.usersList = usersResponse.data;
+      // const usersResponse = await UsersService.getUsers();
+      // this.usersList = usersResponse.data;
       // this.userName = response.data.user.displayName;
       // this.avatar = response.data.user.photos[0].value;
       // this.email = response.data.user.emails[0].value;

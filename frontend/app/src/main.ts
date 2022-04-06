@@ -14,18 +14,29 @@ import i18n from './i18n';
 import PortalVue from 'portal-vue';
 import 'vue-tel-input/dist/vue-tel-input.css';
 import 'vue-search-select/dist/VueSearchSelect.css';
+import ApolloClient from "apollo-boost";
+import VueApollo from "vue-apollo";
 
 Vue.config.productionTip = false;
 
 Vue.use(Toasted);
 Vue.use(VueTelInput);
 Vue.use(VueShortKey);
+Vue.use(VueApollo);
 
 Vue.use(Meta, {
   keyName: 'metaInfo',
   attribute: 'data-vue-meta',
   ssrAttribute: 'data-vue-meta-ssr',
   tagIDKeyName: 'vmid',
+});
+
+const client = new ApolloClient({
+  uri: "http://localhost:5000/api/graphql"
+});
+
+const apolloProvider = new VueApollo({
+  defaultClient: client
 });
 
 Vue.use(SvgIcon, {
@@ -51,5 +62,6 @@ new Vue({
   PortalVue,
   SvgIcon,
   Toasted,
+  provide: apolloProvider.provide(),
   render: (h) => h(App),
 }).$mount('#app');

@@ -2,10 +2,10 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const { ApolloServer, gql } = require('apollo-server-express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const router = require('./routers/index');
-const multer = require('multer');
 const errorMiddleWare = require('./middleware/error-middleware');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -25,34 +25,34 @@ require('./config/passport');
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-
 app.use(cookieSession({
     name: 'google-auth-session',
     keys: ['key1', 'key2']
 }))
-app.use('/graphql', graphqlHTTP({
+app.use(express.json({extended: true}));
+app.use(cookieParser());
+app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+    // origin: function(origin, callback){
+    //     // allow requests with no origin
+    //     // (like mobile apps or curl requests)
+    //     if(!origin) return callback(null, true);
+    //     if(allowedOrigins.indexOf(origin) === -1){
+    //         const msg = 'The CORS policy for this site does not ' +
+    //             'allow access from the specified Origin.';
+    //         return callback(new Error(msg), false);
+    //     }
+    //     return callback(null, true);
+    // }
+}));
+app.use('/api/graphql', graphqlHTTP({
     schema: schema,
     rootValue: resolver,
     graphiql: true
 }))
-app.use(express.json({extended: true}));
-app.use(cookieParser());
-app.use('/images', express.static(path.join(__dirname, 'images')))
-app.use(cors({
-    credentials: true,
-    // origin: process.env.CLIENT_URL
-    origin: function(origin, callback){
-        // allow requests with no origin
-        // (like mobile apps or curl requests)
-        if(!origin) return callback(null, true);
-        if(allowedOrigins.indexOf(origin) === -1){
-            const msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    }
-}));
 app.use('/api', router);
 app.use('/auth', authRoute);
 // подключаем в самом конце
