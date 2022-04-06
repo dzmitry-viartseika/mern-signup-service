@@ -1,16 +1,20 @@
 <template>
-  <div class="app-checkbox" v-bind:class="{ inverted: inverted }">
-    <input type="checkbox"
-           :name="name"
-           :class="className"
-           :id="id"
-           :value="value"
-           :checked="checked"
-           :required="required"
-           @change="updateInput"
-           v-model="statusCheckbox"
+  <div
+    class="app-checkbox"
+    :class="{ inverted: inverted }"
+  >
+    <input
+      :id="id"
+      v-model="statusCheckbox"
+      type="checkbox"
+      :name="name"
+      :class="className"
+      :value="value"
+      :checked="checked"
+      :required="required"
+      @change="updateInput"
     >
-    <label v-bind:for="id">{{ label }}</label>
+    <label :for="id">{{ label }}</label>
   </div>
 </template>
 
@@ -44,13 +48,14 @@ export default class Checkbox extends Vue {
   @Prop({ required: true, type: String })
   label: string;
 
-  get statusCheckbox(): boolean {
-    return  this.value;
+  get statusCheckbox() {
+    return this.value;
   }
 
   set statusCheckbox(data) {
+    const isChecked = (<HTMLInputElement>event.target).checked;
     this.$emit('update:value', data);
-    this.$emit('changeCheckBox', event.target.checked);
+    this.$emit('changeCheckBox', !!isChecked);
   }
 
   updateInput(event): void {
