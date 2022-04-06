@@ -115,6 +115,7 @@ import Radio from '@/components/Elements/Radio.vue';
 import Pagination from '@/components/Paginations/Pagination.vue';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
+import Toggle from '@/components/Elements/Toggle.vue';
 import Vuetable from 'vuetable-2';
 import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
@@ -137,6 +138,7 @@ import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction
     Radio,
     Pagination,
     SelectTemplate,
+    Toggle,
     Vuetable,
     TextInput,
     ModalTemplateWithAction,
@@ -172,6 +174,8 @@ export default class Dashboard extends Vue {
   searchValue: string = '';
 
   isVisibleAddUserModal: boolean = false;
+
+  toggleValue: boolean = false;
 
   usersList: IUsersListResponse[] = [];
 
