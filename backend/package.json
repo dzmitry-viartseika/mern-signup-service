@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-server-express": "^3.6.7",
     "axios": "^0.26.0",
+    "babel-plugin-import-graphql": "^2.7.0",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.5",
@@ -29,9 +31,9 @@
     "nodemailer": "^6.6.1",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0",
+    "socket.io": "^2.2.0",
     "swagger-ui-express": "^4.3.0",
-    "uuid": "^8.3.2",
-    "socket.io": "^2.2.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

@@ -25,11 +25,4 @@ export default class UsersService {
   static getUsers(): Promise<AxiosResponse<IUsersListResponse[]>> {
     return $api.get('/get-users');
   }
-
-  static getAllUsers({ query }) {
-    return $api_graphql.post('/graphql', {
-      title: 'Title of post',
-      body: query,
-    });
-  }
 }

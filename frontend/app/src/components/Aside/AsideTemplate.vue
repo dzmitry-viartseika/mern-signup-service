@@ -1,7 +1,7 @@
 <template>
   <nav
     class="sidebar"
-    :class="{'close': isShortAside}"
+    :class="{'close': isShortAside, 'wertey': true}"
   >
     <header>
       <div class="image-text">
@@ -50,6 +50,22 @@
               <span class="text nav-text">
                 {{ $t(`${item.name}`) }}
               </span>
+              <!--              <template v-if="item.children && item.children.length > 0">-->
+              <!--                <div-->
+              <!--                     @click="showSubmenu"-->
+              <!--                >-->
+              <!--                  >-->
+              <!--                </div>-->
+              <!--                <template v-if="showSubmenuActive">-->
+              <!--                  <div-->
+              <!--                    v-for="subItem in item.children"-->
+              <!--                    :key="subItem.id">-->
+              <!--                  <span class="text nav-text">-->
+              <!--                    {{ subItem.name }}-->
+              <!--                  </span>-->
+              <!--                  </div>-->
+              <!--                </template>-->
+              <!--              </template>-->
             </a>
           </li>
         </ul>
@@ -58,7 +74,7 @@
       <div class="bottom-content">
         <li>
           <a
-            @click.prevent="wishesModalActions(true)"
+            @click.prevent="modalActions(true)"
           >
             <svgicon
               class="icon"
@@ -96,8 +112,19 @@
             <i class="bx bx-moon icon moon" />
             <i class="bx bx-sun icon sun" />
           </div>
-          <span class="mode-text text">Dark mode</span>
-
+          <span class="mode-text text">
+            <template v-if="toggleValue">
+              Dark mode
+            </template>
+            <template v-else>
+              Light mode
+            </template>
+          </span>
+          <Toggle
+            text="wertey"
+            :value.sync="toggleValue"
+            @setToggleVal="setToggleVal"
+          />
           <div class="toggle-switch">
             <span class="switch" />
           </div>
@@ -115,7 +142,7 @@
         v-if="isVisibleWishesModal"
         :modal-title="$t('supportTeam.wishes')"
         placeholder="Describe yourself here..."
-        @wishesModalActions="wishesModalActions"
+        @modalActions="modalActions"
         @actionButton="sendWishes"
       >
         <div slot="content">
@@ -158,14 +185,17 @@ import '@/assets/icons/ChevronBarLeft';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
 import { IAsideItem } from '../../model/aside/IAsideItem';
+import Toggle from '@/components/Elements/Toggle.vue';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
+import { IUser } from '@/model/IUser';
 
 @Component({
   components: {
     ModalTemplateWithAction,
+    Toggle,
     TextareaTemplate,
   },
 })
@@ -173,13 +203,17 @@ export default class AsideTemplate extends Vue {
 
   isShortAside: boolean | null = false;
 
+  toggleValue: boolean = false;
+
   isVisibleWishesModal: boolean | null = false;
+
+  showSubmenuActive: boolean = false;
 
   navList: IAsideItem[] = [];
 
   wishesValue = '';
 
-  get userInfo() {
+  get userInfo(): IUser {
     return this.$store.getters.user;
   }
 
@@ -202,6 +236,17 @@ export default class AsideTemplate extends Vue {
     };
     this.$validator.localize(dict);
     this.$validator.attach({ name: 'wishesValue', rules: { required: true } });
+  }
+
+  setToggleVal(data: boolean): void {
+    this.toggleValue = data;
+    localStorage.setItem('mode', data ? 'dark': '');
+    const body = document.querySelector('body');
+    if (!!data) {
+      body.setAttribute('class', 'dark');
+    } else {
+      body.setAttribute('class', 'light');
+    }
   }
 
   async sendWishes(): Promise<void> {
@@ -227,8 +272,22 @@ export default class AsideTemplate extends Vue {
   //   }
   // }
 
-  created() {
+  created(): void {
     this.navList = asideMenuItems;
+    const mode = localStorage.getItem('mode');
+    const body = document.querySelector('body');
+    if (!!mode) {
+      this.toggleValue = !!mode;
+      body.setAttribute('class', 'dark');
+    } else {
+      body.setAttribute('class', 'light');
+    }
+  }
+
+  showSubmenu(): void {
+    // eslint-disable-next-line no-console
+    console.log('showSubmenuActive');
+    this.showSubmenuActive = true;
   }
 
   hideAside(): void {
@@ -242,7 +301,7 @@ export default class AsideTemplate extends Vue {
     this.$router.push('/sign-in');
   }
 
-  wishesModalActions(data: boolean): void {
+  modalActions(data: boolean): void {
     this.isVisibleWishesModal = data;
   }
 
@@ -254,6 +313,10 @@ export default class AsideTemplate extends Vue {
 
 <style scoped lang="scss">
 @import "../../assets/scss/variables";
+
+.dark .sidebar {
+  background: yellow;
+}
 
   .app--short {
     width: 100px;
@@ -331,6 +394,7 @@ export default class AsideTemplate extends Vue {
     font-weight: 500;
     white-space: nowrap;
     opacity: 1;
+    min-width: 100px;
   }
   .sidebar.close .text{
     opacity: 0;
@@ -482,43 +546,6 @@ export default class AsideTemplate extends Vue {
   }
   body.dark .mode .sun-moon i.moon{
     opacity: 0;
-  }
-
-  .menu-bar .bottom-content .toggle-switch{
-    position: absolute;
-    right: 0;
-    height: 100%;
-    min-width: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .toggle-switch .switch{
-    position: relative;
-    height: 22px;
-    width: 40px;
-    border-radius: 25px;
-    background-color: var(--toggle-color);
-    transition: var(--tran-05);
-  }
-
-  .switch::before{
-    content: '';
-    position: absolute;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-50%);
-    background-color: #FFF;
-    transition: var(--tran-04);
-  }
-
-  body.dark .switch::before{
-    left: 20px;
   }
 
   .home{
