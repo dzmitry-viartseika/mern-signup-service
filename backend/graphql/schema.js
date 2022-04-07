@@ -27,7 +27,13 @@ module.exports = buildSchema(`
     role: String!
   }
   
+  type Status {
+    status: String!
+    message: String!
+  }
+  
   type Mutation {
     addNewClient(client: ClientInput!): CreateNewUser!
+    deleteClient(id: String!): Status!
   } 
 `)

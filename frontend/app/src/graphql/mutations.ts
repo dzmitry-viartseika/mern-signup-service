@@ -10,13 +10,12 @@ export const ADD_NEW_CLIENT = gql`
     }
 `;
 
-// export const DELETE_NAME = gql`
-//   mutation deleteNames($id: ID!) {
-//     deleteNames(id: $id) {
-//       name
-//       id
-//     }
-//   }
-// `;
+export const DELETE_CLIENT = gql`
 
-// mutation { createTodo(todo: {title: "Изучить Graphql"}) { title id createdAt } }
+  mutation deleteClient($id: String!) {
+    deleteClient(id: $id) {
+      status
+      message
+    }
+  }
+`;

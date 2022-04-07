@@ -26,7 +26,7 @@
     <vuetable
       ref="vuetable"
       :data="usersList"
-      :fields="fields"
+      :fields="fieldsList"
     />
     <transition name="fade-el">
       <modal-template-with-action
@@ -139,6 +139,7 @@ import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT } from '@/graphql/mutations';
+import { DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 
@@ -189,7 +190,7 @@ export default class Dashboard extends Vue {
     },
   ];
 
-  fields = [
+  fieldsList = [
     {
       name: 'firstName',
       sortField: 'firstName',
@@ -247,11 +248,24 @@ export default class Dashboard extends Vue {
     };
   }
 
+  async deleteClient(): Promise<void> {
+    try {
+      const response = await this.$apollo.mutate({
+        mutation: DELETE_CLIENT,
+        variables: {
+          id: '624eab57db29c369ab862a6f',
+        },
+      });
+    } catch(e) {
+        console.error(e);
+    }
+  }
+
   async addNewUser(): Promise<void> {
     const result = await this.$validator.validateAll({
       firstName: this.firstName,
       lastName: this.lastName,
-      role: this.role,
+      selectedRole: this.selectedRole,
       email: this.email,
       phoneNumber: this.phoneNumber,
     });

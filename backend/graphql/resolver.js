@@ -12,14 +12,25 @@ module.exports = {
   },
 
   async addNewClient ({client}) {
-    console.log('client', client);
     const candidate = await Client.findOne({ email: client.email });
-    console.log('candidate', candidate);
     if (candidate) {
       return 'Данный клиент уже зарегистрирован';
     }
     const response = await Client.create({ email: client.email, firstName: client.firstName, lastName: client.lastName, role: client.role, phoneNumber: client.phoneNumber });
     console.log('response', response);
     return response;
+  },
+
+  async deleteClient ({id}) {
+    const client = await Client.findOne({_id: id});
+    if (!client) {
+      return 'Данный клиент не найден';
+    }
+
+    client.remove();
+    return  {
+      status: '200',
+      message: 'Пользователь удален'
+    }
   }
 }

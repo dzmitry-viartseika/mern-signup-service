@@ -10,6 +10,7 @@ const errorMiddleWare = require('./middleware/error-middleware');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
+const graphQLDepthLimit = require('graphql-depth-limit');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./graphql/schema.js');
 const resolver = require('./graphql/resolver.js');
@@ -51,7 +52,8 @@ app.use(cors({
 app.use('/api/graphql', graphqlHTTP({
     schema: schema,
     rootValue: resolver,
-    graphiql: true
+    graphiql: true,
+    validationRules: [graphQLDepthLimit(3)],
 }))
 app.use('/api', router);
 app.use('/auth', authRoute);
