@@ -83,5 +83,18 @@
     "information3": "General Browsing: We use cookies that are important for certain technical features of our website, like logging into user accounts and implementing fixes and improvements to our platform.",
     "title1": "CONTACT US",
     "information4": "If you have any questions, comments, or concerns regarding this Cookies Policy, please contact App at:"
+  },
+  "addNewUser": {
+    "modalTitle": "Add a client",
+    "firstName": "FirstName",
+    "placeholderFirstName": "Enter your firstName",
+    "lastName": "LastName",
+    "placeholderLastName": "Enter your lastName",
+    "role": "Роль",
+    "placeholderRole": "Select role",
+    "email": "Email",
+    "placeholderEmail": "Enter your mail",
+    "phoneNumber": "Phone",
+    "placeholderphoneNumber": "Enter your phone"
   }
 }

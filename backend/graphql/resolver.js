@@ -1,41 +1,25 @@
 const User = require('../models/user-model');
+const Client = require('../models/client-model');
 
 module.exports = {
   async getAllUsers() {
     try {
-      const users = await User.find({});
-      return users;
+      const clients = await Client.find({});
+      return clients;
     } catch (e) {
       console.error(e);
     }
+  },
+
+  async addNewClient ({client}) {
+    console.log('client', client);
+    const candidate = await Client.findOne({ email: client.email });
+    console.log('candidate', candidate);
+    if (candidate) {
+      return 'Данный клиент уже зарегистрирован';
+    }
+    const response = await Client.create({ email: client.email, firstName: client.firstName, lastName: client.lastName, role: client.role, phoneNumber: client.phoneNumber });
+    console.log('response', response);
+    return response;
   }
-  // test() {
-  //   return {
-  //     count: Math.trunc(Math.random() * 10),
-  //     users
-  //   }
-  // },
-  // random({min, max, count}) {
-  //   const arr = []
-  //   for (let i = 0; i < count; i++) {
-  //     const random = Math.random() * (max - min) + min
-  //     arr.push(random)
-  //   }
-  //   return arr
-  // },
-  // addTestUser({user: {name, email}}) {
-  //   const user = {
-  //     name, email,
-  //     age: Math.ceil(Math.random() * 30)
-  //   }
-  //   users.push(user)
-  //   return user
-  // },
-  // async getTodos() {
-  //   try {
-  //     return await Todo.findAll()
-  //   } catch (e) {
-  //     throw new Error('Fetch todos is not available')
-  //   }
-  // }
 }

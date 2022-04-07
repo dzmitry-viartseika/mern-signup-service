@@ -16,6 +16,7 @@ import 'vue-tel-input/dist/vue-tel-input.css';
 import 'vue-search-select/dist/VueSearchSelect.css';
 import ApolloClient from 'apollo-boost';
 import VueApollo from 'vue-apollo';
+import typeDefs from "@/graphql/typeDefs";
 
 Vue.config.productionTip = false;
 
@@ -33,6 +34,7 @@ Vue.use(Meta, {
 
 const client = new ApolloClient({
   uri: 'http://localhost:5000/api/graphql',
+  typeDefs,
 });
 
 const apolloProvider = new VueApollo({

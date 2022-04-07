@@ -1,6 +1,4 @@
 const UserModel = require('../models/user-model');
-const Oauth2User = require('../models/oauth2-user-model');
-const TokenModel = require('../models/token-model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
@@ -9,7 +7,6 @@ const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const UsersDto = require('../dtos/users-dto');
 const ApiError = require('../exceptions/api-error');
-const passport = require('passport');
 
 class UserService {
     async registration(email, password) {

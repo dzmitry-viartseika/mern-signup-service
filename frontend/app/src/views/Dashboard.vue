@@ -31,7 +31,7 @@
     <transition name="fade-el">
       <modal-template-with-action
         v-if="isVisibleAddUserModal"
-        :modal-title="$t('supportTeam.wishes')"
+        :modal-title="$t('addNewUser.modalTitle')"
         placeholder="Describe yourself here..."
         @modalActions="modalActions"
         @actionButton="addNewUser"
@@ -41,10 +41,10 @@
             <text-input
               :value.sync="firstName"
               :error-status="$validator.errors.has('firstName')"
-              input-type="email"
+              input-type="text"
               :required="true"
-              :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
-              :label-text="$t('signInPage.email')"
+              :placeholder-text="$t('addNewUser.placeholderFirstName')"
+              :label-text="$t('addNewUser.firstName')"
             />
             <transition name="fade-el">
               <div
@@ -57,32 +57,50 @@
           </div>
           <div class="form-field">
             <text-input
-              :value.sync="userEmail"
-              :error-status="$validator.errors.has('userEmail')"
-              input-type="email"
+              :value.sync="lastName"
+              :error-status="$validator.errors.has('lastName')"
+              input-type="text"
               :required="true"
-              :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
-              :label-text="$t('signInPage.email')"
+              :placeholder-text="$t('addNewUser.placeholderLastName')"
+              :label-text="$t('addNewUser.lastName')"
             />
             <transition name="fade-el">
               <div
-                v-if="$validator.errors.has('userEmail')"
+                v-if="$validator.errors.has('lastName')"
                 class="validation validation--input"
               >
-                {{ $validator.errors.first('userEmail') }}
+                {{ $validator.errors.first('lastName') }}
+              </div>
+            </transition>
+          </div>
+          <div class="form-field">
+            <text-input
+              :value.sync="email"
+              :error-status="$validator.errors.has('email')"
+              input-type="email"
+              :required="true"
+              :placeholder-text="$t('addNewUser.placeholderEmail')"
+              :label-text="$t('addNewUser.email')"
+            />
+            <transition name="fade-el">
+              <div
+                v-if="$validator.errors.has('email')"
+                class="validation validation--input"
+              >
+                {{ $validator.errors.first('email') }}
               </div>
             </transition>
           </div>
           <div class="form-field">
             <SelectTemplate
-              :options="options"
-              :item.sync="item"
+              :options="roles"
+              :item.sync="selectedRole"
             />
           </div>
           <div class="form-field">
             <div class="text-field">
               <label class="text-field__label">
-                Телефон
+                {{ $t('addNewUser.phoneNumber') }}
               </label>
               <vue-tel-input
                 v-model="phoneNumber"
@@ -120,7 +138,9 @@ import Vuetable from 'vuetable-2';
 import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
+import { ADD_NEW_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
+import validationErrorMessage from "@/locales/validationErrorMessage";
 
 @Component({
   metaInfo() {
@@ -147,12 +167,27 @@ import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction
 })
 export default class Dashboard extends Vue {
 
+  lastName: string = '';
+  firstName: string = '';
+  phoneNumber: string = '';
+  email: string = '';
+  selectedRole: string = '';
+
   options = [
     { value: 'firstName', text: 'Имя' },
     { value: 'lastName', text: 'Фамилия' },
     { value: 'phoneNumber', text: 'Телефон' },
     { value: 'role', text: 'Роль' },
   ];
+
+  roles = [
+    {
+      value: 'ADMIN', text: 'Админ',
+    },
+    {
+      value: 'CLIENT', text: 'Клиент',
+    }
+  ]
 
   fields = [
     {
@@ -212,9 +247,37 @@ export default class Dashboard extends Vue {
     };
   }
 
-  addNewUser() {
-    // eslint-disable-next-line no-console
-    console.log('www');
+  async addNewUser(): Promise<void> {
+    const result = await this.$validator.validateAll({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      role: this.role,
+      email: this.email,
+      phoneNumber: this.phoneNumber,
+    });
+
+    if (result) {
+      try {
+        const { data } = await this.$apollo.mutate({
+          mutation: ADD_NEW_CLIENT,
+          variables: {
+            client: {
+              firstName: this.firstName,
+              lastName: this.lastName,
+              phoneNumber: this.phoneNumber,
+              role: this.selectedRole,
+              email: this.email,
+            },
+          },
+        });
+        // eslint-disable-next-line no-console
+        console.log('data', data.addNewClient);
+        this.usersList.push(data.addNewClient);
+        this.isVisibleAddUserModal = false;
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   modalActions(data: boolean): void {
@@ -288,6 +351,55 @@ export default class Dashboard extends Vue {
     //   this.loader = false;
     //   console.error(err);
     // });
+  }
+
+  beforeMount(): void {
+    const dict = {
+      en: {
+        custom: {
+          email: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+          selectedRole: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+          firstName: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+          lastName: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+          phoneNumber: {
+            required: validationErrorMessage.en.inputRequired,
+          },
+        },
+      },
+      ru: {
+        custom: {
+          email: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+          selectedRole: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+          firstName: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+          lastName: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+          phoneNumber: {
+            required: validationErrorMessage.ru.inputRequired,
+          },
+        },
+      },
+    };
+    this.$validator.localize(dict);
+    this.$validator.attach({ name: 'email', rules: { required: true } });
+    this.$validator.attach({ name: 'selectedRole', rules: { required: true } });
+    this.$validator.attach({ name: 'firstName', rules: { required: true } });
+    this.$validator.attach({ name: 'lastName', rules: { required: true } });
+    this.$validator.attach({ name: 'phoneNumber', rules: { required: true } });
   }
 
   async created() {
