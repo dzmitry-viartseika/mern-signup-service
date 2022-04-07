@@ -257,7 +257,7 @@ export default class Dashboard extends Vue {
         },
       });
     } catch(e) {
-        console.error(e);
+      console.error(e);
     }
   }
 
