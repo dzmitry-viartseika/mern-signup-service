@@ -16,7 +16,7 @@ import 'vue-tel-input/dist/vue-tel-input.css';
 import 'vue-search-select/dist/VueSearchSelect.css';
 import ApolloClient from 'apollo-boost';
 import VueApollo from 'vue-apollo';
-import typeDefs from "@/graphql/typeDefs";
+import typeDefs from '@/graphql/typeDefs';
 
 Vue.config.productionTip = false;
 

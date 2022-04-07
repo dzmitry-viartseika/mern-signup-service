@@ -140,7 +140,7 @@ import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
-import validationErrorMessage from "@/locales/validationErrorMessage";
+import validationErrorMessage from '@/locales/validationErrorMessage';
 
 @Component({
   metaInfo() {
@@ -186,8 +186,8 @@ export default class Dashboard extends Vue {
     },
     {
       value: 'CLIENT', text: 'Клиент',
-    }
-  ]
+    },
+  ];
 
   fields = [
     {

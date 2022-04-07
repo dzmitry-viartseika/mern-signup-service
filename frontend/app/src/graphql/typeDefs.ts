@@ -65,4 +65,4 @@ export default gql`
       status: String!
       message: String
     }
-`
+`;
