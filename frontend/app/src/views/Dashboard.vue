@@ -267,12 +267,12 @@ export default class Dashboard extends Vue {
         variables: {
           id: '624eaafcdb29c369ab862a68',
           client: {
-            role: "ADMIN",
-            firstName: "firstName",
-            lastName: "LastName",
-            email: "email@email.com",
-            phoneNumber: "+213"
-          }
+            role: 'ADMIN',
+            firstName: 'firstName',
+            lastName: 'LastName',
+            email: 'email@email.com',
+            phoneNumber: '+213',
+          },
         },
       });
     } catch(e) {
