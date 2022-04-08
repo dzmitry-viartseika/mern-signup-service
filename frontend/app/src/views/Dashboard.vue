@@ -260,7 +260,7 @@ export default class Dashboard extends Vue {
     }
   }
 
-  editClient(): Promise<void> {
+  async editClient(): Promise<void> {
     try {
       const response = await this.$apollo.mutate({
         mutation: EDIT_CLIENT,
