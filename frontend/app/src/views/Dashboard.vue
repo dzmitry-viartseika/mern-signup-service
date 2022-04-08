@@ -138,8 +138,7 @@ import Vuetable from 'vuetable-2';
 import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
-import { ADD_NEW_CLIENT } from '@/graphql/mutations';
-import { DELETE_CLIENT } from '@/graphql/mutations';
+import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 
@@ -253,7 +252,27 @@ export default class Dashboard extends Vue {
       const response = await this.$apollo.mutate({
         mutation: DELETE_CLIENT,
         variables: {
-          id: '624eab57db29c369ab862a6f',
+          id: '624eaafcdb29c369ab862a68',
+        },
+      });
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  async editClient(): Promise<void> {
+    try {
+      const response = await this.$apollo.mutate({
+        mutation: EDIT_CLIENT,
+        variables: {
+          id: '624eaafcdb29c369ab862a68',
+          client: {
+            role: "ADMIN",
+            firstName: "firstName",
+            lastName: "LastName",
+            email: "email@email.com",
+            phoneNumber: "+213"
+          }
         },
       });
     } catch(e) {

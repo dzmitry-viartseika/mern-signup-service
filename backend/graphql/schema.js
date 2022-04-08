@@ -35,5 +35,6 @@ module.exports = buildSchema(`
   type Mutation {
     addNewClient(client: ClientInput!): CreateNewUser!
     deleteClient(id: String!): Status!
+    editClient(id: String!, client: ClientInput!): CreateNewUser!
   } 
 `)

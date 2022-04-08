@@ -153,7 +153,6 @@ class UserService {
     }
 
     async updateUser(email, updatedUser) {
-        console.log('email', email);
         if (!email) {
             throw ApiError.unAuthorizedError();
         }

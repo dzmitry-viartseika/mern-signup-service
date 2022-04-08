@@ -24,13 +24,33 @@ module.exports = {
   async deleteClient ({id}) {
     const client = await Client.findOne({_id: id});
     if (!client) {
-      return 'Данный клиент не найден';
+      return { message: 'Not Found' };
     }
 
     client.remove();
     return  {
       status: '200',
       message: 'Пользователь удален'
+    }
+  },
+
+  async editClient( {id, client} ) {
+    console.log('client', client);
+    console.log('id', id);
+    const currentClient = await Client.findOne({ _id: id });
+    if (!currentClient) {
+      return { message: 'Not Found' }
+    }
+    currentClient.firstName = client.firstName;
+    currentClient.lastName = client.lastName;
+    currentClient.email = client.email;
+    currentClient.role = client.role;
+    currentClient.phoneNumber = client.phoneNumber;
+    currentClient.save();
+    return  {
+      status: '200',
+      message: 'Клиент обновлен',
+      client: currentClient,
     }
   }
 }
