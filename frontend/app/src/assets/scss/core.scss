@@ -245,6 +245,16 @@
   color: #fff;
 }
 
+.text-field {
+  margin-bottom: 15px;
+
+  &__label {
+    color: $color-silver-chalice;
+    font: $font-size-small $font-global-medium;
+    line-height: 1.55;
+  }
+}
+
 .admin-user {
   display: flex;
   align-items: center;

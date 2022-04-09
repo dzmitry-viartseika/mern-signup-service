@@ -92,10 +92,23 @@
             </transition>
           </div>
           <div class="form-field">
-            <SelectTemplate
-              :options="roles"
-              :item.sync="selectedRole"
-            />
+            <div class="text-field">
+              <SelectTemplate
+                :options="roles"
+                :item.sync="selectedRole"
+                :label="'Роль'"
+                :error-status="$validator.errors.has('selectedRole')"
+                required
+              />
+              <transition name="fade-el">
+                <div
+                  v-if="$validator.errors.has('selectedRole')"
+                  class="validation validation--input"
+                >
+                  {{ $validator.errors.first('selectedRole') }}
+                </div>
+              </transition>
+            </div>
           </div>
           <div class="form-field">
             <div class="text-field">
@@ -106,7 +119,16 @@
                 v-model="phoneNumber"
                 :show-dial-code-in-selection="true"
                 mode="international"
+                :error-status="$validator.errors.has('phoneNumber')"
               />
+              <transition name="fade-el">
+                <div
+                  v-if="$validator.errors.has('phoneNumber')"
+                  class="validation validation--input"
+                >
+                  {{ $validator.errors.first('phoneNumber') }}
+                </div>
+              </transition>
             </div>
           </div>
         </div>

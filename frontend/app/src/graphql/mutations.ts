@@ -23,7 +23,7 @@ export const DELETE_CLIENT = gql`
 export const EDIT_CLIENT = gql`
 
   mutation editClient($id: String!, $client: ClientInput!) {
-    editClient(id: $id, client: ClientInput!) {
+    editClient(id: $id, client: $client) {
       firstName lastName phoneNumber email role
     }
   }

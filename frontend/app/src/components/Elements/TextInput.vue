@@ -66,7 +66,6 @@ export default class TextInput extends Vue {
 @import "../../assets/scss/variables";
 
 .text-field {
-  margin-bottom: 15px;
 
   &--validation {
 
@@ -179,12 +178,6 @@ export default class TextInput extends Vue {
     &:focus {
       border-color: $color-dodger-blue;
     }
-  }
-
-  &__label {
-    color: $color-silver-chalice;
-    font: $font-size-small $font-global-medium;
-    line-height: 1.55;
   }
 
   &.active {

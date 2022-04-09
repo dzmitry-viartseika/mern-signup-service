@@ -507,7 +507,6 @@ export default class Settings extends Vue {
   }
 
   .text-field {
-    margin-bottom: 15px;
 
     &__label {
       color: $color-silver-chalice;

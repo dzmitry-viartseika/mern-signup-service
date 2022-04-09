@@ -35,8 +35,6 @@ module.exports = {
   },
 
   async editClient( {id, client} ) {
-    console.log('client', client);
-    console.log('id', id);
     const currentClient = await Client.findOne({ _id: id });
     if (!currentClient) {
       return { message: 'Not Found' }
