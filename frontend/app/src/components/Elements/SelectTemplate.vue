@@ -1,10 +1,11 @@
 <template>
-  <div class="app-select"
-       :class="{'app-select--validation': errorStatus}"
+  <div
+    class="app-select"
+    :class="{'app-select--validation': errorStatus}"
   >
     <div
-      class="app-select__label"
       v-if="label"
+      class="app-select__label"
       :class="{'validation--required': required}"
     >
       {{ label }}
