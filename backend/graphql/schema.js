@@ -5,6 +5,7 @@ module.exports = buildSchema(`
     phoneNumber: String!
     firstName: String!
     email: String!
+    _id: String!
   }
 
   type Query {

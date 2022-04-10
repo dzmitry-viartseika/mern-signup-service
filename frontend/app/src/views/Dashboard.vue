@@ -23,10 +23,28 @@
         :item.sync="item"
       />
     </div>
+    <div>
+      <button
+        @click="editClient"
+        class="app__btn app__btn--primary"
+        :class="{'app__btn--disabled': !selectedClient}"
+      >
+        Edit
+      </button>
+      <button
+        @click="deleteClient"
+        :class="{'app__btn--disabled': !selectedClient}"
+        class="app__btn app__btn--primary"
+      >
+        Delete
+      </button>
+      selectedClient={{ selectedClient }}
+    </div>
     <vuetable
       ref="vuetable"
       :data="usersList"
       :fields="fieldsList"
+      @vuetable:row-clicked="onDetailRowClick"
     />
     <transition name="fade-el">
       <modal-template-with-action
@@ -194,6 +212,7 @@ export default class Dashboard extends Vue {
   phoneNumber: string = '';
   email: string = '';
   selectedRole: string = '';
+  selectedClient: any = {};
 
   options = [
     { value: 'firstName', text: 'Имя' },
@@ -256,6 +275,14 @@ export default class Dashboard extends Vue {
     filter: '',
   };
 
+  onDetailRowClick (dataItem, event) {
+    // eslint-disable-next-line no-console
+    console.log('onDetailRowClick', dataItem);
+    this.selectedClient = dataItem.data;
+    // eslint-disable-next-line no-console
+    console.log('event', event);
+  }
+
   getPaginationData({ totalDocs, page, perPage }) {
     const totalPages = Math.ceil(totalDocs / perPage);
     const nextPage = totalPages > page ? page + 1 : undefined;
@@ -274,9 +301,11 @@ export default class Dashboard extends Vue {
       const response = await this.$apollo.mutate({
         mutation: DELETE_CLIENT,
         variables: {
-          id: '624eaafcdb29c369ab862a68',
+          id: this.selectedClient._id,
         },
       });
+      const currentIndex = this.usersList.findIndex((item) => item._id === this.selectedClient._id);
+      this.usersList.splice(currentIndex, 1);
     } catch(e) {
       console.error(e);
     }
@@ -287,7 +316,7 @@ export default class Dashboard extends Vue {
       const response = await this.$apollo.mutate({
         mutation: EDIT_CLIENT,
         variables: {
-          id: '624eaafcdb29c369ab862a68',
+          id: this.selectedClient._id,
           client: {
             role: 'ADMIN',
             firstName: 'firstName',
