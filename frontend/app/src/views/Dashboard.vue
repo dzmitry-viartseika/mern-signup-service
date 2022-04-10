@@ -25,16 +25,16 @@
     </div>
     <div>
       <button
-        @click="editClient"
         class="app__btn app__btn--primary"
         :class="{'app__btn--disabled': !selectedClient}"
+        @click="editClient"
       >
         Edit
       </button>
       <button
-        @click="deleteClient"
         :class="{'app__btn--disabled': !selectedClient}"
         class="app__btn app__btn--primary"
+        @click="deleteClient"
       >
         Delete
       </button>
