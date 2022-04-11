@@ -10,6 +10,7 @@
       >
         Add Client
       </button>
+      isEditMode={{ isEditMode }}
     </div>
     <div>
       <text-input
@@ -26,13 +27,13 @@
     <div>
       <button
         class="app__btn app__btn--primary"
-        :class="{'app__btn--disabled': !selectedClient}"
+        :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
         @click="editClient"
       >
         Edit
       </button>
       <button
-        :class="{'app__btn--disabled': !selectedClient}"
+        :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
         class="app__btn app__btn--primary"
         @click="deleteClient"
       >
@@ -49,7 +50,7 @@
     <transition name="fade-el">
       <modal-template-with-action
         v-if="isVisibleAddUserModal"
-        :modal-title="$t('addNewUser.modalTitle')"
+        :modal-title="!isEditMode ? $t('addNewUser.modalTitle') : 'Edit'"
         placeholder="Describe yourself here..."
         @modalActions="modalActions"
         @actionButton="addNewUser"
@@ -212,6 +213,7 @@ export default class Dashboard extends Vue {
   phoneNumber: string = '';
   email: string = '';
   selectedRole: string = '';
+  isEditMode: boolean = false;
   selectedClient: any = {};
 
   options = [
@@ -275,12 +277,8 @@ export default class Dashboard extends Vue {
     filter: '',
   };
 
-  onDetailRowClick (dataItem, event) {
-    // eslint-disable-next-line no-console
-    console.log('onDetailRowClick', dataItem);
+  onDetailRowClick (dataItem) {
     this.selectedClient = dataItem.data;
-    // eslint-disable-next-line no-console
-    console.log('event', event);
   }
 
   getPaginationData({ totalDocs, page, perPage }) {
@@ -311,21 +309,52 @@ export default class Dashboard extends Vue {
     }
   }
 
-  async editClient(): Promise<void> {
+  editClient(): void {
+    this.isVisibleAddUserModal = true;
+    this.isEditMode = true;
+    this.firstName = this.selectedClient.firstName;
+    this.lastName = this.selectedClient.lastName;
+    this.selectedRole = this.selectedClient.role;
+    this.phoneNumber = this.selectedClient.phoneNumber;
+    this.email = this.selectedClient.email;
+  }
+
+  async editAction(): Promise<any> {
     try {
       const response = await this.$apollo.mutate({
         mutation: EDIT_CLIENT,
         variables: {
           id: this.selectedClient._id,
           client: {
-            role: 'ADMIN',
-            firstName: 'firstName',
-            lastName: 'LastName',
-            email: 'email@email.com',
-            phoneNumber: '+213',
+            role: this.selectedRole,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            phoneNumber: this.phoneNumber,
           },
         },
       });
+      return response;
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  async addAction(): Promise<any> {
+    try {
+      const response = await this.$apollo.mutate({
+        mutation: ADD_NEW_CLIENT,
+        variables: {
+          client: {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            phoneNumber: this.phoneNumber,
+            role: this.selectedRole,
+            email: this.email,
+          },
+        },
+      });
+      return response;
     } catch(e) {
       console.error(e);
     }
@@ -342,21 +371,15 @@ export default class Dashboard extends Vue {
 
     if (result) {
       try {
-        const { data } = await this.$apollo.mutate({
-          mutation: ADD_NEW_CLIENT,
-          variables: {
-            client: {
-              firstName: this.firstName,
-              lastName: this.lastName,
-              phoneNumber: this.phoneNumber,
-              role: this.selectedRole,
-              email: this.email,
-            },
-          },
-        });
-        // eslint-disable-next-line no-console
-        console.log('data', data.addNewClient);
-        this.usersList.push(data.addNewClient);
+        const { data } = this.isEditMode ? await this.editAction() : await this.addAction();
+        if (!this.isEditMode) {
+          this.usersList.push(data.addNewClient);
+        } else {
+          // eslint-disable-next-line no-console
+          console.log('data', data.editClient);
+          const currentIndex = this.usersList.findIndex((item) => item._id === this.selectedClient._id);
+          this.usersList.splice(currentIndex, 1, data.editClient);
+        }
         this.isVisibleAddUserModal = false;
       } catch (e) {
         console.error(e);
@@ -365,7 +388,13 @@ export default class Dashboard extends Vue {
   }
 
   modalActions(data: boolean): void {
+    this.isEditMode = false;
     this.isVisibleAddUserModal = data;
+    this.selectedRole = '';
+    this.firstName = '';
+    this.lastName = '';
+    this.phoneNumber = '';
+    this.email = '';
   }
 
   mounted() {
