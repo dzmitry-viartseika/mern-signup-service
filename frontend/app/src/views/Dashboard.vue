@@ -375,10 +375,15 @@ export default class Dashboard extends Vue {
         if (!this.isEditMode) {
           this.usersList.push(data.addNewClient);
         } else {
-          // eslint-disable-next-line no-console
-          console.log('data', data.editClient);
           const currentIndex = this.usersList.findIndex((item) => item._id === this.selectedClient._id);
-          this.usersList.splice(currentIndex, 1, data.editClient);
+          const obj = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            role: this.selectedRole,
+            email: this.email,
+            phoneNumber: this.phoneNumber,
+          };
+          this.usersList.splice(currentIndex, 1, obj);
         }
         this.isVisibleAddUserModal = false;
       } catch (e) {

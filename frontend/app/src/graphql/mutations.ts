@@ -5,7 +5,7 @@ export const ADD_NEW_CLIENT = gql`
 
     mutation addNewClient($client: ClientInput!) {
       addNewClient(client: $client) {
-        firstName lastName phoneNumber email
+        firstName lastName phoneNumber email _id role
       }
     }
 `;
@@ -24,7 +24,7 @@ export const EDIT_CLIENT = gql`
 
   mutation editClient($id: String!, $client: ClientInput!) {
     editClient(id: $id, client: $client) {
-      firstName lastName phoneNumber email role
+      status message
     }
   }
 `;

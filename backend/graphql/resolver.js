@@ -48,7 +48,6 @@ module.exports = {
     return  {
       status: '200',
       message: 'Клиент обновлен',
-      client: currentClient,
     }
   }
 }

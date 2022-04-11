@@ -28,6 +28,15 @@ module.exports = buildSchema(`
     lastName: String!
     email: String!
     role: String!
+    _id: String!
+  }
+  
+  type EditClientType {
+    phoneNumber: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+    role: String!
   }
   
   type Status {
@@ -38,6 +47,6 @@ module.exports = buildSchema(`
   type Mutation {
     addNewClient(client: ClientInput!): CreateNewUser!
     deleteClient(id: String!): Status!
-    editClient(id: String!, client: ClientInput!): CreateNewUser!
+    editClient(id: String!, client: ClientInput!): Status!
   } 
 `)

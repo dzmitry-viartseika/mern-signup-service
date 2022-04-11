@@ -34,7 +34,10 @@ export default gql`
     type User {
       phoneNumber: String!
       firstName: String!
+      lastName: String!
       email: String!
+      role: String!
+      _id: String!
     }
 
     input ClientInput {
@@ -45,24 +48,35 @@ export default gql`
       role: String!
     }
 
-    type CreateNewUser {
+    type createNewClient {
       phoneNumber: String!
       firstName: String!
       lastName: String!
       email: String!
       role: String!
+      _id: String!
     }
 
-    type Mutation {
-      addNewClient(client: ClientInput!): CreateNewUser!
-    }
-
-    type Query {
-      getAllUsers: [User!]!
+    type EditClientType {
+        phoneNumber: String!
+        firstName: String!
+        lastName: String!
+        email: String!
+        role: String!
     }
 
     type Status {
       status: String!
       message: String
+    }
+
+    type Mutation {
+      addNewClient(client: ClientInput!): createNewClient!
+      editClient(id: String!, client: ClientInput!): Status!
+      deleteClient(id: String!): Status!
+    }
+
+    type Query {
+      getAllUsers: [User!]!
     }
 `;
