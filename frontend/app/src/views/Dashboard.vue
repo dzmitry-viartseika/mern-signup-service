@@ -15,10 +15,9 @@
       <ag-grid-vue
         style="width: 500px; height: 200px"
         class="ag-theme-alpine"
-        :columnDefs="columnDefs"
-        :rowData="rowData"
-      >
-      </ag-grid-vue>
+        :column-defs="columnDefs"
+        :row-data="rowData"
+      />
     </div>
     <div>
       <text-input
