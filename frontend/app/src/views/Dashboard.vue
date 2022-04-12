@@ -12,6 +12,15 @@
       </button>
     </div>
     <div>
+      <ag-grid-vue
+        style="width: 500px; height: 200px"
+        class="ag-theme-alpine"
+        :columnDefs="columnDefs"
+        :rowData="rowData"
+      >
+      </ag-grid-vue>
+    </div>
+    <div>
       <text-input
         :value.sync="searchValue"
         input-type="text"
@@ -189,6 +198,7 @@ import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
+import { AgGridVue } from 'ag-grid-vue';
 
 @Component({
   metaInfo() {
@@ -210,6 +220,7 @@ import validationErrorMessage from '@/locales/validationErrorMessage';
     Vuetable,
     TextInput,
     ModalTemplateWithAction,
+    AgGridVue,
     VueTelInput,
   },
 })
@@ -222,6 +233,8 @@ export default class Dashboard extends Vue {
   selectedRole: string = '';
   isEditMode: boolean = false;
   selectedClient: any = {};
+  columnDefs = null;
+  rowData = null;
 
   roles = [
     {
@@ -498,6 +511,17 @@ export default class Dashboard extends Vue {
   }
 
   beforeMount(): void {
+    this.columnDefs = [
+      { field: "make" },
+      { field: "model" },
+      { field: "price" },
+    ];
+
+    this.rowData = [
+      { make: "Toyota", model: "Celica", price: 35000 },
+      { make: "Ford", model: "Mondeo", price: 32000 },
+      { make: "Porsche", model: "Boxter", price: 72000 },
+    ];
     const dict = {
       en: {
         custom: {
