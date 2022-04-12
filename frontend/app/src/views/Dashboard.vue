@@ -19,7 +19,7 @@
         :label-text="'Поиск'"
       />
       <SelectTemplate
-        :options="options"
+        :options="roles"
         :item.sync="item"
       />
     </div>
@@ -180,6 +180,7 @@ import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
+import queryString from 'query-string';
 
 @Component({
   metaInfo() {
@@ -214,13 +215,6 @@ export default class Dashboard extends Vue {
   isEditMode: boolean = false;
   selectedClient: any = {};
 
-  options = [
-    { value: 'firstName', text: 'Имя' },
-    { value: 'lastName', text: 'Фамилия' },
-    { value: 'phoneNumber', text: 'Телефон' },
-    { value: 'role', text: 'Роль' },
-  ];
-
   roles = [
     {
       value: 'ADMIN', text: 'Админ',
@@ -252,6 +246,8 @@ export default class Dashboard extends Vue {
   isVisibleAddUserModal: boolean = false;
 
   toggleValue: boolean = false;
+
+  filterQuery = {};
 
   usersList: IUsersListResponse[] = [];
 
@@ -290,6 +286,19 @@ export default class Dashboard extends Vue {
       prevPage,
       totalDocs,
     };
+  }
+
+  addingParameterToLink(): void {
+    this.$router.push({
+      /* eslint-disable */
+      /* tslint:disable */
+      // @ts-ignore
+      query: {
+        ...this.filterQuery,
+      },
+    }).catch((e) => {
+      console.error(e);
+    });
   }
 
   async deleteClient(): Promise<void> {
@@ -383,6 +392,7 @@ export default class Dashboard extends Vue {
             phoneNumber: this.phoneNumber,
             _id: this.selectedClient._id,
           };
+          this.selectedClient = {};
           this.usersList.splice(currentIndex, 1, obj);
         }
         this.isVisibleAddUserModal = false;

@@ -13,7 +13,7 @@
     <model-select
       v-model="itemValue"
       :options="options"
-      placeholder="select item"
+      placeholder="select item"z
     />
   </div>
 </template>
