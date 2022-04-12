@@ -189,7 +189,6 @@ import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
-import queryString from 'query-string';
 
 @Component({
   metaInfo() {
