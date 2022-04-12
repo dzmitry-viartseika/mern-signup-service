@@ -42,9 +42,16 @@
     <vuetable
       ref="vuetable"
       :data="usersList"
-      :fields="fieldsList"
+      :fields="fields"
       @vuetable:row-clicked="onDetailRowClick"
-    />
+    >
+
+      <template slot="email" slot-scope="props">
+        <a href="props.rowData.email">
+          {{ props.rowData.email }}
+        </a>
+      </template>
+    </vuetable>
     <transition name="fade-el">
       <modal-template-with-action
         v-if="isVisibleAddUserModal"
@@ -224,10 +231,17 @@ export default class Dashboard extends Vue {
     },
   ];
 
-  fieldsList = [
+  fields = [
     {
       name: 'firstName',
       sortField: 'firstName',
+    },
+    {
+      name: 'lastName',
+      sortField: 'lastName',
+    },
+    {
+      name: 'role',
     },
     {
       name: 'email',
@@ -239,6 +253,7 @@ export default class Dashboard extends Vue {
       titleClass: 'center aligned',
       dataClass: 'center aligned',
     },
+    '__slot:actions',
   ];
 
   searchValue: string = '';
@@ -551,7 +566,7 @@ export default class Dashboard extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
   .app-dashboard {
     display: flex;
