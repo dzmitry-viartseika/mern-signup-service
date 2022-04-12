@@ -10,7 +10,6 @@
       >
         Add Client
       </button>
-      isEditMode={{ isEditMode }}
     </div>
     <div>
       <text-input
@@ -39,7 +38,6 @@
       >
         Delete
       </button>
-      selectedClient={{ selectedClient }}
     </div>
     <vuetable
       ref="vuetable"
@@ -304,6 +302,7 @@ export default class Dashboard extends Vue {
       });
       const currentIndex = this.usersList.findIndex((item) => item._id === this.selectedClient._id);
       this.usersList.splice(currentIndex, 1);
+      this.selectedClient = {};
     } catch(e) {
       console.error(e);
     }
@@ -382,6 +381,7 @@ export default class Dashboard extends Vue {
             role: this.selectedRole,
             email: this.email,
             phoneNumber: this.phoneNumber,
+            _id: this.selectedClient._id,
           };
           this.usersList.splice(currentIndex, 1, obj);
         }
@@ -542,9 +542,11 @@ export default class Dashboard extends Vue {
 </script>
 
 <style scoped lang="scss">
+
   .app-dashboard {
     display: flex;
     flex-direction: column;
+
     &-header {
       display: flex;
       justify-content: space-between;
