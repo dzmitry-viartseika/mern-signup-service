@@ -45,8 +45,10 @@
       :fields="fields"
       @vuetable:row-clicked="onDetailRowClick"
     >
-
-      <template slot="email" slot-scope="props">
+      <template
+        slot="email"
+        slot-scope="props"
+      >
         <a href="props.rowData.email">
           {{ props.rowData.email }}
         </a>
