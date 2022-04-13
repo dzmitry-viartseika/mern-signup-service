@@ -17,8 +17,14 @@ import 'vue-search-select/dist/VueSearchSelect.css';
 import ApolloClient from 'apollo-boost';
 import VueApollo from 'vue-apollo';
 import typeDefs from '@/graphql/typeDefs';
+import VueSocketIO from 'vue-socket.io';
 
 Vue.config.productionTip = false;
+
+Vue.use(new VueSocketIO({
+  debug: false,
+  connection: 'http://localhost:5000/',
+}));
 
 Vue.use(Toasted);
 Vue.use(VueTelInput);

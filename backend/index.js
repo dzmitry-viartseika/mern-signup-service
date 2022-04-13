@@ -10,6 +10,7 @@ const errorMiddleWare = require('./middleware/error-middleware');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
+const http = require('http');
 const graphQLDepthLimit = require('graphql-depth-limit');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./graphql/schema.js');
@@ -26,6 +27,9 @@ require('./config/passport');
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+const server = http.createServer(app);
+const io = require('socket.io').listen(server);
+
 app.use(cookieSession({
     name: 'google-auth-session',
     keys: ['key1', 'key2']
@@ -126,6 +130,29 @@ app.get("/logout", (req, res) => {
     res.redirect('/');
 })
 
+io
+    .sockets
+    .on('connection', function (socket) {
+        console.log('SOCKET')
+        socket.send({
+            type: 'hello',
+            message: 'Hello my friend. Im Socket IO'
+        })
+       socket.on('message', message => {
+           socket.send({
+               type: 'message',
+               message: message
+           });
+           socket
+               .setBroadcast.send({
+               type: 'message',
+               message: message
+           })
+       })
+       socket.on('disconnect', (data) => {
+           console.log('disconnect');
+       })
+})
 
 app.use('/api', fileRoutes.routes);
 const startApp = async () => {
