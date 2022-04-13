@@ -70,10 +70,14 @@ app.use('/documentations', swaggerDoc.serve);
 app.use('/documentations', swaggerDoc.setup(swaggerDocumentation));
 
 app.use(session({
-    secret: "secretcode",
+    secret: process.env.SECRET_SESSION,
+    key: 'key', // naming
     resave: true,
     saveUninitialized: true,
     cookie: {
+        // path: '/', // кука по определенным роутам / по всему сайту
+        // httponly: true, // только браузер и ко мне на фронте не читать
+        // maxAge: null, // null - бесконечно живет
         sameSite: "none",
         secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
@@ -93,6 +97,7 @@ const isLoggedIn = (req, res, next) => {
 }
 
 app.get("/api",isLoggedIn, (req, res) => {
+    console.log('session', req.session.id);
     res.send({
         message: 'wertey  sucecess',
         user: req.user,
