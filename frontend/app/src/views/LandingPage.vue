@@ -12,6 +12,12 @@
     >
       {{ $t('global.signInButton') }}
     </button>
+    <button
+      class="app__btn app__btn--primary"
+      @click="ping"
+    >
+      Socket
+    </button>
     <!--    // TODO class-->
     <dropDown
       :dropdown-options="dropdownOptions"
@@ -82,6 +88,14 @@ export default class LandingPage extends Vue {
       value: this.language,
     };
   }
+
+  // ping() {
+  //   console.log('ping');
+  //   // this.$socket.emit('pingServer', 'PING!');
+  //   this.$socket.on('hello', (arg) => {
+  //     console.log(arg); // world
+  //   });
+  // }
 
   agreePolicy(): void {
     this.isAgreePolicy = !this.isAgreePolicy;

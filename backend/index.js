@@ -133,24 +133,28 @@ app.get("/logout", (req, res) => {
 io
     .sockets
     .on('connection', function (socket) {
-        console.log('SOCKET')
-        socket.send({
-            type: 'hello',
-            message: 'Hello my friend. Im Socket IO'
-        })
-       socket.on('message', message => {
-           socket.send({
-               type: 'message',
-               message: message
-           });
-           socket
-               .setBroadcast.send({
-               type: 'message',
-               message: message
-           })
-       })
-       socket.on('disconnect', (data) => {
-           console.log('disconnect');
+        socket.emit("hello", "world");
+        // socket.send({
+        //     type: 'hello',
+        //     message: 'Hello my friend. Im Socket IO'
+        // })
+       // socket.on('message', message => {
+       //     socket.send({
+       //         type: 'message',
+       //         message: message
+       //     });
+       //     socket
+       //         .setBroadcast.send({
+       //         type: 'message',
+       //         message: message
+       //     })
+       // })
+       // socket.on('disconnect', (data) => {
+       //     console.log('disconnect');
+       // });
+       socket.on('pingServer', (message) => {
+           console.log('message', message);
+           // socket.emit("pingServer", message);
        })
 })
 
@@ -162,7 +166,7 @@ const startApp = async () => {
             useUnifiedTopology: true,
             useCreateIndex: true,
         })
-        app.listen(PORT, () => {
+        server.listen(PORT, () => {
             console.log(`Backend is running on the ${PORT}`);
         })
     } catch (e) {
