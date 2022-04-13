@@ -16,8 +16,14 @@
       class="app__btn app__btn--primary"
       @click="ping"
     >
-      Socket
+      sent to backend data
     </button>
+    <!--    <button-->
+    <!--      class="app__btn app__btn&#45;&#45;primary"-->
+    <!--      @click="ping2"-->
+    <!--    >-->
+    <!--      sent to frontend data-->
+    <!--    </button>-->
     <!--    // TODO class-->
     <dropDown
       :dropdown-options="dropdownOptions"
@@ -53,6 +59,7 @@ import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import DropDown from '@/components/Elements/DropDown.vue';
 import HeaderTemplate from '@/components/Landing/Header/HeaderTemplate.vue';
 import UsersService from '@/services/Users/UsersService';
+import { message } from 'ag-grid-community/dist/lib/utils/general';
 
 @Component({
   components: {
@@ -90,11 +97,11 @@ export default class LandingPage extends Vue {
   }
 
   // ping() {
-  //   console.log('ping');
-  //   // this.$socket.emit('pingServer', 'PING!');
-  //   this.$socket.on('hello', (arg) => {
-  //     console.log(arg); // world
-  //   });
+  //   this.$socket.emit('send-message', 'WERTEY MESSAGE');
+  // }
+  //
+  // test(message) {
+  //   console.log('message', message);
   // }
 
   agreePolicy(): void {
@@ -109,6 +116,9 @@ export default class LandingPage extends Vue {
   }
 
   async created(): Promise<any> {
+    this.$socket.on('receive-message', (message) => {
+      this.test(message);
+    });
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
     try {

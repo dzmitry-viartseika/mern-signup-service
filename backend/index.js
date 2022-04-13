@@ -133,7 +133,8 @@ app.get("/logout", (req, res) => {
 io
     .sockets
     .on('connection', function (socket) {
-        socket.emit("hello", "world");
+        console.log('socket', socket.id);
+        // socket.emit("hello", "world");
         // socket.send({
         //     type: 'hello',
         //     message: 'Hello my friend. Im Socket IO'
@@ -152,11 +153,17 @@ io
        // socket.on('disconnect', (data) => {
        //     console.log('disconnect');
        // });
-       socket.on('pingServer', (message) => {
+
+        // там походу схема на один ивент закидываешь с фронта объект например, записываешь его в базу,
+        //     и потом достаешь уже обновленные объекты из базы и эмитишь другой ивент их отдаешь, и
+        // на фронте где подписался на него там обновляешь ui новыми объектами
+       socket.on('send-message', (message) => {
+           io.emit("receive-message", message);
            console.log('message', message);
-           // socket.emit("pingServer", message);
        })
-})
+    }
+)
+
 
 app.use('/api', fileRoutes.routes);
 const startApp = async () => {
