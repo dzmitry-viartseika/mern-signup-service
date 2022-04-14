@@ -287,8 +287,9 @@ export default class AsideTemplate extends Vue {
 
   created(): void {
     this.activeMenuItem = this.$route.path;
-    if (this.$route.name === 'Others') {
+    if (this.$route.name === 'Others' || this.$route.name === 'Test') {
       this.isVisibleDropDown = true;
+      this.activeSubMenuItem = this.$route.path;
     }
     this.navList = asideMenuItems;
     const mode = localStorage.getItem('mode');
@@ -327,7 +328,7 @@ export default class AsideTemplate extends Vue {
     if (sub.length) {
       const { route } = sub[0];
       this.$router.push(route);
-      this.activeSubMenuItem = page;
+      this.activeSubMenuItem = route;
     }
     this.activeMenuItem = page;
     this.$router.push(page);

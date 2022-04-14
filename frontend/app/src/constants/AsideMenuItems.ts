@@ -40,11 +40,13 @@ const asideMenuItems: IAsideItem[] = [
       {
         id: 7,
         name: 'Тестовый роут',
-        route: '/crm/others',
+        route: '/crm/others/test',
         icon: 'Chart',
       },
     ],
   },
 ];
+
+// TODO three-dots icon bootstrap
 
 export default asideMenuItems;

@@ -76,6 +76,30 @@ const routes: RouteConfig[] = [
     },
   },
   {
+    path: '/crm/others',
+    name: 'Others',
+    component: () => import(/* webpackChunkName: "Others" */ '../views/Others.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.user) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
+  },
+  {
+    path: '/crm/others/test',
+    name: 'Others',
+    component: () => import(/* webpackChunkName: "Test" */ '../views/Test.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.user) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
+  },
+  {
     path: '/crm/calendar-working-days',
     name: 'Calendar',
     component: () => import(/* webpackChunkName: "Calendar" */ '../views/Calendar.vue'),
