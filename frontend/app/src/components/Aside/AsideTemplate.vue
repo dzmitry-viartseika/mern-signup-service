@@ -39,12 +39,12 @@
           :href="`#${item.route}`"
           @click.stop.prevent="proceedTo(item.route, item.children)"
         >
-<!--          @click.stop.prevent="goToPage(item.route, $event, item.children)"-->
-<!--          :class="[-->
-<!--          {'admin-left-sidebar-menu__item_active': activeMenuItem === item.route-->
-<!--          || activeMenuItem === item.routeActive},-->
-<!--          {'admin-left-sidebar-menu__item_height': item.sub && showFullSidebar}-->
-<!--          ]"-->
+          <!--          @click.stop.prevent="goToPage(item.route, $event, item.children)"-->
+          <!--          :class="[-->
+          <!--          {'admin-left-sidebar-menu__item_active': activeMenuItem === item.route-->
+          <!--          || activeMenuItem === item.routeActive},-->
+          <!--          {'admin-left-sidebar-menu__item_height': item.sub && showFullSidebar}-->
+          <!--          ]"-->
           <div class="admin-left-sidebar-menu__content">
             <svgicon
               class="icon"
@@ -57,11 +57,11 @@
               mode="out-in"
               tag="div"
             >
-                  <span
-                    :key="index"
-                  >
-                    {{ $t(`${item.name}`) }}
-                  </span>
+              <span
+                :key="index"
+              >
+                {{ $t(`${item.name}`) }}
+              </span>
             </transition>
           </div>
           <div
@@ -74,7 +74,7 @@
                 :key="el.id"
                 class="admin-left-sidebar-menu__dropdown-item"
                 :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem
-                      || el.route === activeSubMenuItem}"
+                  || el.route === activeSubMenuItem}"
                 @click.stop.prevent="proceedTo(el.route)"
               >
                 {{ $t(`${el.name}`) }}
@@ -85,7 +85,10 @@
       </template>
     </nav>
 
-    <div class="menu-bar" v-if="false">
+    <div
+      v-if="false"
+      class="menu-bar"
+    >
       <div class="menu">
         <ul class="menu-links">
           <li
