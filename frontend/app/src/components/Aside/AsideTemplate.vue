@@ -125,7 +125,9 @@
           <i class="bx bx-moon icon moon" />
           <i class="bx bx-sun icon sun" />
         </div>
-        <span class="mode-text text">
+        <span
+          v-if="!isShortAside"
+          class="mode-text text">
           <template v-if="toggleValue">
             Dark mode
           </template>
