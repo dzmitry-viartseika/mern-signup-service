@@ -36,10 +36,12 @@
           class="admin-left-sidebar-menu__item"
           :href="`#${item.route}`"
           :class="[
-            {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route},
-            {'admin-left-sidebar-menu__item_height': item.children}
+            {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route || item.children && isVisibleDropDown},
+            {'admin-left-sidebar-menu__item_height': item.children && !isShortAside}
           ]"
           @click.stop.prevent="proceedTo(item.route, item.children)"
+          @mouseenter="showMenuPopup($event, index, item.children)"
+          @mouseleave="showMenuPopup($event, null, item.children)"
         >
           <div class="admin-left-sidebar-menu__content">
             <svgicon
@@ -49,20 +51,80 @@
               height="20"
             />
             <transition
+              name="fade-menu-item"
+              mode="out-in"
+            >
+              <div
+                v-if="curItemMenu === index && isShortAside"
+                class="admin-left-sidebar-popup"
+                :class="{'admin-left-sidebar-popup_no-hover': item.children}"
+                :style="popupPosition"
+              >
+                    <span
+                      v-if="!item.children"
+                      class="admin-left-sidebar-popup__title"
+                    >
+                      {{ $t(`${item.name}`) }}
+                    </span>
+                <div
+                  v-else
+                  class="admin-left-sidebar-popup__list"
+                >
+                      <span
+                        class="admin-left-sidebar-popup__title admin-left-sidebar-popup__title_disabled"
+                        @click.stop
+                      >
+                        {{ $t(`${item.name}`) }}
+                      </span>
+                  <div
+                    class="admin-left-sidebar-menu__dropdown admin-left-sidebar-menu__dropdown_alt"
+                  >
+                    <transition-group
+                      name="fade-el"
+                      mode="out-in"
+                      tag="div"
+                    >
+                      <div
+                        v-for="el in item.children"
+                        :key="el.id"
+                        class="admin-left-sidebar-menu__dropdown-item"
+                        :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem}"
+                        @click.stop.prevent="proceedToRoute(el.route)"
+                      >
+                        {{ $t(`${el.name}`) }}
+                      </div>
+                    </transition-group>
+                  </div>
+                </div>
+              </div>
+            </transition>
+            <transition
               name="fade-content"
               mode="out-in"
               tag="div"
             >
-              <span
-                v-if="!isShortAside"
-                :key="index"
-              >
-                {{ $t(`${item.name}`) }}
-              </span>
+                  <span
+                    v-if="!isShortAside"
+                    :key="index"
+                  >
+                    {{ $t(`${item.name}`) }}
+                  </span>
             </transition>
+<!--            <transition-->
+<!--              name="fade-content"-->
+<!--              mode="out-in"-->
+<!--              tag="div"-->
+<!--            >-->
+<!--              <span-->
+<!--                v-if="!isShortAside"-->
+<!--                :key="index"-->
+<!--              >-->
+<!--                {{ $t(`${item.name}`) }}-->
+<!--              </span>-->
+<!--            </transition>-->
           </div>
           <div
-            v-if="item.children && isVisibleDropDown"
+            v-if="item.children && isVisibleDropDown && !isShortAside"
             class="admin-left-sidebar-menu__dropdown"
           >
             <transition-group name="fade-el">
@@ -70,9 +132,8 @@
                 v-for="el in item.children"
                 :key="el.id"
                 class="admin-left-sidebar-menu__dropdown-item"
-                :class="{'admin-left-sidebar-menu__dropdown-item--active': el.route === activeSubMenuItem
-                  || el.route === activeSubMenuItem}"
-                @click.stop.prevent="proceedTo(el.route)"
+                :class="{'admin-left-sidebar-menu__dropdown-item--active': el.route === activeSubMenuItem}"
+                @click.stop.prevent="proceedToRoute(el.route)"
               >
                 {{ $t(`${el.name}`) }}
               </div>
@@ -127,7 +188,8 @@
         </div>
         <span
           v-if="!isShortAside"
-          class="mode-text text">
+          class="mode-text text"
+        >
           <template v-if="toggleValue">
             Dark mode
           </template>
@@ -224,6 +286,10 @@ export default class AsideTemplate extends Vue {
   activeSubMenuItem: string = '';
   activeMenuItem: string = '';
 
+  curItemMenu: null;
+
+  popupPosition: any = {};
+
   navList: IAsideItem[] = [];
 
   wishesValue = '';
@@ -289,7 +355,7 @@ export default class AsideTemplate extends Vue {
 
   created(): void {
     this.activeMenuItem = this.$route.path;
-    if (this.$route.name === 'Others' || this.$route.name === 'Test') {
+    if (this.$route.name === 'Others') {
       this.isVisibleDropDown = true;
       this.activeSubMenuItem = this.$route.path;
     }
@@ -312,6 +378,7 @@ export default class AsideTemplate extends Vue {
 
   hideAside(): void {
     this.isShortAside = !this.isShortAside;
+    this.curItemMenu = null;
   }
 
   logOut(): void {
@@ -327,13 +394,36 @@ export default class AsideTemplate extends Vue {
 
   proceedTo(page: string, sub: any[] = []): void {
     this.isVisibleDropDown = !!sub.length;
-    if (sub.length) {
+    if (page !== this.$route.path) {
+      this.$router.push(page);
+    }
+    if (sub.length && this.isShortAside) {
       const { route } = sub[0];
       this.$router.push(route);
       this.activeSubMenuItem = route;
     }
     this.activeMenuItem = page;
-    this.$router.push(page);
+    // this.curItemMenu = null;
+  }
+
+  showMenuPopup(e, index, sub: any[] = []) {
+    if (sub.length) {
+      const position = e.target.getBoundingClientRect();
+      if (position) {
+        this.popupPosition = {
+          top: `${position.top}px`,
+          right: 'auto',
+        };
+      } else {
+        this.popupPosition = {};
+      }
+      this.curItemMenu = index;
+    }
+  }
+
+  proceedToRoute(route) {
+    this.activeSubMenuItem = route;
+    this.$router.push(route);
   }
 }
 </script>
@@ -724,7 +814,7 @@ export default class AsideTemplate extends Vue {
     background: $color-white;
     min-height: 46px;
     padding: 12px 0;
-    left: 70px;
+    left: 80px;
     top: 72px;
     box-shadow: 0 0 8px rgba($color-black, .04);
     border-radius: $borderRadius;
