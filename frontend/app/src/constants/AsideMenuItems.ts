@@ -30,23 +30,17 @@ const asideMenuItems: IAsideItem[] = [
     name: 'asideMenu.analytics',
     route: '/crm/analytics',
     icon: 'Chart',
+  },
+  {
+    id: 6,
+    name: 'Другие',
+    route: '/crm/others',
+    icon: 'Chart',
     children: [
       {
-        id: 6,
-        name: 'TEST',
-        route: '/crm/test',
-        icon: 'Chart',
-      },
-      {
         id: 7,
-        name: 'TEST',
-        route: '/crm/test',
-        icon: 'Chart',
-      },
-      {
-        id: 8,
-        name: 'TEST',
-        route: '/crm/test',
+        name: 'Тестовый роут',
+        route: '/crm/others',
         icon: 'Chart',
       },
     ],

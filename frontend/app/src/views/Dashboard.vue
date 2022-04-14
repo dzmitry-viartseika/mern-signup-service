@@ -47,21 +47,6 @@
         Delete
       </button>
     </div>
-    <vuetable
-      ref="vuetable"
-      :data="usersList"
-      :fields="fields"
-      @vuetable:row-clicked="onDetailRowClick"
-    >
-      <template
-        slot="email"
-        slot-scope="props"
-      >
-        <a href="props.rowData.email">
-          {{ props.rowData.email }}
-        </a>
-      </template>
-    </vuetable>
     <transition name="fade-el">
       <modal-template-with-action
         v-if="isVisibleAddUserModal"

@@ -24,11 +24,13 @@
 
   &--flex {
     display: flex;
+    height: 100vh;
+    overflow: hidden;
   }
 
   &-dashboard {
     overflow-x: hidden;
-    min-height: 100vh;
+    //min-height: 100vh;
     display: flex;
     position: relative;
   }

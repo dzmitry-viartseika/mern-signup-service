@@ -1,7 +1,7 @@
 <template>
   <nav
     class="sidebar"
-    :class="{'close': isShortAside, 'wertey': true}"
+    :class="{'close': isShortAside}"
   >
     <header>
       <div class="image-text">
@@ -25,8 +25,6 @@
         height="16"
         @click="hideAside"
       />
-
-      <!--      <i class='bx bx-chevron-right toggle'></i>-->
     </header>
 
     <nav class="admin-left-sidebar-menu">
@@ -38,13 +36,11 @@
           class="admin-left-sidebar-menu__item"
           :href="`#${item.route}`"
           @click.stop.prevent="proceedTo(item.route, item.children)"
+          :class="[
+          {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route},
+          {'admin-left-sidebar-menu__item_height': item.children}
+          ]"
         >
-          <!--          @click.stop.prevent="goToPage(item.route, $event, item.children)"-->
-          <!--          :class="[-->
-          <!--          {'admin-left-sidebar-menu__item_active': activeMenuItem === item.route-->
-          <!--          || activeMenuItem === item.routeActive},-->
-          <!--          {'admin-left-sidebar-menu__item_height': item.sub && showFullSidebar}-->
-          <!--          ]"-->
           <div class="admin-left-sidebar-menu__content">
             <svgicon
               class="icon"
@@ -59,6 +55,7 @@
             >
               <span
                 :key="index"
+                v-if="!isShortAside"
               >
                 {{ $t(`${item.name}`) }}
               </span>
@@ -73,7 +70,7 @@
                 v-for="el in item.children"
                 :key="el.id"
                 class="admin-left-sidebar-menu__dropdown-item"
-                :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem
+                :class="{'admin-left-sidebar-menu__dropdown-item--active': el.route === activeSubMenuItem
                   || el.route === activeSubMenuItem}"
                 @click.stop.prevent="proceedTo(el.route)"
               >
@@ -85,93 +82,49 @@
       </template>
     </nav>
 
-    <div
-      v-if="false"
-      class="menu-bar"
+    <div class="bottom-content"
     >
-      <div class="menu">
-        <ul class="menu-links">
-          <li
-            v-for="item in navList"
-            :key="item.id"
-            class="nav-link"
-            :class="{'active': item.route === $route.path}"
+      <li>
+        <a
+          @click.prevent="modalActions(true)"
+        >
+          <svgicon
+            class="icon"
+            name="Message"
+            width="22"
+            height="22"
+          />
+          <span
+            class="text nav-text"
           >
-            <a
-              @click.prevent="proceedTo(item.route)"
-            >
-              <svgicon
-                class="icon"
-                :name="item.icon"
-                width="20"
-                height="20"
-              />
-              <span class="text nav-text">
-                {{ $t(`${item.name}`) }}
-              </span>
-              <!--              <template v-if="item.children && item.children.length > 0">-->
-              <!--                <div-->
-              <!--                     @click="showSubmenu"-->
-              <!--                >-->
-              <!--                  >-->
-              <!--                </div>-->
-              <!--                <template v-if="showSubmenuActive">-->
-              <!--                  <div-->
-              <!--                    v-for="subItem in item.children"-->
-              <!--                    :key="subItem.id">-->
-              <!--                  <span class="text nav-text">-->
-              <!--                    {{ subItem.name }}-->
-              <!--                  </span>-->
-              <!--                  </div>-->
-              <!--                </template>-->
-              <!--              </template>-->
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="bottom-content">
-        <li>
-          <a
-            @click.prevent="modalActions(true)"
-          >
-            <svgicon
-              class="icon"
-              name="Message"
-              width="22"
-              height="22"
-            />
-            <span
-              class="text nav-text"
-            >
               {{ $t('supportTeam.improveService') }}
             </span>
-          </a>
-        </li>
-        <li>
-          <a
-            @click.prevent="logOut"
+        </a>
+      </li>
+      <li>
+        <a
+          @click.prevent="logOut"
+        >
+          <svgicon
+            class="icon icon--logout"
+            name="LogOut"
+            width="22"
+            height="22"
+          />
+          <span
+            class="text nav-text"
           >
-            <svgicon
-              class="icon icon--logout"
-              name="LogOut"
-              width="22"
-              height="22"
-            />
-            <span
-              class="text nav-text"
-            >
               {{ $t('asideMenu.logout') }}
             </span>
-          </a>
-        </li>
+        </a>
+      </li>
 
-        <li class="mode">
-          <div class="sun-moon">
-            <i class="bx bx-moon icon moon" />
-            <i class="bx bx-sun icon sun" />
-          </div>
-          <span class="mode-text text">
+      <li class="mode">
+        <div class="sun-moon">
+          <i class="bx bx-moon icon moon" />
+          <i class="bx bx-sun icon sun" />
+        </div>
+        <span class="mode-text text">
             <template v-if="toggleValue">
               Dark mode
             </template>
@@ -179,22 +132,17 @@
               Light mode
             </template>
           </span>
-          <Toggle
-            text="wertey"
-            :value.sync="toggleValue"
-            @setToggleVal="setToggleVal"
-          />
-          <div class="toggle-switch">
-            <span class="switch" />
-          </div>
-        </li>
-      </div>
+        <Toggle
+          text="wertey"
+          :value.sync="toggleValue"
+          @setToggleVal="setToggleVal"
+        />
+        <div class="toggle-switch">
+          <span class="switch" />
+        </div>
+      </li>
     </div>
-    <!--    <portal to="notification-outlet">-->
-    <!--      <p>This slot content will be rendered wherever the with name 'destination'-->
-    <!--        is  located.</p>-->
-    <!--    </portal>-->
-    <!--    <portal-target name="notification-outlet"></portal-target>-->
+
     <transition name="fade-el">
       <!--      // TODO проверить placeholder-->
       <modal-template-with-action
@@ -271,6 +219,7 @@ export default class AsideTemplate extends Vue {
   isVisibleDropDown: boolean = false;
 
   activeSubMenuItem: string = '';
+  activeMenuItem: string = '';
 
   navList: IAsideItem[] = [];
 
@@ -336,6 +285,10 @@ export default class AsideTemplate extends Vue {
   // }
 
   created(): void {
+    this.activeMenuItem = this.$route.path;
+    if (this.$route.name === 'Others') {
+      this.isVisibleDropDown = true;
+    }
     this.navList = asideMenuItems;
     const mode = localStorage.getItem('mode');
     const body = document.querySelector('body');
@@ -375,6 +328,7 @@ export default class AsideTemplate extends Vue {
       this.$router.push(route);
       this.activeSubMenuItem = page;
     }
+    this.activeMenuItem = page;
     this.$router.push(page);
   }
 }
@@ -394,11 +348,10 @@ export default class AsideTemplate extends Vue {
     align-items: center;
   }
 
-  .sidebar{
+  .sidebar {
     position: relative;
     top: 0;
     left: 0;
-    height: 100vh;
     width: 250px;
     min-width: 250px;
     padding: 10px 14px;
@@ -406,6 +359,7 @@ export default class AsideTemplate extends Vue {
     transition: all 0.3s ease;
     z-index: 100;
   }
+
   .sidebar.close{
     width: 88px;
     min-width: 88px;
@@ -468,7 +422,6 @@ export default class AsideTemplate extends Vue {
   .sidebar.close .text{
     opacity: 0;
   }
-  /* =========================== */
 
   .sidebar header{
     position: relative;
@@ -621,7 +574,7 @@ export default class AsideTemplate extends Vue {
     position: absolute;
     top: 0;
     left: 250px;
-    height: 100vh;
+    //height: 100vh;
     width: calc(100% - 250px);
     background-color: #E4E9F7;
     transition: var(--tran-05);
@@ -635,7 +588,7 @@ export default class AsideTemplate extends Vue {
 
   .sidebar.close ~ .home{
     left: 78px;
-    height: 100vh;
+    //height: 100vh;
     width: calc(100% - 78px);
   }
   body.dark .home .text{
@@ -674,7 +627,7 @@ export default class AsideTemplate extends Vue {
   z-index: 10;
   height: 98vh;
 
-  &_active {
+  &--active {
     min-width: 240px;
     max-width: 240px;
 
@@ -695,10 +648,6 @@ export default class AsideTemplate extends Vue {
     flex-direction: column;
     justify-content: space-between;
     height: 98vh;
-  }
-
-  &__bottom {
-    position: relative;
   }
 
   &-toggle {
@@ -732,7 +681,7 @@ export default class AsideTemplate extends Vue {
       }
     }
 
-    &_active {
+    &--active {
       i {
         transform: rotate(180deg);
         top: -1px;
@@ -825,9 +774,10 @@ export default class AsideTemplate extends Vue {
   &-menu {
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 
     &__dropdown {
-      padding:  12px 10px 10px 30px;
+      padding:  12px 10px 10px 60px;
 
       &-item {
         font: $font-size-md $font-global;
@@ -835,7 +785,7 @@ export default class AsideTemplate extends Vue {
         align-items: center;
         height: 26px;
 
-        &_active {
+        &--active {
           font: $font-size-md $font-global-medium;
         }
       }
@@ -867,44 +817,23 @@ export default class AsideTemplate extends Vue {
     }
 
     &__item {
-      height: 46px;
       display: block;
-      padding: 13px 20px 13px;
+      padding: 15px 0;
       position: relative;
       cursor: pointer;
       transition: background-color .15s ease-in;
       user-select: none;
       text-decoration: none;
 
-      &:focus {
-
-        span {
-          color: $color-dodger-blue;
-        }
-      }
-
       & + .admin-left-sidebar-menu__item {
         margin-top: 7px;
       }
 
-      &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        border-radius: 0 $borderRadius $borderRadius 0;
-        background: $color-dodger-blue;
-        width: 4px;
-        opacity: 0;
-        transition: .15s ease-in;
-      }
+      &:focus {
 
-      i {
-        margin-right: 10px;
-        color: $color-silver-chalice;
-        transition: color .15s ease-in;
-        font-size: $font-size-xlg;
+        span {
+          color: $color-white;
+        }
       }
 
       span {
@@ -918,25 +847,16 @@ export default class AsideTemplate extends Vue {
         top: 1px;
       }
 
-      &_active {
-        background: rgba($color-dodger-blue, .08);
+      &--active {
+        background: #695CFE;
+        border-radius: 5px;
 
         span, i {
-          color: $color-dodger-blue;
+          color: $color-white;
         }
 
-        span {
-          font-family: $font-global-medium;
-        }
-
-        &:before {
-          opacity: 1;
-        }
-      }
-
-      &:hover {
-        span, i {
-          color: $color-dodger-blue;
+        .icon {
+          fill: $color-white;
         }
       }
 
@@ -945,6 +865,28 @@ export default class AsideTemplate extends Vue {
         min-height: 105px;
       }
     }
+  }
+
+  //&__bottom {
+  //  position: absolute;
+  //  bottom: 0;
+  //}
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    flex: 0 0 auto;
+  }
+
+  nav {
+    flex: 1 0 auto;
+  }
+
+  .bottom-content {
+    flex: 0 0 auto;
   }
 }
 </style>
