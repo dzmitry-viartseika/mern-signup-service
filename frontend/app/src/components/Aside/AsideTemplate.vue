@@ -29,7 +29,63 @@
       <!--      <i class='bx bx-chevron-right toggle'></i>-->
     </header>
 
-    <div class="menu-bar">
+    <nav class="admin-left-sidebar-menu">
+      <template
+        v-for="(item, index) in navList"
+      >
+        <a
+          :key="item.id"
+          class="admin-left-sidebar-menu__item"
+          :href="`#${item.route}`"
+          @click.stop.prevent="proceedTo(item.route, item.children)"
+        >
+<!--          @click.stop.prevent="goToPage(item.route, $event, item.children)"-->
+<!--          :class="[-->
+<!--          {'admin-left-sidebar-menu__item_active': activeMenuItem === item.route-->
+<!--          || activeMenuItem === item.routeActive},-->
+<!--          {'admin-left-sidebar-menu__item_height': item.sub && showFullSidebar}-->
+<!--          ]"-->
+          <div class="admin-left-sidebar-menu__content">
+            <svgicon
+              class="icon"
+              :name="item.icon"
+              width="20"
+              height="20"
+            />
+            <transition
+              name="fade-content"
+              mode="out-in"
+              tag="div"
+            >
+                  <span
+                    :key="index"
+                  >
+                    {{ $t(`${item.name}`) }}
+                  </span>
+            </transition>
+          </div>
+          <div
+            v-if="item.children && isVisibleDropDown"
+            class="admin-left-sidebar-menu__dropdown"
+          >
+            <transition-group name="fade-el">
+              <div
+                v-for="el in item.children"
+                :key="el.id"
+                class="admin-left-sidebar-menu__dropdown-item"
+                :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem
+                      || el.route === activeSubMenuItem}"
+                @click.stop.prevent="proceedTo(el.route)"
+              >
+                {{ $t(`${el.name}`) }}
+              </div>
+            </transition-group>
+          </div>
+        </a>
+      </template>
+    </nav>
+
+    <div class="menu-bar" v-if="false">
       <div class="menu">
         <ul class="menu-links">
           <li
@@ -209,6 +265,10 @@ export default class AsideTemplate extends Vue {
 
   showSubmenuActive: boolean = false;
 
+  isVisibleDropDown: boolean = false;
+
+  activeSubMenuItem: string = '';
+
   navList: IAsideItem[] = [];
 
   wishesValue = '';
@@ -305,8 +365,14 @@ export default class AsideTemplate extends Vue {
     this.isVisibleWishesModal = data;
   }
 
-  proceedTo(route: string): void {
-    this.$router.push(route);
+  proceedTo(page: string, sub: any[] = []): void {
+    this.isVisibleDropDown = !!sub.length;
+    if (sub.length) {
+      const { route } = sub[0];
+      this.$router.push(route);
+      this.activeSubMenuItem = page;
+    }
+    this.$router.push(page);
   }
 }
 </script>
@@ -590,4 +656,292 @@ export default class AsideTemplate extends Vue {
     background-color: #695CFE;
   }
 
+
+.admin-left-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-width: 66px;
+  max-width: 66px;
+  background: $color-white;
+  padding: 21px 0 0;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  transition: all .15s ease-in;
+  z-index: 10;
+  height: 98vh;
+
+  &_active {
+    min-width: 240px;
+    max-width: 240px;
+
+    .logout {
+
+      &__content {
+        padding: 0 25px;
+      }
+    }
+
+    .account {
+      padding: 0 25px;
+    }
+  }
+
+  &__scroll {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 98vh;
+  }
+
+  &__bottom {
+    position: relative;
+  }
+
+  &-toggle {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: -15px;
+    bottom: 59px;
+    min-width: 28px;
+    max-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid $color-gallery;
+    background: $color-white;
+    transition: background-color .15s ease-in;
+    cursor: pointer;
+
+    i {
+      color: $color-silver-chalice;
+      font-size: $font-size-small;
+      transition: color .15s ease-in;
+      position: relative;
+    }
+
+    &:hover {
+      background: green;
+
+      i {
+        color: $color-dodger-blue;
+      }
+    }
+
+    &_active {
+      i {
+        transform: rotate(180deg);
+        top: -1px;
+        left: -1px;
+      }
+    }
+  }
+
+  &__image {
+    max-width: 163px;
+    position: relative;
+
+    &_mini {
+      max-width: 26px;
+    }
+  }
+
+  &__logo {
+    margin-bottom: 20px;
+    padding: 0 20px;
+    cursor: pointer;
+    width: 100%;
+    max-height: 30px;
+    min-height: 30px;
+
+    &_full {
+      img {
+        left: 2px;
+      }
+    }
+  }
+
+  &-popup {
+    position: fixed;
+    width: 195px;
+    background: $color-white;
+    min-height: 46px;
+    padding: 12px 0;
+    left: 70px;
+    top: 72px;
+    box-shadow: 0 0 8px rgba($color-black, .04);
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      width: 4px;
+      height: 100%;
+      background: transparent;
+    }
+
+    &__list {
+      width: 100%;
+    }
+
+    &__title {
+      top: 0;
+      color: $color-silver-chalice !important;
+      padding: 0 16px;
+
+      &_disabled {
+        cursor: default;
+        color: $color-silver-chalice;
+      }
+    }
+
+    &:hover {
+      .admin-left-sidebar-popup{
+        &__title {
+          color: $color-dodger-blue !important;
+        }
+      }
+    }
+
+    &_no-hover {
+      &:hover {
+        .admin-left-sidebar-popup{
+          &__title {
+            color: $color-silver-chalice !important;
+          }
+        }
+      }
+    }
+  }
+
+  &-menu {
+    display: flex;
+    flex-direction: column;
+
+    &__dropdown {
+      padding:  12px 10px 10px 30px;
+
+      &-item {
+        font: $font-size-md $font-global;
+        display: flex;
+        align-items: center;
+        height: 26px;
+
+        &_active {
+          font: $font-size-md $font-global-medium;
+        }
+      }
+
+      &_alt {
+        padding: 0;
+        margin-top: 16px;
+        border-top: 1px solid $color-gallery;
+
+        .admin-left-sidebar-menu {
+          &__dropdown {
+            &-item {
+              padding: 0 16px;
+              height: 34px;
+              color: $color-silver-chalice;
+              font-family: $font-global;
+
+              &:hover {
+                background: $color-alabaster;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__content {
+      display: flex;
+    }
+
+    &__item {
+      height: 46px;
+      display: block;
+      padding: 13px 20px 13px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color .15s ease-in;
+      user-select: none;
+      text-decoration: none;
+
+      &:focus {
+
+        span {
+          color: $color-dodger-blue;
+        }
+      }
+
+      & + .admin-left-sidebar-menu__item {
+        margin-top: 7px;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        border-radius: 0 $borderRadius $borderRadius 0;
+        background: $color-dodger-blue;
+        width: 4px;
+        opacity: 0;
+        transition: .15s ease-in;
+      }
+
+      i {
+        margin-right: 10px;
+        color: $color-silver-chalice;
+        transition: color .15s ease-in;
+        font-size: $font-size-xlg;
+      }
+
+      span {
+        color: $color-silver-chalice;
+        text-decoration: none;
+        transition: all .15s ease-in;
+        display: inline-block;
+        width: 100%;
+        white-space: nowrap;
+        position: relative;
+        top: 1px;
+      }
+
+      &_active {
+        background: rgba($color-dodger-blue, .08);
+
+        span, i {
+          color: $color-dodger-blue;
+        }
+
+        span {
+          font-family: $font-global-medium;
+        }
+
+        &:before {
+          opacity: 1;
+        }
+      }
+
+      &:hover {
+        span, i {
+          color: $color-dodger-blue;
+        }
+      }
+
+      &_height {
+        padding-bottom: 14px;
+        min-height: 105px;
+      }
+    }
+  }
+}
 </style>
