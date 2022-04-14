@@ -42,7 +42,6 @@ const asideMenuItems: IAsideItem[] = [
         name: 'Тестовый роут',
         route: '/crm/others/test',
         icon: 'Chart',
-        routeSub: 'test',
       },
     ],
   },

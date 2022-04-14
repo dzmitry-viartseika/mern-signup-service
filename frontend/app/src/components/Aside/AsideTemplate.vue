@@ -60,22 +60,22 @@
                 :class="{'admin-left-sidebar-popup_no-hover': item.children}"
                 :style="popupPosition"
               >
-                    <span
-                      v-if="!item.children"
-                      class="admin-left-sidebar-popup__title"
-                    >
-                      {{ $t(`${item.name}`) }}
-                    </span>
+                <span
+                  v-if="!item.children"
+                  class="admin-left-sidebar-popup__title"
+                >
+                  {{ $t(`${item.name}`) }}
+                </span>
                 <div
                   v-else
                   class="admin-left-sidebar-popup__list"
                 >
-                      <span
-                        class="admin-left-sidebar-popup__title admin-left-sidebar-popup__title_disabled"
-                        @click.stop
-                      >
-                        {{ $t(`${item.name}`) }}
-                      </span>
+                  <span
+                    class="admin-left-sidebar-popup__title admin-left-sidebar-popup__title_disabled"
+                    @click.stop
+                  >
+                    {{ $t(`${item.name}`) }}
+                  </span>
                   <div
                     class="admin-left-sidebar-menu__dropdown admin-left-sidebar-menu__dropdown_alt"
                   >
@@ -103,25 +103,25 @@
               mode="out-in"
               tag="div"
             >
-                  <span
-                    v-if="!isShortAside"
-                    :key="index"
-                  >
-                    {{ $t(`${item.name}`) }}
-                  </span>
+              <span
+                v-if="!isShortAside"
+                :key="index"
+              >
+                {{ $t(`${item.name}`) }}
+              </span>
             </transition>
-<!--            <transition-->
-<!--              name="fade-content"-->
-<!--              mode="out-in"-->
-<!--              tag="div"-->
-<!--            >-->
-<!--              <span-->
-<!--                v-if="!isShortAside"-->
-<!--                :key="index"-->
-<!--              >-->
-<!--                {{ $t(`${item.name}`) }}-->
-<!--              </span>-->
-<!--            </transition>-->
+            <!--            <transition-->
+            <!--              name="fade-content"-->
+            <!--              mode="out-in"-->
+            <!--              tag="div"-->
+            <!--            >-->
+            <!--              <span-->
+            <!--                v-if="!isShortAside"-->
+            <!--                :key="index"-->
+            <!--              >-->
+            <!--                {{ $t(`${item.name}`) }}-->
+            <!--              </span>-->
+            <!--            </transition>-->
           </div>
           <div
             v-if="item.children && isVisibleDropDown && !isShortAside"
