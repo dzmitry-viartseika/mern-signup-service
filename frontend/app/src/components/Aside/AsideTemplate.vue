@@ -35,11 +35,11 @@
           :key="item.id"
           class="admin-left-sidebar-menu__item"
           :href="`#${item.route}`"
-          @click.stop.prevent="proceedTo(item.route, item.children)"
           :class="[
-          {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route},
-          {'admin-left-sidebar-menu__item_height': item.children}
+            {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route},
+            {'admin-left-sidebar-menu__item_height': item.children}
           ]"
+          @click.stop.prevent="proceedTo(item.route, item.children)"
         >
           <div class="admin-left-sidebar-menu__content">
             <svgicon
@@ -54,8 +54,8 @@
               tag="div"
             >
               <span
-                :key="index"
                 v-if="!isShortAside"
+                :key="index"
               >
                 {{ $t(`${item.name}`) }}
               </span>
@@ -82,7 +82,8 @@
       </template>
     </nav>
 
-    <div class="bottom-content"
+    <div
+      class="bottom-content"
     >
       <li>
         <a
@@ -97,8 +98,8 @@
           <span
             class="text nav-text"
           >
-              {{ $t('supportTeam.improveService') }}
-            </span>
+            {{ $t('supportTeam.improveService') }}
+          </span>
         </a>
       </li>
       <li>
@@ -114,8 +115,8 @@
           <span
             class="text nav-text"
           >
-              {{ $t('asideMenu.logout') }}
-            </span>
+            {{ $t('asideMenu.logout') }}
+          </span>
         </a>
       </li>
 
@@ -125,13 +126,13 @@
           <i class="bx bx-sun icon sun" />
         </div>
         <span class="mode-text text">
-            <template v-if="toggleValue">
-              Dark mode
-            </template>
-            <template v-else>
-              Light mode
-            </template>
-          </span>
+          <template v-if="toggleValue">
+            Dark mode
+          </template>
+          <template v-else>
+            Light mode
+          </template>
+        </span>
         <Toggle
           text="wertey"
           :value.sync="toggleValue"
