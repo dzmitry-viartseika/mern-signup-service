@@ -12,10 +12,12 @@
     <div class="text-field-wrapper">
       <input
         data-test="input"
+        ref="inputRef"
         :type="inputType"
         class="text-field__input"
         :value="value"
         :placeholder="placeholderText"
+        :autofocus="autofocus"
         :disabled="disabled"
         @input="$emit('update:value', $event.target.value)"
       >
@@ -59,6 +61,19 @@ export default class TextInput extends Vue {
 
   @Prop({ type: Boolean, default: false })
   required: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  autofocus: boolean;
+
+  setFocus() {
+    this.$refs.inputRef.focus();
+  }
+
+  created() {
+    if (this.autofocus) {
+      this.$nextTick(() => this.setFocus());
+    }
+  }
 }
 </script>
 

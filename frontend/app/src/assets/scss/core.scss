@@ -13,6 +13,21 @@
 
 .ag-theme-alpine .ag-row-selected {
   background-color: #695CFE;
+  color: $color-white;
+}
+
+.ag-theme-alpine .ag-layout-auto-height .ag-center-cols-clipper, .ag-theme-alpine .ag-layout-auto-height .ag-center-cols-container, .ag-theme-alpine .ag-layout-print .ag-center-cols-clipper, .ag-theme-alpine .ag-layout-print .ag-center-cols-container {
+  min-height: auto!important;
+}
+
+.ag-center-cols-container {
+  width: 100% !important;
+}
+
+.ag-row-hover {
+  background: #695CFE !important;
+  cursor: pointer;
+  color: $color-white !important;
 }
 
 .form-field {

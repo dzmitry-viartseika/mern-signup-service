@@ -1,5 +1,6 @@
 <template>
   <div class="app-dashboard">
+    <loader-template v-if="isLoader" />
     <div class="app-dashboard-header">
       <h1 class="app__title">
         Dashboard
@@ -10,20 +11,6 @@
       >
         Add Client
       </button>
-    </div>
-    <div>
-      <ag-grid-vue
-        style="width: auto; height: 100%"
-        class="ag-theme-alpine"
-        :column-defs="columnDefs"
-        :row-data="rowData"
-        dom-layout="autoHeight"
-        :is-numerable="true"
-        :suppress-cell-selection="true"
-        :auto-size-columns-with-headers="true"
-        :row-selection="'single'"
-        @cell-clicked="onClientSelected($event)"
-      />
     </div>
     <div>
       <text-input
@@ -53,6 +40,22 @@
         Delete
       </button>
     </div>
+    <div>
+      <ag-grid-vue
+        v-if="rowData.length"
+        style="width: auto; height: auto"
+        class="ag-theme-alpine"
+        :column-defs="columnDefs"
+        :row-data="rowData"
+        dom-layout="autoHeight"
+        :is-numerable="true"
+        :suppress-cell-selection="true"
+        :auto-size-columns-with-headers="true"
+        :row-selection="'single'"
+        @cell-clicked="onClientSelected($event)"
+        :default-col-def="defaultColDef"
+      />
+    </div>
     <transition name="fade-el">
       <modal-template-with-action
         v-if="isVisibleAddUserModal"
@@ -65,6 +68,7 @@
           <div class="form-field">
             <text-input
               :value.sync="firstName"
+              :autofocus="true"
               :error-status="$validator.errors.has('firstName')"
               input-type="text"
               :required="true"
@@ -179,6 +183,7 @@ import Radio from '@/components/Elements/Radio.vue';
 import Pagination from '@/components/Paginations/Pagination.vue';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
+import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import Toggle from '@/components/Elements/Toggle.vue';
 import { GridApi } from 'ag-grid-community';
 import { VueTelInput } from 'vue-tel-input';
@@ -215,6 +220,7 @@ export enum RowSelection {
     ModalTemplateWithAction,
     AgGridVue,
     VueTelInput,
+    LoaderTemplate,
   },
 })
 export default class Dashboard extends Vue {
@@ -225,6 +231,7 @@ export default class Dashboard extends Vue {
   email: string = '';
   selectedRole: string = '';
   isEditMode: boolean = false;
+  isLoader: boolean = false;
   selectedClient: any = {};
   columnDefs = null;
   rowData = null;
@@ -262,6 +269,11 @@ export default class Dashboard extends Vue {
   allTypeServicesList: any[] = [];
 
   servicesList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+
+  defaultColDef = {
+    width: 300,
+    sortable: true,
+  }
 
   queryParams = {
     page: 1,
@@ -488,11 +500,29 @@ export default class Dashboard extends Vue {
 
   beforeMount(): void {
     this.columnDefs = [
-      { field: 'firstName' },
-      { field: "lastName" },
-      { field: "role" },
-      { field: "email" },
-      { field: "phoneNumber" },
+      {
+        field: 'firstName',
+        sort: 'desc',
+        flex: 1,
+      },
+      {
+        field: "lastName",
+        flex: 1,
+      },
+      {
+        field: "role",
+        sort: 'desc',
+        flex: 1,
+      },
+      {
+        field: "email",
+        sort: 'desc',
+        flex: 1,
+      },
+      {
+        field: "phoneNumber",
+        flex: 1,
+      },
     ];
 
     const dict = {

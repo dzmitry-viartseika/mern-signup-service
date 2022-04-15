@@ -18,6 +18,7 @@
             :value.sync="userEmail"
             :placeholder-text="$t('signInPage.inputEmailPlaceholder')"
             :label-text="$t('signInPage.email')"
+            :autofocus="true"
             input-type="email"
             :required="true"
             :error-status="$validator.errors.has('userEmail')"
