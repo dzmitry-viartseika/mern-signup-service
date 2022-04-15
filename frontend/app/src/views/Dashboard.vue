@@ -13,10 +13,16 @@
     </div>
     <div>
       <ag-grid-vue
-        style="width: 500px; height: 200px"
+        style="width: auto; height: 100%"
         class="ag-theme-alpine"
         :column-defs="columnDefs"
         :row-data="rowData"
+        dom-layout="autoHeight"
+        :is-numerable="true"
+        :suppress-cell-selection="true"
+        :auto-size-columns-with-headers="true"
+        :row-selection="'single'"
+        @cell-clicked="onClientSelected($event)"
       />
     </div>
     <div>
@@ -166,8 +172,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Component, Emit, Vue } from 'vue-property-decorator';
 import '@/assets/icons/Eye';
 import UsersService from '@/services/Users/UsersService';
 import Radio from '@/components/Elements/Radio.vue';
@@ -175,7 +180,7 @@ import Pagination from '@/components/Paginations/Pagination.vue';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
 import Toggle from '@/components/Elements/Toggle.vue';
-import Vuetable from 'vuetable-2';
+import { GridApi } from 'ag-grid-community';
 import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
@@ -183,6 +188,11 @@ import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations'
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import { AgGridVue } from 'ag-grid-vue';
+
+export enum RowSelection {
+  single = 'single',
+  multiple = 'multiple',
+}
 
 @Component({
   metaInfo() {
@@ -201,7 +211,6 @@ import { AgGridVue } from 'ag-grid-vue';
     Pagination,
     SelectTemplate,
     Toggle,
-    Vuetable,
     TextInput,
     ModalTemplateWithAction,
     AgGridVue,
@@ -229,31 +238,6 @@ export default class Dashboard extends Vue {
     },
   ];
 
-  fields = [
-    {
-      name: 'firstName',
-      sortField: 'firstName',
-    },
-    {
-      name: 'lastName',
-      sortField: 'lastName',
-    },
-    {
-      name: 'role',
-    },
-    {
-      name: 'email',
-      title: 'Email Address',
-    },
-    {
-      name: 'phoneNumber',
-      sortField: 'phoneNumber',
-      titleClass: 'center aligned',
-      dataClass: 'center aligned',
-    },
-    '__slot:actions',
-  ];
-
   searchValue: string = '';
 
   isVisibleAddUserModal: boolean = false;
@@ -262,7 +246,7 @@ export default class Dashboard extends Vue {
 
   filterQuery = {};
 
-  usersList: IUsersListResponse[] = [];
+  rowData: IUsersListResponse[] = [];
 
   item = {
     value: '',
@@ -272,6 +256,8 @@ export default class Dashboard extends Vue {
   test = '';
 
   fullInfo = {};
+
+  gridApi: GridApi;
 
   allTypeServicesList: any[] = [];
 
@@ -283,6 +269,7 @@ export default class Dashboard extends Vue {
     search: '',
     filter: '',
   };
+
 
   onDetailRowClick (dataItem) {
     this.selectedClient = dataItem.data;
@@ -322,8 +309,8 @@ export default class Dashboard extends Vue {
           id: this.selectedClient._id,
         },
       });
-      const currentIndex = this.usersList.findIndex((item) => item._id === this.selectedClient._id);
-      this.usersList.splice(currentIndex, 1);
+      const currentIndex = this.rowData.findIndex((item) => item._id === this.selectedClient._id);
+      this.rowData.splice(currentIndex, 1);
       this.selectedClient = {};
     } catch(e) {
       console.error(e);
@@ -338,6 +325,11 @@ export default class Dashboard extends Vue {
     this.selectedRole = this.selectedClient.role;
     this.phoneNumber = this.selectedClient.phoneNumber;
     this.email = this.selectedClient.email;
+  }
+
+  onClientSelected(item): void {
+    console.log('item.data', item);
+    this.selectedClient = item.data;
   }
 
   async editAction(): Promise<any> {
@@ -394,9 +386,9 @@ export default class Dashboard extends Vue {
       try {
         const { data } = this.isEditMode ? await this.editAction() : await this.addAction();
         if (!this.isEditMode) {
-          this.usersList.push(data.addNewClient);
+          this.rowData.push(data.addNewClient);
         } else {
-          const currentIndex = this.usersList.findIndex((item) => item._id === this.selectedClient._id);
+          const currentIndex = this.rowData.findIndex((item) => item._id === this.selectedClient._id);
           const obj = {
             firstName: this.firstName,
             lastName: this.lastName,
@@ -406,7 +398,7 @@ export default class Dashboard extends Vue {
             _id: this.selectedClient._id,
           };
           this.selectedClient = {};
-          this.usersList.splice(currentIndex, 1, obj);
+          this.rowData.splice(currentIndex, 1, obj);
         }
         this.isVisibleAddUserModal = false;
       } catch (e) {
@@ -496,16 +488,13 @@ export default class Dashboard extends Vue {
 
   beforeMount(): void {
     this.columnDefs = [
-      { field: "make" },
-      { field: "model" },
-      { field: "price" },
+      { field: 'firstName' },
+      { field: "lastName" },
+      { field: "role" },
+      { field: "email" },
+      { field: "phoneNumber" },
     ];
 
-    this.rowData = [
-      { make: "Toyota", model: "Celica", price: 35000 },
-      { make: "Ford", model: "Mondeo", price: 32000 },
-      { make: "Porsche", model: "Boxter", price: 72000 },
-    ];
     const dict = {
       en: {
         custom: {
@@ -559,12 +548,12 @@ export default class Dashboard extends Vue {
       query: GET_ALL_USERS,
     });
     if (data.getAllUsers.length) {
-      this.usersList = data.getAllUsers;
+      this.rowData = data.getAllUsers;
     }
     try {
       await UsersService.success();
       // const usersResponse = await UsersService.getUsers();
-      // this.usersList = usersResponse.data;
+      // this.rowData = usersResponse.data;
       // this.userName = response.data.user.displayName;
       // this.avatar = response.data.user.photos[0].value;
       // this.email = response.data.user.emails[0].value;

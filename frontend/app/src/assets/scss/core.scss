@@ -8,9 +8,12 @@
 @import "vue-input-tel";
 @import "calendar-working-days";
 @import "toggle";
-@import "vuetable";
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
+
+.ag-theme-alpine .ag-row-selected {
+  background-color: #695CFE;
+}
 
 .form-field {
   position: relative;
@@ -30,7 +33,7 @@
 
   &-dashboard {
     overflow-x: hidden;
-    //min-height: 100vh;
+    min-height: 100%;
     display: flex;
     position: relative;
   }
