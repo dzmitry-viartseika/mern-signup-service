@@ -20,7 +20,7 @@ import { AgGridVue } from 'ag-grid-vue';
 @Component({
   components: {
     AgGridVue,
-  }
+  },
 })
 export default class AGGridTable extends Vue {
   @Prop({ type: Array, required: true })

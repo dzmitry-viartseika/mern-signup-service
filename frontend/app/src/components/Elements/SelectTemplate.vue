@@ -14,6 +14,7 @@
       v-model="itemValue"
       :options="options"
       :placeholder="placeholderText"
+      @select="onSelect"
     />
   </div>
 </template>
@@ -32,8 +33,8 @@ export default class SelectTemplate extends Vue {
   @Prop({ required: true, type: Array })
   options: object[];
 
-  @Prop({ required: true, type: Object })
-  item: object;
+  @Prop({ required: true, type: String })
+  item: string;
 
   @Prop({ required: false, type: String })
   label: string;
@@ -44,7 +45,7 @@ export default class SelectTemplate extends Vue {
   @Prop({ type: Boolean, default: false })
   errorStatus: boolean;
 
-  @Prop({  type: String})
+  @Prop({  type: String })
   placeholderText: string;
 
   get itemValue() {
@@ -53,6 +54,13 @@ export default class SelectTemplate extends Vue {
 
   set itemValue(data) {
     this.$emit('update:item', data);
+  }
+
+  onSelect() {
+    /* eslint-disable */
+    /* tslint:disable */
+    // @ts-ignore
+    console.log('wertey');
   }
 }
 </script>

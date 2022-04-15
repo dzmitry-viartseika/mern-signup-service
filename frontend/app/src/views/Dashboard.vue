@@ -31,7 +31,8 @@
                 :style="{'width': '200px'}"
                 :options="roles"
                 :item.sync="filterQuery.role"
-                :placeholderText="'Выбрать роль'"
+                :placeholder-text="'Выбрать роль'"
+                @onSelect="onSelect"
               />
             </div>
             <div class="app-dashboard-table-action__item">
@@ -57,8 +58,8 @@
             <AGGridTable
               :column-defs="columnDefs"
               :row-data="rowData"
-              @onClientSelected="onClientSelected"
               :default-col-def="defaultColDef"
+              @onClientSelected="onClientSelected"
             />
           </div>
         </div>
@@ -68,11 +69,14 @@
       <div
         class="app-dashboard-placeholder"
       >
-        <h2 class="app-dashboard-placeholder__title">Список клиентов пуст</h2>
+        <h2 class="app-dashboard-placeholder__title">
+          Список клиентов пуст
+        </h2>
         <img
           class="app-dashboard-placeholder__image"
           src="@/assets/images/placeholders/clients-placeholder.png"
-          alt="placeholder">
+          alt="placeholder"
+        >
         <button
           class="app__btn app__btn--primary"
           @click="modalActions(true)"
@@ -209,8 +213,8 @@ import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
-import queryString from "query-string";
-import IFilterQueryCalendar from "@/model/filters/IFilterQueryCalendar";
+import queryString from 'query-string';
+import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
 
 export enum RowSelection {
   single = 'single',
@@ -273,10 +277,7 @@ export default class Dashboard extends Vue {
 
   rowData: IUsersListResponse[] = [];
 
-  item = {
-    value: '',
-    text: '',
-  };
+  item = '';
 
   test = '';
 
@@ -444,6 +445,10 @@ export default class Dashboard extends Vue {
     this.lastName = '';
     this.phoneNumber = '';
     this.email = '';
+  }
+
+  onSelect (items) {
+    console.log('items', items);
   }
 
   mounted() {
