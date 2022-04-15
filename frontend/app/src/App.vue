@@ -80,6 +80,7 @@ export default class App extends Vue {
   background: $color-alabaster;
   flex-grow: 1;
   padding: 20px;
+  height: 100vh;
 }
 
 .fade-enter-active,

@@ -1,7 +1,7 @@
 <template>
   <nav
     class="sidebar"
-    :class="{'close': isShortAside, 'wertey': true}"
+    :class="{'close': isShortAside}"
   >
     <header>
       <div class="image-text">
@@ -25,117 +25,189 @@
         height="16"
         @click="hideAside"
       />
-
-      <!--      <i class='bx bx-chevron-right toggle'></i>-->
     </header>
 
-    <div class="menu-bar">
-      <div class="menu">
-        <ul class="menu-links">
-          <li
-            v-for="item in navList"
-            :key="item.id"
-            class="nav-link"
-            :class="{'active': item.route === $route.path}"
-          >
-            <a
-              @click.prevent="proceedTo(item.route)"
-            >
-              <svgicon
-                class="icon"
-                :name="item.icon"
-                width="20"
-                height="20"
-              />
-              <span class="text nav-text">
-                {{ $t(`${item.name}`) }}
-              </span>
-              <!--              <template v-if="item.children && item.children.length > 0">-->
-              <!--                <div-->
-              <!--                     @click="showSubmenu"-->
-              <!--                >-->
-              <!--                  >-->
-              <!--                </div>-->
-              <!--                <template v-if="showSubmenuActive">-->
-              <!--                  <div-->
-              <!--                    v-for="subItem in item.children"-->
-              <!--                    :key="subItem.id">-->
-              <!--                  <span class="text nav-text">-->
-              <!--                    {{ subItem.name }}-->
-              <!--                  </span>-->
-              <!--                  </div>-->
-              <!--                </template>-->
-              <!--              </template>-->
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="bottom-content">
-        <li>
-          <a
-            @click.prevent="modalActions(true)"
-          >
+    <nav class="admin-left-sidebar-menu">
+      <template
+        v-for="(item, index) in navList"
+      >
+        <a
+          :key="item.id"
+          class="admin-left-sidebar-menu__item"
+          :href="`#${item.route}`"
+          :class="[
+            {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route || item.children && isVisibleDropDown},
+            {'admin-left-sidebar-menu__item_height': item.children && !isShortAside}
+          ]"
+          @click.stop.prevent="proceedTo(item.route, item.children)"
+          @mouseenter="showMenuPopup($event, index, item.children)"
+          @mouseleave="showMenuPopup($event, null, item.children)"
+        >
+          <div class="admin-left-sidebar-menu__content">
             <svgicon
               class="icon"
-              name="Message"
-              width="22"
-              height="22"
+              :name="item.icon"
+              width="20"
+              height="20"
             />
-            <span
-              class="text nav-text"
+            <transition
+              name="fade-menu-item"
+              mode="out-in"
             >
-              {{ $t('supportTeam.improveService') }}
-            </span>
-          </a>
-        </li>
-        <li>
-          <a
-            @click.prevent="logOut"
+              <div
+                v-if="curItemMenu === index && isShortAside"
+                class="admin-left-sidebar-popup"
+                :class="{'admin-left-sidebar-popup_no-hover': item.children}"
+                :style="popupPosition"
+              >
+                <span
+                  v-if="!item.children"
+                  class="admin-left-sidebar-popup__title"
+                >
+                  {{ $t(`${item.name}`) }}
+                </span>
+                <div
+                  v-else
+                  class="admin-left-sidebar-popup__list"
+                >
+                  <span
+                    class="admin-left-sidebar-popup__title admin-left-sidebar-popup__title_disabled"
+                    @click.stop
+                  >
+                    {{ $t(`${item.name}`) }}
+                  </span>
+                  <div
+                    class="admin-left-sidebar-menu__dropdown admin-left-sidebar-menu__dropdown_alt"
+                  >
+                    <transition-group
+                      name="fade-el"
+                      mode="out-in"
+                      tag="div"
+                    >
+                      <div
+                        v-for="el in item.children"
+                        :key="el.id"
+                        class="admin-left-sidebar-menu__dropdown-item"
+                        :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem}"
+                        @click.stop.prevent="proceedToRoute(el.route)"
+                      >
+                        {{ $t(`${el.name}`) }}
+                      </div>
+                    </transition-group>
+                  </div>
+                </div>
+              </div>
+            </transition>
+            <transition
+              name="fade-content"
+              mode="out-in"
+              tag="div"
+            >
+              <span
+                v-if="!isShortAside"
+                :key="index"
+              >
+                {{ $t(`${item.name}`) }}
+              </span>
+            </transition>
+            <!--            <transition-->
+            <!--              name="fade-content"-->
+            <!--              mode="out-in"-->
+            <!--              tag="div"-->
+            <!--            >-->
+            <!--              <span-->
+            <!--                v-if="!isShortAside"-->
+            <!--                :key="index"-->
+            <!--              >-->
+            <!--                {{ $t(`${item.name}`) }}-->
+            <!--              </span>-->
+            <!--            </transition>-->
+          </div>
+          <div
+            v-if="item.children && isVisibleDropDown && !isShortAside"
+            class="admin-left-sidebar-menu__dropdown"
           >
-            <svgicon
-              class="icon icon--logout"
-              name="LogOut"
-              width="22"
-              height="22"
-            />
-            <span
-              class="text nav-text"
-            >
-              {{ $t('asideMenu.logout') }}
-            </span>
-          </a>
-        </li>
+            <transition-group name="fade-el">
+              <div
+                v-for="el in item.children"
+                :key="el.id"
+                class="admin-left-sidebar-menu__dropdown-item"
+                :class="{'admin-left-sidebar-menu__dropdown-item--active': el.route === activeSubMenuItem}"
+                @click.stop.prevent="proceedToRoute(el.route)"
+              >
+                {{ $t(`${el.name}`) }}
+              </div>
+            </transition-group>
+          </div>
+        </a>
+      </template>
+    </nav>
 
-        <li class="mode">
-          <div class="sun-moon">
-            <i class="bx bx-moon icon moon" />
-            <i class="bx bx-sun icon sun" />
-          </div>
-          <span class="mode-text text">
-            <template v-if="toggleValue">
-              Dark mode
-            </template>
-            <template v-else>
-              Light mode
-            </template>
-          </span>
-          <Toggle
-            text="wertey"
-            :value.sync="toggleValue"
-            @setToggleVal="setToggleVal"
+    <div
+      class="bottom-content"
+    >
+      <li>
+        <a
+          @click.prevent="modalActions(true)"
+        >
+          <svgicon
+            class="icon"
+            name="Message"
+            width="22"
+            height="22"
           />
-          <div class="toggle-switch">
-            <span class="switch" />
-          </div>
-        </li>
-      </div>
+          <span
+            class="text nav-text"
+          >
+            {{ $t('supportTeam.improveService') }}
+          </span>
+        </a>
+      </li>
+      <li>
+        <a
+          @click.prevent="logOut"
+        >
+          <svgicon
+            class="icon icon--logout"
+            name="LogOut"
+            width="22"
+            height="22"
+          />
+          <span
+            class="text nav-text"
+          >
+            {{ $t('asideMenu.logout') }}
+          </span>
+        </a>
+      </li>
+
+      <li class="mode">
+        <div class="sun-moon">
+          <i class="bx bx-moon icon moon" />
+          <i class="bx bx-sun icon sun" />
+        </div>
+        <span
+          v-if="!isShortAside"
+          class="mode-text text"
+        >
+          <template v-if="toggleValue">
+            Dark mode
+          </template>
+          <template v-else>
+            Light mode
+          </template>
+        </span>
+        <Toggle
+          text="wertey"
+          :value.sync="toggleValue"
+          @setToggleVal="setToggleVal"
+        />
+        <div class="toggle-switch">
+          <span class="switch" />
+        </div>
+      </li>
     </div>
-    <!--    <portal to="notification-outlet">-->
-    <!--      <p>This slot content will be rendered wherever the with name 'destination'-->
-    <!--        is  located.</p>-->
-    <!--    </portal>-->
-    <!--    <portal-target name="notification-outlet"></portal-target>-->
+
     <transition name="fade-el">
       <!--      // TODO проверить placeholder-->
       <modal-template-with-action
@@ -209,6 +281,15 @@ export default class AsideTemplate extends Vue {
 
   showSubmenuActive: boolean = false;
 
+  isVisibleDropDown: boolean = false;
+
+  activeSubMenuItem: string = '';
+  activeMenuItem: string = '';
+
+  curItemMenu: null;
+
+  popupPosition: any = {};
+
   navList: IAsideItem[] = [];
 
   wishesValue = '';
@@ -273,6 +354,11 @@ export default class AsideTemplate extends Vue {
   // }
 
   created(): void {
+    this.activeMenuItem = this.$route.path;
+    if (this.$route.name === 'Others') {
+      this.isVisibleDropDown = true;
+      this.activeSubMenuItem = this.$route.path;
+    }
     this.navList = asideMenuItems;
     const mode = localStorage.getItem('mode');
     const body = document.querySelector('body');
@@ -292,6 +378,7 @@ export default class AsideTemplate extends Vue {
 
   hideAside(): void {
     this.isShortAside = !this.isShortAside;
+    this.curItemMenu = null;
   }
 
   logOut(): void {
@@ -305,7 +392,37 @@ export default class AsideTemplate extends Vue {
     this.isVisibleWishesModal = data;
   }
 
-  proceedTo(route: string): void {
+  proceedTo(page: string, sub: any[] = []): void {
+    this.isVisibleDropDown = !!sub.length;
+    if (page !== this.$route.path) {
+      this.$router.push(page);
+    }
+    if (sub.length && this.isShortAside) {
+      const { route } = sub[0];
+      this.$router.push(route);
+      this.activeSubMenuItem = route;
+    }
+    this.activeMenuItem = page;
+    // this.curItemMenu = null;
+  }
+
+  showMenuPopup(e, index, sub: any[] = []) {
+    if (sub.length) {
+      const position = e.target.getBoundingClientRect();
+      if (position) {
+        this.popupPosition = {
+          top: `${position.top}px`,
+          right: 'auto',
+        };
+      } else {
+        this.popupPosition = {};
+      }
+      this.curItemMenu = index;
+    }
+  }
+
+  proceedToRoute(route) {
+    this.activeSubMenuItem = route;
     this.$router.push(route);
   }
 }
@@ -325,11 +442,10 @@ export default class AsideTemplate extends Vue {
     align-items: center;
   }
 
-  .sidebar{
+  .sidebar {
     position: relative;
     top: 0;
     left: 0;
-    height: 100vh;
     width: 250px;
     min-width: 250px;
     padding: 10px 14px;
@@ -337,6 +453,7 @@ export default class AsideTemplate extends Vue {
     transition: all 0.3s ease;
     z-index: 100;
   }
+
   .sidebar.close{
     width: 88px;
     min-width: 88px;
@@ -399,7 +516,6 @@ export default class AsideTemplate extends Vue {
   .sidebar.close .text{
     opacity: 0;
   }
-  /* =========================== */
 
   .sidebar header{
     position: relative;
@@ -552,7 +668,7 @@ export default class AsideTemplate extends Vue {
     position: absolute;
     top: 0;
     left: 250px;
-    height: 100vh;
+    //height: 100vh;
     width: calc(100% - 250px);
     background-color: #E4E9F7;
     transition: var(--tran-05);
@@ -566,7 +682,7 @@ export default class AsideTemplate extends Vue {
 
   .sidebar.close ~ .home{
     left: 78px;
-    height: 100vh;
+    //height: 100vh;
     width: calc(100% - 78px);
   }
   body.dark .home .text{
@@ -590,4 +706,281 @@ export default class AsideTemplate extends Vue {
     background-color: #695CFE;
   }
 
+
+.admin-left-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-width: 66px;
+  max-width: 66px;
+  background: $color-white;
+  padding: 21px 0 0;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  transition: all .15s ease-in;
+  z-index: 10;
+  height: 98vh;
+
+  &--active {
+    min-width: 240px;
+    max-width: 240px;
+
+    .logout {
+
+      &__content {
+        padding: 0 25px;
+      }
+    }
+
+    .account {
+      padding: 0 25px;
+    }
+  }
+
+  &__scroll {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 98vh;
+  }
+
+  &-toggle {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: -15px;
+    bottom: 59px;
+    min-width: 28px;
+    max-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid $color-gallery;
+    background: $color-white;
+    transition: background-color .15s ease-in;
+    cursor: pointer;
+
+    i {
+      color: $color-silver-chalice;
+      font-size: $font-size-small;
+      transition: color .15s ease-in;
+      position: relative;
+    }
+
+    &:hover {
+      background: green;
+
+      i {
+        color: $color-dodger-blue;
+      }
+    }
+
+    &--active {
+      i {
+        transform: rotate(180deg);
+        top: -1px;
+        left: -1px;
+      }
+    }
+  }
+
+  &__image {
+    max-width: 163px;
+    position: relative;
+
+    &_mini {
+      max-width: 26px;
+    }
+  }
+
+  &__logo {
+    margin-bottom: 20px;
+    padding: 0 20px;
+    cursor: pointer;
+    width: 100%;
+    max-height: 30px;
+    min-height: 30px;
+
+    &_full {
+      img {
+        left: 2px;
+      }
+    }
+  }
+
+  &-popup {
+    position: fixed;
+    width: 195px;
+    background: $color-white;
+    min-height: 46px;
+    padding: 12px 0;
+    left: 80px;
+    top: 72px;
+    box-shadow: 0 0 8px rgba($color-black, .04);
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      width: 4px;
+      height: 100%;
+      background: transparent;
+    }
+
+    &__list {
+      width: 100%;
+    }
+
+    &__title {
+      top: 0;
+      color: $color-silver-chalice !important;
+      padding: 0 16px;
+
+      &_disabled {
+        cursor: default;
+        color: $color-silver-chalice;
+      }
+    }
+
+    &:hover {
+      .admin-left-sidebar-popup{
+        &__title {
+          color: $color-dodger-blue !important;
+        }
+      }
+    }
+
+    &_no-hover {
+      &:hover {
+        .admin-left-sidebar-popup{
+          &__title {
+            color: $color-silver-chalice !important;
+          }
+        }
+      }
+    }
+  }
+
+  &-menu {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+
+    &__dropdown {
+      padding:  12px 10px 10px 60px;
+
+      &-item {
+        font: $font-size-md $font-global;
+        display: flex;
+        align-items: center;
+        height: 26px;
+
+        &--active {
+          font: $font-size-md $font-global-medium;
+        }
+      }
+
+      &_alt {
+        padding: 0;
+        margin-top: 16px;
+        border-top: 1px solid $color-gallery;
+
+        .admin-left-sidebar-menu {
+          &__dropdown {
+            &-item {
+              padding: 0 16px;
+              height: 34px;
+              color: $color-silver-chalice;
+              font-family: $font-global;
+
+              &:hover {
+                background: $color-alabaster;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__content {
+      display: flex;
+    }
+
+    &__item {
+      display: block;
+      padding: 15px 0;
+      position: relative;
+      cursor: pointer;
+      transition: background-color .15s ease-in;
+      user-select: none;
+      text-decoration: none;
+
+      & + .admin-left-sidebar-menu__item {
+        margin-top: 7px;
+      }
+
+      &:focus {
+
+        span {
+          color: $color-white;
+        }
+      }
+
+      span {
+        color: $color-silver-chalice;
+        text-decoration: none;
+        transition: all .15s ease-in;
+        display: inline-block;
+        width: 100%;
+        white-space: nowrap;
+        position: relative;
+        top: 1px;
+      }
+
+      &--active {
+        background: #695CFE;
+        border-radius: 5px;
+
+        span, i {
+          color: $color-white;
+        }
+
+        .icon {
+          fill: $color-white;
+        }
+      }
+
+      &_height {
+        padding-bottom: 14px;
+        min-height: 105px;
+      }
+    }
+  }
+
+  //&__bottom {
+  //  position: absolute;
+  //  bottom: 0;
+  //}
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    flex: 0 0 auto;
+  }
+
+  nav {
+    flex: 1 0 auto;
+  }
+
+  .bottom-content {
+    flex: 0 0 auto;
+  }
+}
 </style>
