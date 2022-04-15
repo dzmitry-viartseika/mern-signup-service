@@ -13,8 +13,7 @@
     <model-select
       v-model="itemValue"
       :options="options"
-      placeholder="select item"
-      z
+      :placeholder="placeholderText"
     />
   </div>
 </template>
@@ -45,6 +44,9 @@ export default class SelectTemplate extends Vue {
   @Prop({ type: Boolean, default: false })
   errorStatus: boolean;
 
+  @Prop({  type: String})
+  placeholderText: string;
+
   get itemValue() {
     return this.item;
   }
@@ -58,6 +60,12 @@ export default class SelectTemplate extends Vue {
 <style scoped lang="scss">
 @import "../../assets/scss/variables";
   .app-select {
+    height: 40px;
+
+    .ui.selection.dropdown {
+      height: 40px;
+      border: 1px solid #EEEEEE;
+    }
 
     &--validation {
 

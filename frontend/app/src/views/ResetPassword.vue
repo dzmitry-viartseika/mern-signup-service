@@ -20,6 +20,7 @@
             :label-text="$t('resetPasswordPage.oldEmailAddress')"
             input-type="email"
             :required="true"
+            :autofocus="true"
             :error-status="$validator.errors.has('userEmail')"
           />
           <transition name="fade-el">

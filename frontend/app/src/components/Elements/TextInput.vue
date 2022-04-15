@@ -11,8 +11,8 @@
     </label>
     <div class="text-field-wrapper">
       <input
-        data-test="input"
         ref="inputRef"
+        data-test="input"
         :type="inputType"
         class="text-field__input"
         :value="value"

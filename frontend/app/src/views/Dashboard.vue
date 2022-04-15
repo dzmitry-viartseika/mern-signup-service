@@ -12,50 +12,75 @@
         Add Client
       </button>
     </div>
-    <div>
-      <text-input
-        :value.sync="searchValue"
-        input-type="text"
-        :placeholder-text="'поиск'"
-        :label-text="'Поиск'"
-      />
-      <SelectTemplate
-        :options="roles"
-        :item.sync="item"
-      />
-    </div>
-    <div>
-      <button
-        class="app__btn app__btn--primary"
-        :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
-        @click="editClient"
+    <template v-if="rowData.length">
+      <transition-group
+        name="fade-el"
       >
-        Edit
-      </button>
-      <button
-        :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
-        class="app__btn app__btn--primary"
-        @click="deleteClient"
+        <div key="table">
+          <div class="app-dashboard-table-action">
+            <div class="app-dashboard-table-action__item">
+              <text-input
+                :value.sync="searchValue"
+                input-type="text"
+                :placeholder-text="'Поиск по Фамилии'"
+              />
+            </div>
+            <div class="app-dashboard-table-action__item">
+              filterQuery.role{{ filterQuery.role }}
+              <SelectTemplate
+                :style="{'width': '200px'}"
+                :options="roles"
+                :item.sync="filterQuery.role"
+                :placeholderText="'Выбрать роль'"
+              />
+            </div>
+            <div class="app-dashboard-table-action__item">
+              <button
+                class="app__btn app__btn--primary"
+                :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
+                @click="editClient"
+              >
+                Edit
+              </button>
+            </div>
+            <div class="app-dashboard-table-action__item">
+              <button
+                :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
+                class="app__btn app__btn--primary"
+                @click="deleteClient"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+          <div class="app-dashboard-content">
+            <AGGridTable
+              :column-defs="columnDefs"
+              :row-data="rowData"
+              @onClientSelected="onClientSelected"
+              :default-col-def="defaultColDef"
+            />
+          </div>
+        </div>
+      </transition-group>
+    </template>
+    <template v-else>
+      <div
+        class="app-dashboard-placeholder"
       >
-        Delete
-      </button>
-    </div>
-    <div>
-      <ag-grid-vue
-        v-if="rowData.length"
-        style="width: auto; height: auto"
-        class="ag-theme-alpine"
-        :column-defs="columnDefs"
-        :row-data="rowData"
-        dom-layout="autoHeight"
-        :is-numerable="true"
-        :suppress-cell-selection="true"
-        :auto-size-columns-with-headers="true"
-        :row-selection="'single'"
-        @cell-clicked="onClientSelected($event)"
-        :default-col-def="defaultColDef"
-      />
-    </div>
+        <h2 class="app-dashboard-placeholder__title">Список клиентов пуст</h2>
+        <img
+          class="app-dashboard-placeholder__image"
+          src="@/assets/images/placeholders/clients-placeholder.png"
+          alt="placeholder">
+        <button
+          class="app__btn app__btn--primary"
+          @click="modalActions(true)"
+        >
+          Add Client
+        </button>
+      </div>
+    </template>
     <transition name="fade-el">
       <modal-template-with-action
         v-if="isVisibleAddUserModal"
@@ -163,20 +188,11 @@
         </div>
       </modal-template-with-action>
     </transition>
-    <!--    <Radio name='wertey' :value.sync="test"/>-->
-    <!--    <Radio name='wertey' :value.sync="test"/>-->
-    <!--    pagi-->
-    <!--    <Pagination-->
-    <!--      v-if="false"-->
-    <!--      :data="fullInfo"-->
-    <!--      :getQuery="getRequests"-->
-    <!--      :limit="queryParams.perPage"-->
-    <!--    />-->
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import '@/assets/icons/Eye';
 import UsersService from '@/services/Users/UsersService';
 import Radio from '@/components/Elements/Radio.vue';
@@ -185,6 +201,7 @@ import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
 import Toggle from '@/components/Elements/Toggle.vue';
+import AGGridTable from '@/components/Tables/AGGridTable.vue';
 import { GridApi } from 'ag-grid-community';
 import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
@@ -192,7 +209,8 @@ import { GET_ALL_USERS } from '@/graphql/querries';
 import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
-import { AgGridVue } from 'ag-grid-vue';
+import queryString from "query-string";
+import IFilterQueryCalendar from "@/model/filters/IFilterQueryCalendar";
 
 export enum RowSelection {
   single = 'single',
@@ -218,9 +236,9 @@ export enum RowSelection {
     Toggle,
     TextInput,
     ModalTemplateWithAction,
-    AgGridVue,
     VueTelInput,
     LoaderTemplate,
+    AGGridTable,
   },
 })
 export default class Dashboard extends Vue {
@@ -273,7 +291,7 @@ export default class Dashboard extends Vue {
   defaultColDef = {
     width: 300,
     sortable: true,
-  }
+  };
 
   queryParams = {
     page: 1,
@@ -340,8 +358,7 @@ export default class Dashboard extends Vue {
   }
 
   onClientSelected(item): void {
-    console.log('item.data', item);
-    this.selectedClient = item.data;
+    this.selectedClient = item;
   }
 
   async editAction(): Promise<any> {
@@ -574,6 +591,14 @@ export default class Dashboard extends Vue {
   }
 
   async created() {
+    const { location } = window;
+    const parsed = queryString.parse(location.search, { parseBooleans: true });
+    const {
+      role = this.filterQuery.role,
+    } = parsed;
+    this.filterQuery = {
+      role,
+    } as IFilterQueryCalendar;
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
     });
@@ -591,6 +616,19 @@ export default class Dashboard extends Vue {
       console.error(e);
     }
   }
+
+  addingParameterToLink(): void {
+    this.$router.push({
+      /* eslint-disable */
+      /* tslint:disable */
+      // @ts-ignore
+      query: {
+        ...this.filterQuery,
+      },
+    }).catch((e) => {
+      console.error(e);
+    });
+  }
 }
 </script>
 
@@ -599,6 +637,43 @@ export default class Dashboard extends Vue {
   .app-dashboard {
     display: flex;
     flex-direction: column;
+
+    &-table {
+
+      &-action {
+        display: flex;
+        justify-content: flex-start;
+
+        &__item + .app-dashboard-table-action__item {
+          margin-left: 20px;
+        }
+      }
+    }
+
+    &-placeholder {
+      margin-top: 20vh;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+
+
+      &__title {
+        font-size: 30px;
+      }
+    }
+
+    &-content {
+      width: 100%;
+
+      &--flex {
+        display: flex;
+        justify-content: center;
+      }
+    }
 
     &-header {
       display: flex;
