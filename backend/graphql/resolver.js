@@ -2,10 +2,17 @@ const User = require('../models/user-model');
 const Client = require('../models/client-model');
 
 module.exports = {
-  async getAllUsers() {
+  async getAllUsers(arg) {
     try {
+      console.log('arg', arg);
+      const { role = 'ALL' } = arg.input.filter;
+      console.log('role', role);
       const clients = await Client.find({});
-      return clients;
+      if (role === 'ALL') {
+        return clients;
+      }
+      const filteredUsers = clients.filter((item) => item.role === role);
+      return filteredUsers;
     } catch (e) {
       console.error(e);
     }

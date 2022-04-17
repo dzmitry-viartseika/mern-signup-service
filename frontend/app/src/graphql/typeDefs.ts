@@ -70,6 +70,14 @@ export default gql`
       message: String
     }
 
+    input UsersFilter {
+      role: String
+    }
+
+    input UserInput {
+      filter: UsersFilter
+    }
+
     type Mutation {
       addNewClient(client: ClientInput!): createNewClient!
       editClient(id: String!, client: ClientInput!): Status!
@@ -77,6 +85,6 @@ export default gql`
     }
 
     type Query {
-      getAllUsers: [User!]!
+      getAllUsers(input: UserInput): [User!]!
     }
 `;

@@ -101,7 +101,6 @@ const isLoggedIn = (req, res, next) => {
 }
 
 app.get("/api",isLoggedIn, (req, res) => {
-    console.log('session', req.session.id);
     res.send({
         message: 'wertey  sucecess',
         user: req.user,

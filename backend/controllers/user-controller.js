@@ -77,7 +77,6 @@ class UserController {
     async resetPassword(req,res,next) {
         try {
             const resetLink = req.params.link;
-            console.log('resetLink', resetLink);
             await UserService.refreshPassword(resetLink);
             return res.redirect(process.env.CLIENT_RESET_PASSWORD_URL)
         } catch (e) {
@@ -119,7 +118,6 @@ class UserController {
 
     async getCurrentUser(req, res, next) {
         if (req.headers && req.headers.authorization) {
-            console.log('req.session', req)
             const token = req.headers.authorization.split(' ');
             const userData = await UserService.getCurrentUser(token);
             return res.json(userData);

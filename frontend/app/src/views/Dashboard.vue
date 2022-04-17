@@ -26,7 +26,6 @@
               />
             </div>
             <div class="app-dashboard-table-action__item">
-              filterQuery.role{{ filterQuery.role }}
               <SelectTemplate
                 :style="{'width': '200px'}"
                 :options="roles"
@@ -51,6 +50,14 @@
                 @click="deleteClient"
               >
                 Delete
+              </button>
+            </div>
+            <div class="app-dashboard-table-action__item">
+              <button
+                class="app__btn app__btn--primary"
+                @click="filterClients"
+              >
+                Фильтровать
               </button>
             </div>
           </div>
@@ -332,6 +339,22 @@ export default class Dashboard extends Vue {
     });
   }
 
+  async filterClients() {
+    const { data } = await this.$apollo.query({
+      query: GET_ALL_USERS,
+      variables: {
+        input: {
+          filter: {
+            role: this.filterQuery.role,
+          },
+        }
+      },
+    });
+    if (data.getAllUsers.length) {
+      this.rowData = data.getAllUsers;
+    }
+  }
+
   async deleteClient(): Promise<void> {
     try {
       const response = await this.$apollo.mutate({
@@ -447,8 +470,8 @@ export default class Dashboard extends Vue {
     this.email = '';
   }
 
-  onSelect (items) {
-    console.log('items', items);
+  onSelect (data) {
+    this.addingParameterToLink();
   }
 
   mounted() {
@@ -606,6 +629,13 @@ export default class Dashboard extends Vue {
     } as IFilterQueryCalendar;
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
+      variables: {
+        input: {
+          filter: {
+            role: 'ALL',
+          },
+        }
+      },
     });
     if (data.getAllUsers.length) {
       this.rowData = data.getAllUsers;
@@ -620,19 +650,6 @@ export default class Dashboard extends Vue {
     } catch (e) {
       console.error(e);
     }
-  }
-
-  addingParameterToLink(): void {
-    this.$router.push({
-      /* eslint-disable */
-      /* tslint:disable */
-      // @ts-ignore
-      query: {
-        ...this.filterQuery,
-      },
-    }).catch((e) => {
-      console.error(e);
-    });
   }
 }
 </script>
@@ -651,6 +668,10 @@ export default class Dashboard extends Vue {
 
         &__item + .app-dashboard-table-action__item {
           margin-left: 20px;
+        }
+
+        .app-dashboard-table-action__item:last-child {
+          margin-left: auto;
         }
       }
     }

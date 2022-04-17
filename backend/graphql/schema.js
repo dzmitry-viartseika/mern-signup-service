@@ -9,9 +9,17 @@ module.exports = buildSchema(`
     role: String!
     _id: String!
   }
+  
+  input UsersFilter {
+    role: String
+  }
+  
+  input UserInput {
+    filter: UsersFilter
+  }
 
   type Query {
-    getAllUsers: [User!]!
+    getAllUsers(input: UserInput): [User]! 
   }
   
   input ClientInput {

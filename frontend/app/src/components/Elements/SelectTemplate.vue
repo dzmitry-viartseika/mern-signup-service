@@ -14,7 +14,7 @@
       v-model="itemValue"
       :options="options"
       :placeholder="placeholderText"
-      @select="onSelect"
+      @input="handleOnInput"
     />
   </div>
 </template>
@@ -56,11 +56,8 @@ export default class SelectTemplate extends Vue {
     this.$emit('update:item', data);
   }
 
-  onSelect() {
-    /* eslint-disable */
-    /* tslint:disable */
-    // @ts-ignore
-    console.log('wertey');
+  handleOnInput() {
+    this.$emit('onSelect', '');
   }
 }
 </script>
