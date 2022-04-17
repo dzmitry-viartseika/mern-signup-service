@@ -24,6 +24,7 @@ const ClientSchema = new Schema({
     },
 });
 
+ClientSchema.index({ firstName: 'text', lastName: 'text', email: 'text' })
 ClientSchema.set('toJSON', {
     virtuals: true,
 })

@@ -4,10 +4,15 @@ const Client = require('../models/client-model');
 module.exports = {
   async getAllUsers(arg) {
     try {
-      console.log('arg', arg);
-      const { role = 'ALL' } = arg.input.filter;
-      console.log('role', role);
-      const clients = await Client.find({});
+      const { role = 'ALL', searchText = '' } = arg.input.filter;
+      let clients;
+      if (!searchText) {
+         clients = await Client.find({});
+      }
+      if (searchText) {
+        clients = await Client.find({$text: {$search: searchText}});
+      }
+
       if (role === 'ALL') {
         return clients;
       }

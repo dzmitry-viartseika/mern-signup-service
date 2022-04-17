@@ -11,7 +11,8 @@ module.exports = buildSchema(`
   }
   
   input UsersFilter {
-    role: String
+    role: String,
+    searchText: String
   }
   
   input UserInput {

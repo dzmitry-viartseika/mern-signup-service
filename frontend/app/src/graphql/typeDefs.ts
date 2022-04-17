@@ -71,7 +71,8 @@ export default gql`
     }
 
     input UsersFilter {
-      role: String
+      role: String,
+      searchText: String
     }
 
     input UserInput {

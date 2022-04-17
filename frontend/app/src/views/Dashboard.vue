@@ -12,55 +12,64 @@
         Add Client
       </button>
     </div>
+    <div class="app-dashboard-table-action">
+      <div class="app-dashboard-table-action__item">
+        <text-input
+          :value.sync="searchValue"
+          input-type="text"
+          :placeholder-text="'Поиск по Фамилии'"
+        />
+        <!--              // TODO icon с расшифровкой по чем поиск UI-->
+      </div>
+      <div class="app-dashboard-table-action__item">
+        <SelectTemplate
+          :style="{'width': '200px'}"
+          :options="roles"
+          :item.sync="filterQuery.role"
+          :placeholder-text="'Выбрать роль'"
+          @onSelect="onSelect"
+        />
+      </div>
+      <div class="app-dashboard-table-action__item">
+        <button
+          class="app__btn app__btn--primary"
+          :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
+          @click="editClient"
+        >
+          Edit
+        </button>
+      </div>
+      <div class="app-dashboard-table-action__item">
+        <button
+          :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
+          class="app__btn app__btn--primary"
+          @click="deleteClient"
+        >
+          Delete
+        </button>
+      </div>
+      <div class="app-dashboard-table-action__item">
+        <button
+          class="app__btn app__btn--primary"
+          @click="filterClients"
+        >
+          Фильтровать
+        </button>
+      </div>
+      <div class="app-dashboard-table-action__item">
+        <button
+          class="app__btn app__btn--primary"
+          @click="clearFilters"
+        >
+          Очистить фильтры
+        </button>
+      </div>
+    </div>
     <template v-if="rowData.length">
       <transition-group
         name="fade-el"
       >
         <div key="table">
-          <div class="app-dashboard-table-action">
-            <div class="app-dashboard-table-action__item">
-              <text-input
-                :value.sync="searchValue"
-                input-type="text"
-                :placeholder-text="'Поиск по Фамилии'"
-              />
-            </div>
-            <div class="app-dashboard-table-action__item">
-              <SelectTemplate
-                :style="{'width': '200px'}"
-                :options="roles"
-                :item.sync="filterQuery.role"
-                :placeholder-text="'Выбрать роль'"
-                @onSelect="onSelect"
-              />
-            </div>
-            <div class="app-dashboard-table-action__item">
-              <button
-                class="app__btn app__btn--primary"
-                :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
-                @click="editClient"
-              >
-                Edit
-              </button>
-            </div>
-            <div class="app-dashboard-table-action__item">
-              <button
-                :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
-                class="app__btn app__btn--primary"
-                @click="deleteClient"
-              >
-                Delete
-              </button>
-            </div>
-            <div class="app-dashboard-table-action__item">
-              <button
-                class="app__btn app__btn--primary"
-                @click="filterClients"
-              >
-                Фильтровать
-              </button>
-            </div>
-          </div>
           <div class="app-dashboard-content">
             <AGGridTable
               :column-defs="columnDefs"
@@ -339,20 +348,27 @@ export default class Dashboard extends Vue {
     });
   }
 
+  clearFilters() {
+    this.filterQuery.role = 'ALL';
+    this.searchValue = '';
+    this.addingParameterToLink();
+    this.filterClients();
+  }
+
   async filterClients() {
+    console.log('wwwwwwwww');
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
       variables: {
         input: {
           filter: {
-            role: this.filterQuery.role,
+            role: this.filterQuery.role || 'ALL',
+            searchText: this.searchValue,
           },
         }
       },
     });
-    if (data.getAllUsers.length) {
-      this.rowData = data.getAllUsers;
-    }
+    this.rowData = data.getAllUsers;
   }
 
   async deleteClient(): Promise<void> {
@@ -460,7 +476,7 @@ export default class Dashboard extends Vue {
     }
   }
 
-  modalActions(data: boolean): void {
+  async modalActions(data: boolean): void {
     this.isEditMode = false;
     this.isVisibleAddUserModal = data;
     this.selectedRole = '';
@@ -468,6 +484,10 @@ export default class Dashboard extends Vue {
     this.lastName = '';
     this.phoneNumber = '';
     this.email = '';
+    this.searchValue = '';
+    this.filterQuery.role = 'ALL';
+    this.addingParameterToLink();
+    await this.filterClients();
   }
 
   onSelect (data) {
