@@ -426,9 +426,6 @@ export default class AsideTemplate extends Vue {
   }
 
   proceedToRoute(route) {
-    // if (route === this.$route.path) {
-    //   return;
-    // }
     this.activeSubMenuItem = route;
     this.$router.push({
       name: route,
@@ -823,7 +820,7 @@ export default class AsideTemplate extends Vue {
     background: $color-white;
     min-height: 46px;
     padding: 12px 0;
-    left: 80px;
+    left: 76px;
     top: 72px;
     box-shadow: 0 0 8px rgba($color-black, .04);
     border-radius: $borderRadius;
