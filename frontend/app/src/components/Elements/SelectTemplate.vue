@@ -33,7 +33,7 @@ export default class SelectTemplate extends Vue {
   @Prop({ required: true, type: Array })
   options: object[];
 
-  @Prop({ required: true, type: String })
+  @Prop({ required: false, type: String })
   item: string;
 
   @Prop({ required: false, type: String })

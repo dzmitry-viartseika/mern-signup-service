@@ -352,13 +352,6 @@ export default class AsideTemplate extends Vue {
     }
   }
 
-  // async mounted() {
-  //   if (Object.keys(this.$store.getters.user).length === 0) {
-  //     const response = await UsersService.getCurrentUser();
-  //     this.$store.dispatch('setUser', response.data);
-  //   }
-  // }
-
   created(): void {
     this.activeMenuItem = this.$route.path;
     if (ACTIVE_SUB_ROUTES.includes(this.$route.name)) {

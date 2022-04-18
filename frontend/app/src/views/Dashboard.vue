@@ -356,7 +356,6 @@ export default class Dashboard extends Vue {
   }
 
   async filterClients() {
-    console.log('wwwwwwwww');
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
       variables: {
