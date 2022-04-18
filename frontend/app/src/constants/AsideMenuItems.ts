@@ -41,14 +41,14 @@ const asideMenuItems: IAsideItem[] = [
     path: '/crm/files',
     name: 'asideMenu.files',
     route: 'Files',
-    icon: 'Chart',
+    icon: 'Folder',
   },
   {
     id: 7,
     path: '/crm/others',
     name: 'asideMenu.others',
     route: 'Others',
-    icon: 'Chart',
+    icon: 'Dots',
     children: [
       {
         id: 8,
@@ -61,7 +61,6 @@ const asideMenuItems: IAsideItem[] = [
   },
 ];
 
-// TODO three-dots icon bootstrap
 // TODO three-dots icon bootstrap
 
 export default asideMenuItems;
