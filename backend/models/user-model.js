@@ -37,6 +37,14 @@ const UserSchema = new Schema({
         type: String,
         default: '',
     },
+    showNotify: {
+        type: Boolean,
+        default: true
+    },
+    emailNotify: {
+        type: String,
+        default: "INSTANTLY"
+    }
 });
 
 UserSchema.set('toJSON', {

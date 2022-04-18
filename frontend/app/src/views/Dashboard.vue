@@ -288,13 +288,9 @@ export default class Dashboard extends Vue {
 
   isVisibleAddUserModal: boolean = false;
 
-  toggleValue: boolean = false;
-
   filterQuery: IFilterQueryClients = {} as IFilterQueryClients;
 
   item = '';
-
-  test = '';
 
   fullInfo = {};
 

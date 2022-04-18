@@ -42,8 +42,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Component, Watch, Vue } from 'vue-property-decorator';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import Checkbox from '@/components/Elements/Checkbox.vue';
 import '@/assets/icons/Eye';
@@ -66,9 +65,9 @@ import '@/assets/icons/Eye';
   },
 })
 export default class Notification extends Vue {
-  selectedPeriod: string = '';
+  selectedPeriod: null | string = null;
 
-  isSendNotify = false;
+  isSendNotify: null | boolean = null;
 
   periods = [
     {
@@ -82,9 +81,17 @@ export default class Notification extends Vue {
     },
   ];
 
+  created() {
+    const { showNotify = true, emailNotify = 'INSTANTLY' } = this.$store.getters.user;
+    this.isSendNotify = showNotify;
+    this.selectedPeriod = emailNotify;
+  }
+
   acceptSettings(): void {
     // eslint-disable-next-line no-console
     console.log('acceptSettings');
+    // eslint-disable-next-line no-console
+    console.log('this.selectedPeriod', this.selectedPeriod);
   }
 }
 </script>
