@@ -15,9 +15,7 @@
         Create Folder
       </button>
     </div>
-    <div class="app-files-content">
-
-    </div>
+    <div class="app-files-content" />
   </div>
 </template>
 
