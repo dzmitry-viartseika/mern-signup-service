@@ -91,7 +91,7 @@
                         :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem}"
                         @click.stop.prevent="proceedToRoute(el.route)"
                       >
-                        {{ $t(`${el.name}`) }}
+                        {{ $t(`${el.name}`) }} ww
                       </div>
                     </transition-group>
                   </div>
@@ -395,11 +395,15 @@ export default class AsideTemplate extends Vue {
   proceedTo(page: string, sub: any[] = []): void {
     this.isVisibleDropDown = !!sub.length;
     if (page !== this.$route.path) {
-      this.$router.push(page);
+      this.$router.push({
+        name: page,
+      });
     }
     if (sub.length && this.isShortAside) {
       const { route } = sub[0];
-      this.$router.push(route);
+      this.$router.push({
+        name: page,
+      });
       this.activeSubMenuItem = route;
     }
     this.activeMenuItem = page;
@@ -422,8 +426,13 @@ export default class AsideTemplate extends Vue {
   }
 
   proceedToRoute(route) {
+    // if (route === this.$route.path) {
+    //   return;
+    // }
     this.activeSubMenuItem = route;
-    this.$router.push(route);
+    this.$router.push({
+      name: route,
+    });
   }
 }
 </script>

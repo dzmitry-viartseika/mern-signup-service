@@ -89,7 +89,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/crm/others/test',
-    name: 'Others',
+    name: 'Test',
     component: () => import(/* webpackChunkName: "Test" */ '../views/Test.vue'),
     beforeEnter: (to, from, next) => {
       if (store.getters.user) {

@@ -3,5 +3,6 @@ export interface IAsideItem {
   name: string;
   route: string;
   icon: string;
+  path: string;
   children?: IAsideItem[];
 }
