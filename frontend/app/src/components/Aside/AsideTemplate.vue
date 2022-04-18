@@ -619,6 +619,7 @@ export default class AsideTemplate extends Vue {
     display: flex;
     align-items: center;
     height: 100%;
+    cursor: pointer;
     width: 100%;
     border-radius: 6px;
     text-decoration: none;

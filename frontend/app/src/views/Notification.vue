@@ -2,7 +2,7 @@
   <div class="app-notification">
     <div class="app-notification-header">
       <h1 class="app__title">
-        Dashboard
+        Notification
       </h1>
       <button
         class="app__btn app__btn--primary"
@@ -11,23 +11,23 @@
         Accept
       </button>
     </div>
-    <h2>
-      Отключить уведомления действий в системе
-    </h2>
-    <checkbox
-      id="remember-me"
-      v-model="isSendNotify"
-      name="send-notify"
-      :label="'Отправлять уведомление'"
-    />
-    <h2>
-      Изменить частоту оповещений по электронной почте
-    </h2>
-    <SelectTemplate
-      :options="periods"
-      :item.sync="selectedPeriod"
-      :label="'Период отправки писем'"
-    />
+    <div class="app-notification-content">
+      <div class="app-notification-content__item">
+        <checkbox
+          id="remember-me"
+          v-model="isSendNotify"
+          name="send-notify"
+          :label="'Отключить уведомления действий в системе'"
+        />
+      </div>
+      <div class="app-notification-content__item">
+        <select-template
+          :options="periods"
+          :item.sync="selectedPeriod"
+          :label="'Изменить частоту оповещений по электронной почте'"
+        />
+      </div>
+    </div>
     <!--    Отправка писем…-->
 
     <!--    Никогда-->
@@ -102,6 +102,14 @@ export default class Notification extends Vue {
     &-header {
       display: flex;
       justify-content: space-between;
+    }
+
+    &-content {
+      margin-top: 30px;
+
+      &__item {
+        margin-bottom: 15px;
+      }
     }
   }
 </style>
