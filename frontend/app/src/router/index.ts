@@ -52,6 +52,18 @@ const routes: RouteConfig[] = [
     },
   },
   {
+    path: '/crm/clients',
+    name: 'Clients',
+    component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Clients.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.user) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    },
+  },
+  {
     path: '/crm/analytics',
     name: 'Analytics',
     component: () => import(/* webpackChunkName: "Analytics" */ '../views/Analytics.vue'),

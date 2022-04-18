@@ -256,6 +256,7 @@ import '@/assets/icons/Calendar';
 import '@/assets/icons/LogOut';
 import '@/assets/icons/Message';
 import '@/assets/icons/Folder';
+import '@/assets/icons/Clients';
 import '@/assets/icons/Dots';
 import '@/assets/icons/ChevronBarLeft';
 import Component from 'vue-class-component';
