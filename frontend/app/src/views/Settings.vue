@@ -73,7 +73,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value="userData.firstName"
+            :value.sync="userData.firstName"
             input-type="text"
             label-text="Имя"
             :disabled="!isEditMode"
@@ -81,7 +81,7 @@
         </div>
         <div class="form-field">
           <text-input
-            :value="userData.lastName"
+            :value.sync="userData.lastName"
             input-type="text"
             label-text="Фамилия"
             :disabled="!isEditMode"
@@ -337,6 +337,7 @@ export default class Settings extends Vue {
     try {
       const formData = new FormData();
       formData.append('file', this.file);
+      console.log('this.userData', this.userData);
       const response = await UsersService.updateUser(this.$store.getters.user.email, this.userData);
       this.user = response.data;
     } catch (e) {
