@@ -66,7 +66,7 @@ export default class TextInput extends Vue {
   autofocus: boolean;
 
   setFocus() {
-    this.$refs.inputRef.focus();
+    (this.$refs.inputRef as HTMLElement).focus();
   }
 
   created() {

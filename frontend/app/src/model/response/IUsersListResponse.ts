@@ -1,8 +1,9 @@
 export interface IUsersListResponse {
-  avatar: string;
+  avatar?: string;
   email: string;
   firstName: string;
-  id: string;
+  role?: string;
+  _id: string;
   lastName: string;
   phoneNumber: string;
 }

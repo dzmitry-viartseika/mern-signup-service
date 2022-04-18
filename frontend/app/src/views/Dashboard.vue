@@ -231,6 +231,7 @@ import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import queryString from 'query-string';
 import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
+import IFilterQueryClients from "@/model/filters/IFilterQueryClients";
 
 export enum RowSelection {
   single = 'single',
@@ -272,7 +273,7 @@ export default class Dashboard extends Vue {
   isLoader: boolean = false;
   selectedClient: any = {};
   columnDefs = null;
-  rowData = null;
+  rowData: IUsersListResponse[] = [];
 
   roles = [
     {
@@ -289,9 +290,7 @@ export default class Dashboard extends Vue {
 
   toggleValue: boolean = false;
 
-  filterQuery = {};
-
-  rowData: IUsersListResponse[] = [];
+  filterQuery: IFilterQueryClients = {} as IFilterQueryClients;
 
   item = '';
 
@@ -457,14 +456,14 @@ export default class Dashboard extends Vue {
           this.rowData.push(data.addNewClient);
         } else {
           const currentIndex = this.rowData.findIndex((item) => item._id === this.selectedClient._id);
-          const obj = {
+          const obj: IUsersListResponse = {
             firstName: this.firstName,
             lastName: this.lastName,
             role: this.selectedRole,
             email: this.email,
             phoneNumber: this.phoneNumber,
             _id: this.selectedClient._id,
-          };
+          }
           this.selectedClient = {};
           this.rowData.splice(currentIndex, 1, obj);
         }
@@ -475,7 +474,7 @@ export default class Dashboard extends Vue {
     }
   }
 
-  async modalActions(data: boolean): void {
+  async modalActions(data: boolean): Promise<void> {
     this.isEditMode = false;
     this.isVisibleAddUserModal = data;
     this.selectedRole = '';
@@ -645,7 +644,7 @@ export default class Dashboard extends Vue {
     } = parsed;
     this.filterQuery = {
       role,
-    } as IFilterQueryCalendar;
+    } as IFilterQueryClients;
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
       variables: {

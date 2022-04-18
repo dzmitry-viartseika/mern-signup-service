@@ -117,7 +117,7 @@ export default class LandingPage extends Vue {
 
   async created(): Promise<any> {
     this.$socket.on('receive-message', (message) => {
-      this.test(message);
+      // this.test(message);
     });
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
