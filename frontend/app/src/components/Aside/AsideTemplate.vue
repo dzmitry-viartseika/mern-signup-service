@@ -91,7 +91,7 @@
                         :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem}"
                         @click.stop.prevent="proceedToRoute(el.route)"
                       >
-                        {{ $t(`${el.name}`) }} ww
+                        {{ $t(`${el.name}`) }}
                       </div>
                     </transition-group>
                   </div>
@@ -182,7 +182,10 @@
       </li>
 
       <li class="mode">
-        <div class="sun-moon">
+        <div
+          class="sun-moon"
+          :class="{'sun-moon--short': isShortAside}"
+        >
           <i class="bx bx-moon icon moon" />
           <i class="bx bx-sun icon sun" />
         </div>
@@ -256,13 +259,16 @@ import '@/assets/icons/Message';
 import '@/assets/icons/ChevronBarLeft';
 import Component from 'vue-class-component';
 import asideMenuItems from '@/constants/AsideMenuItems';
-import { IAsideItem } from '../../model/aside/IAsideItem';
+import { IAsideItem } from '@/model/aside/IAsideItem';
 import Toggle from '@/components/Elements/Toggle.vue';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
 import { IUser } from '@/model/IUser';
+
+const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
+const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
 
 @Component({
   components: {
@@ -286,7 +292,7 @@ export default class AsideTemplate extends Vue {
   activeSubMenuItem: string = '';
   activeMenuItem: string = '';
 
-  curItemMenu: null;
+  curItemMenu: null = null;
 
   popupPosition: any = {};
 
@@ -355,7 +361,7 @@ export default class AsideTemplate extends Vue {
 
   created(): void {
     this.activeMenuItem = this.$route.path;
-    if (this.$route.name === 'Others') {
+    if (ACTIVE_SUB_ROUTES.includes(this.$route.name)) {
       this.isVisibleDropDown = true;
       this.activeSubMenuItem = this.$route.path;
     }
@@ -371,8 +377,6 @@ export default class AsideTemplate extends Vue {
   }
 
   showSubmenu(): void {
-    // eslint-disable-next-line no-console
-    console.log('showSubmenuActive');
     this.showSubmenuActive = true;
   }
 
@@ -427,6 +431,11 @@ export default class AsideTemplate extends Vue {
 
   proceedToRoute(route) {
     this.activeSubMenuItem = route;
+    if (ACTIVE_SUB_ROUTES.includes(route)) {
+      this.activeMenuItem = MAIN_ROUTE_FOR_OTHER_CHILDREN;
+    } else {
+      this.activeMenuItem = route;
+    }
     this.$router.push({
       name: route,
     });
@@ -655,6 +664,15 @@ export default class AsideTemplate extends Vue {
   .menu-bar .mode .sun-moon{
     height: 50px;
     width: 60px;
+  }
+
+  .sun-moon {
+    margin-left: 22px;
+    transition: all .15s ease-in;
+
+    &--short {
+      margin-left: 10px;
+    }
   }
 
   .mode .sun-moon i{
