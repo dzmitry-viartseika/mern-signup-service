@@ -33,6 +33,14 @@
       <div class="app-dashboard-table-action__item">
         <button
           class="app__btn app__btn--primary"
+          @click="filterClients"
+        >
+          Фильтровать
+        </button>
+      </div>
+      <div class="app-dashboard-table-action__item">
+        <button
+          class="app__btn app__btn--primary"
           :class="{'app__btn--disabled': !Object.keys(selectedClient).length}"
           @click="editClient"
         >
@@ -46,14 +54,6 @@
           @click="deleteClient"
         >
           Delete
-        </button>
-      </div>
-      <div class="app-dashboard-table-action__item">
-        <button
-          class="app__btn app__btn--primary"
-          @click="filterClients"
-        >
-          Фильтровать
         </button>
       </div>
       <div class="app-dashboard-table-action__item">
@@ -166,7 +166,7 @@
             </transition>
           </div>
           <div class="form-field">
-            <div class="text-field">
+            <div class="text-field text-field--md">
               <SelectTemplate
                 :options="roles"
                 :item.sync="selectedRole"
@@ -231,7 +231,7 @@ import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import queryString from 'query-string';
 import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
-import IFilterQueryClients from "@/model/filters/IFilterQueryClients";
+import IFilterQueryClients from '@/model/filters/IFilterQueryClients';
 
 export enum RowSelection {
   single = 'single',
@@ -683,6 +683,7 @@ export default class Dashboard extends Vue {
       &-action {
         display: flex;
         justify-content: flex-start;
+        margin-top: 30px;
 
         &__item + .app-dashboard-table-action__item {
           margin-left: 20px;

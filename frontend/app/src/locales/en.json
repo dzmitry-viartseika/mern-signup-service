@@ -54,7 +54,11 @@
     "calendar": "Calendar",
     "notification": "Notifications",
     "analytics": "Analytics",
-    "logout": "Logout"
+    "files": "Files",
+    "others": "Others",
+    "logout": "Logout",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
   },
   "calendarPage": {
     "pageTitle": "Calendar",

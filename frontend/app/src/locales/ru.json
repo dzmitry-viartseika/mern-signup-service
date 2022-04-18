@@ -55,7 +55,11 @@
     "calendar": "Календарь",
     "notification": "Уведомления",
     "analytics": "Аналитика",
-    "logout": "Выйти"
+    "files": "Файлы",
+    "others": "Другое",
+    "logout": "Выйти",
+    "lightMode": "Светлый режим",
+    "darkMode": "Тёмный режим"
   },
   "calendarPage": {
     "pageTitle": "Производственный календарь",

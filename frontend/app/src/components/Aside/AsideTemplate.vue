@@ -194,14 +194,13 @@
           class="mode-text text"
         >
           <template v-if="toggleValue">
-            Dark mode
+            {{ $t('asideMenu.darkMode') }}
           </template>
           <template v-else>
-            Light mode
+            {{ $t('asideMenu.lightMode') }}
           </template>
         </span>
         <Toggle
-          text="wertey"
           :value.sync="toggleValue"
           @setToggleVal="setToggleVal"
         />
@@ -657,6 +656,12 @@ export default class AsideTemplate extends Vue {
   .menu-bar .mode .sun-moon{
     height: 50px;
     width: 60px;
+  }
+
+  .mode {
+    &-text {
+      margin-right: 10px;
+    }
   }
 
   .sun-moon {
