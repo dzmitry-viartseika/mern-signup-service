@@ -122,7 +122,7 @@ export default class Files extends Vue {
 
   selectedFolder: string = '';
 
-  async created() {
+  async created(): Promise<void> {
     try {
       const user = this.$store.getters.user;
       const { data } = await FolderService.getAllFilesByUserId(user.id);
@@ -152,12 +152,9 @@ export default class Files extends Vue {
 
   showModal(): void {
     this.isVisibleContextMenu = true;
-    // ref.$refs.list.style.top = `${top - ref.optimizedHeight}px`;
   }
 
   selectFolder(id: string): void {
-    // eslint-disable-next-line no-console
-    console.log('selectFolder');
     this.selectedFolder = id;
   }
 
@@ -173,11 +170,7 @@ export default class Files extends Vue {
     if (result) {
       try {
         const { showNotify, _id } = this.$store.getters.user;
-        // eslint-disable-next-line no-console
-        console.log('showNotify', showNotify);
         const { data } = await FolderService.createFolder(this.folderName, '123', _id, 2);
-        // eslint-disable-next-line no-console
-        console.log('data', data.folder);
         if (showNotify) {
           this.$toasted.show(`Новая папка ${this.folderName} успешно создана`, {
             theme: 'bubble',
@@ -198,6 +191,7 @@ export default class Files extends Vue {
 
 <style scoped lang="scss">
 @import '~vue-context/src/sass/vue-context';
+@import "../assets/scss/variables";
 
   .app-files {
 
@@ -237,7 +231,7 @@ export default class Files extends Vue {
         justify-content: center;
         align-items: center;
         display: flex;
-        //border-radius: $borderRadius;
+        border-radius: $borderRadius;
         transition: background-color .15s ease-in;
         cursor: pointer;
 
