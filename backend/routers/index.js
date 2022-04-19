@@ -1,5 +1,6 @@
 const Router = require('express');
 const UserController = require('../controllers/user-controller');
+const FolderController = require('../controllers/folders-controller');
 const WishesController = require('../controllers/wishes-controller');
 const WeekBasedWorkingCalendarDateController = require('../controllers/week-based-working-calendar-date-controller');
 const authMiddleWare = require('../middleware/auth-middleware');
@@ -25,5 +26,7 @@ router.get('/working-days', WeekBasedWorkingCalendarDateController.getWorkingDay
 router.patch('/changed-working-days', WeekBasedWorkingCalendarDateController.changeWorkingDate);
 router.post('/send-wishes', WishesController.sendWishesToEmail);
 router.get('/get-users', UserController.getUsers);
+router.post('/folder', FolderController.createFolder);
+router.get('/folder/:id', FolderController.getAllFilesByUserId);
 
 module.exports = router;

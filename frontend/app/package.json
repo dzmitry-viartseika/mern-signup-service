@@ -44,6 +44,7 @@
     "vue-apollo": "^3.1.0",
     "vue-class-component": "^7.2.3",
     "vue-click-outside": "^1.1.0",
+    "vue-context": "^6.0.0",
     "vue-i18n": "^8.19.0",
     "vue-infinite-loading": "^2.4.5",
     "vue-material-year-calendar": "^1.2.6",
