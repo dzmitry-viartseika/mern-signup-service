@@ -28,16 +28,6 @@
         />
       </div>
     </div>
-    <!--    Отправка писем…-->
-
-    <!--    Никогда-->
-    <!--    Не отправлять письма.-->
-
-    <!--    Периодически-->
-    <!--    Отправлять письма примерно раз в час.-->
-
-    <!--    Мгновенно-->
-    <!--    Отправлять письма как можно скорее.-->
   </div>
 </template>
 
@@ -46,7 +36,7 @@ import { Component, Watch, Vue } from 'vue-property-decorator';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import Checkbox from '@/components/Elements/Checkbox.vue';
 import '@/assets/icons/Eye';
-import UsersService from "@/services/Users/UsersService";
+import UsersService from '@/services/Users/UsersService';
 
 @Component({
   components: {
@@ -75,9 +65,6 @@ export default class Notification extends Vue {
       value: 'NEVER', text: 'Не отправлять письма',
     },
     {
-      value: 'FROMTIMETOTIME', text: 'Периодически',
-    },
-    {
       value: 'INSTANTLY', text: 'Мгновенно',
     },
   ];
@@ -94,7 +81,7 @@ export default class Notification extends Vue {
       ...userData,
       showNotify: this.isSendNotify,
       emailNotify: this.selectedPeriod,
-    }
+    };
     try {
       const { data } = await UsersService.updateUser(updatedUser);
       await this.$store.dispatch('setUser', data);
