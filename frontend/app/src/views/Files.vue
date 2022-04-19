@@ -2,7 +2,7 @@
   <div class="app-files">
     <div class="app-files-header">
       <h1 class="app__title">
-        Files
+        My Files
       </h1>
       <button
         class="app__btn app__btn--primary"
@@ -26,7 +26,7 @@
         class="app-files-content__item"
         :class="{'app-files-content__item--selected': selectedFolder === folder._id}"
         @click="selectedFolder = folder._id"
-        @contextmenu.prevent.stop="selectFolder(folder._id)"
+        @contextmenu.prevent.stop="$refs.selectedContextMenu.open"
       >
         <svgicon
           class="icon"
@@ -76,6 +76,16 @@
         </li>
         <li>
           <a @click.prevent="false">Загрузить файл</a>
+        </li>
+      </vue-context>
+    </transition>
+    <transition name="fade-el">
+      <vue-context ref="selectedContextMenu">
+        <li>
+          <a @click.prevent="false">Переименовать папку</a>
+        </li>
+        <li>
+          <a @click.prevent="false">Удалить папку</a>
         </li>
       </vue-context>
     </transition>
