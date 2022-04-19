@@ -4,12 +4,6 @@
       <h1 class="app__title">
         Notification
       </h1>
-      <button
-        class="app__btn app__btn--primary"
-        @click="acceptSettings"
-      >
-        Accept
-      </button>
     </div>
     <div class="app-notification-content">
       <div class="app-notification-content__item">
@@ -17,12 +11,15 @@
           id="remember-me"
           v-model="isSendNotify"
           name="send-notify"
+          @changeCheckBox="changeCheckBox($event)"
           :label="'Отключить уведомления действий в системе'"
         />
       </div>
       <div class="app-notification-content__item">
         <select-template
+          :style="{'width': '400px'}"
           :options="periods"
+          @onSelect="onSelect"
           :item.sync="selectedPeriod"
           :label="'Изменить частоту оповещений по электронной почте'"
         />
@@ -71,13 +68,22 @@ export default class Notification extends Vue {
     },
   ];
 
-  created() {
+  created(): void {
     const { showNotify = true, emailNotify = NotificationPeriods.INSTANTLY } = this.$store.getters.user;
     this.isSendNotify = showNotify;
     this.selectedPeriod = emailNotify;
   }
 
-  async acceptSettings(): Promise<void> {
+  async changeCheckBox(): Promise<void> {
+    this.isSendNotify = !this.isSendNotify;
+    await this.updateUser();
+  }
+
+  async onSelect(): Promise<void> {
+    await this.updateUser();
+  }
+
+  async updateUser(): Promise<void> {
     const userData = this.$store.getters.user;
     const updatedUser = {
       ...userData,
@@ -87,6 +93,13 @@ export default class Notification extends Vue {
     try {
       const { data } = await UsersService.updateUser(updatedUser);
       await this.$store.dispatch('setUser', data);
+      if (userData.showNotify) {
+        this.$toasted.show('Настройки уведомлений успешно изменены', {
+          theme: 'bubble',
+          position: 'top-right',
+          duration: 3000,
+        });
+      }
     } catch (e) {
       console.error(e);
     }

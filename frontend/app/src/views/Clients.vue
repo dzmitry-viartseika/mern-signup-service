@@ -22,7 +22,7 @@
         <!--              // TODO icon с расшифровкой по чем поиск UI-->
       </div>
       <div class="app-clients-table-action__item">
-        <SelectTemplate
+        <select-template
           :style="{'width': '200px'}"
           :options="roles"
           :item.sync="filterQuery.role"
@@ -499,7 +499,7 @@ export default class Dashboard extends Vue {
     await this.filterClients();
   }
 
-  onSelect (data) {
+  onSelect(): void {
     this.addingParameterToLink();
   }
 
