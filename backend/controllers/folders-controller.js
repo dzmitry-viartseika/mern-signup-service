@@ -19,8 +19,18 @@ class FoldersController {
     async getAllFilesByUserId(req, res, next) {
         try {
             const { id } = req.params;
-            console.log('id', id);
             const response = await FoldersService.getAllFilesByUserId(id);
+            return res.json(response);
+        } catch (e) {
+            next(e);
+            console.log(e);
+        }
+    }
+
+    async deleteFolderById(req, res, next) {
+        try {
+            const { id } = req.params;
+            const response = await FoldersService.deleteFolderById(id);
             return res.json(response);
         } catch (e) {
             next(e);

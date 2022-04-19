@@ -75,7 +75,6 @@ const deleteFile = async (req,res, next) => {
     try{
         const { _id } = req.body;
         const test = await SingleFile.deleteOne({ _id });
-        console.log('test', test);
         res.status(200).send({
             message: 'File was deleted'
         });

@@ -10,4 +10,8 @@ export default class FolderService {
   static async getAllFilesByUserId(id: string): Promise<AxiosResponse<any>> {
     return $api.get<any>(`/folder/${id}`);
   }
+
+  static async deleteFolder(id: string): Promise<AxiosResponse<any>> {
+    return $api.delete<any>(`/folder/${id}`);
+  }
 }

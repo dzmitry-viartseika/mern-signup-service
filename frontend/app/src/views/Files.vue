@@ -85,7 +85,7 @@
           <a @click.prevent="false">Переименовать папку</a>
         </li>
         <li>
-          <a @click.prevent="false">Удалить папку</a>
+          <a @click.prevent="deleteFolder">Удалить папку</a>
         </li>
       </vue-context>
     </transition>
@@ -170,6 +170,12 @@ export default class Files extends Vue {
 
   modalActions(data: boolean): void {
     this.isVisibleAddFolderModal = data;
+  }
+
+  async deleteFolder(): Promise<void> {
+    const { data } = await FolderService.deleteFolder(this.selectedFolder);
+    // eslint-disable-next-line no-console
+    console.log('data', data);
   }
 
   async addNewFolder(): Promise<void> {

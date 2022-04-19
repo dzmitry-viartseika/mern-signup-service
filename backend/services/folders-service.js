@@ -9,11 +9,16 @@ class FoldersService {
     }
 
     async getAllFilesByUserId(id) {
-        console.log('id', id);
         const folders = await FolderModel.find({ userCreatedFolder: id });
-        console.log('folders', folders);
         return {
             folders,
+        }
+    }
+
+    async deleteFolderById(id) {
+        await FolderModel.deleteOne({ file: id });
+        return {
+            message: 'File was deleted',
         }
     }
 }
