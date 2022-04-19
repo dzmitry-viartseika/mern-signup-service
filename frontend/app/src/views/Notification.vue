@@ -11,17 +11,17 @@
           id="remember-me"
           v-model="isSendNotify"
           name="send-notify"
-          @changeCheckBox="changeCheckBox($event)"
           :label="'Отключить уведомления действий в системе'"
+          @changeCheckBox="changeCheckBox($event)"
         />
       </div>
       <div class="app-notification-content__item">
         <select-template
           :style="{'width': '400px'}"
           :options="periods"
-          @onSelect="onSelect"
           :item.sync="selectedPeriod"
           :label="'Изменить частоту оповещений по электронной почте'"
+          @onSelect="onSelect"
         />
       </div>
     </div>
