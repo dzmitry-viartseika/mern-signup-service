@@ -190,7 +190,7 @@
           <i class="bx bx-sun icon sun" />
         </div>
         <span
-          v-if="!asideMode"
+          v-if="!conditionAsideMenu"
           class="mode-text text"
         >
           <template v-if="toggleValue">
