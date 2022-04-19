@@ -42,9 +42,9 @@
           <template v-else>
             <input
               ref="inputEdit"
+              v-model="folder.name"
               type="text"
               :style="{'width': '70px'}"
-              v-model="folder.name"
               @change="changedName"
             >
           </template>
