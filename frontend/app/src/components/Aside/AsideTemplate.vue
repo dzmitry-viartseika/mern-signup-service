@@ -268,7 +268,7 @@ import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
 import { IUser } from '@/model/IUser';
-import AsideMenuMode from '@/model/aside/AsideMenuMode';
+import AsideMenuMode from '@/model/enums/AsideMenuMode';
 
 const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
 const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';

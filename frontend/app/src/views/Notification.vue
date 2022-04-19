@@ -32,11 +32,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import Checkbox from '@/components/Elements/Checkbox.vue';
 import '@/assets/icons/Eye';
 import UsersService from '@/services/Users/UsersService';
+import NotificationPeriods from '@/model/enums/NotificationPeriods';
+import ISelectItem from '@/model/elements/ISelectItem';
 
 @Component({
   components: {
@@ -60,17 +62,17 @@ export default class Notification extends Vue {
 
   isSendNotify: null | boolean = null;
 
-  periods = [
+  periods: ISelectItem[] = [
     {
-      value: 'NEVER', text: 'Не отправлять письма',
+      value: NotificationPeriods.NEVER, text: 'Не отправлять письма',
     },
     {
-      value: 'INSTANTLY', text: 'Мгновенно',
+      value: NotificationPeriods.INSTANTLY, text: 'Мгновенно',
     },
   ];
 
   created() {
-    const { showNotify = true, emailNotify = 'INSTANTLY' } = this.$store.getters.user;
+    const { showNotify = true, emailNotify = NotificationPeriods.INSTANTLY } = this.$store.getters.user;
     this.isSendNotify = showNotify;
     this.selectedPeriod = emailNotify;
   }
