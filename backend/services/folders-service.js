@@ -16,7 +16,14 @@ class FoldersService {
     }
 
     async deleteFolderById(id) {
-        await FolderModel.deleteOne({ file: id });
+        const file = await FolderModel.findOne({ _id: id });
+        if (!file) {
+            return {
+                message: 'The File was not founded',
+            }
+        }
+        console.log('file', file);
+        file.remove();
         return {
             message: 'File was deleted',
         }

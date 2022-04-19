@@ -28,5 +28,6 @@ router.post('/send-wishes', WishesController.sendWishesToEmail);
 router.get('/get-users', UserController.getUsers);
 router.post('/folder', FolderController.createFolder);
 router.get('/folder/:id', FolderController.getAllFilesByUserId);
+router.delete('/folder/:id', FolderController.deleteFolderById);
 
 module.exports = router;

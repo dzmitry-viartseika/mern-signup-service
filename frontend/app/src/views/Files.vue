@@ -24,8 +24,8 @@
         v-for="folder in folders"
         :key="folder._id"
         class="app-files-content__item"
-        :class="{'app-files-content__item--selected': selectedFolder === folder._id}"
-        @click="selectedFolder = folder._id"
+        :class="{'app-files-content__item--selected': selectedFolder.id === folder._id}"
+        @click="selectedFolder = folder"
         @contextmenu.prevent.stop="$refs.selectedContextMenu.open"
       >
         <svgicon
@@ -34,8 +34,20 @@
           width="60"
           height="60"
         />
+        isEditMode{{ isEditMode }}
         <div class="app-files-content__item-name">
-          {{ folder.name }}
+          <template v-if="selectedFolder._id !== folder._id">
+            {{ folder.name }}
+          </template>
+          <template v-else>
+            <input
+              ref="inputEdit"
+              type="text"
+              :style="{'width': '70px'}"
+              v-model="folder.name"
+              @change="changedName"
+            >
+          </template>
         </div>
       </div>
     </div>
@@ -82,7 +94,7 @@
     <transition name="fade-el">
       <vue-context ref="selectedContextMenu">
         <li>
-          <a @click.prevent="false">Переименовать папку</a>
+          <a @click.prevent="editFolderName">Переименовать папку</a>
         </li>
         <li>
           <a @click.prevent="deleteFolder">Удалить папку</a>
@@ -130,7 +142,13 @@ export default class Files extends Vue {
 
   folders: any[] = [];
 
-  selectedFolder: string = '';
+  isEditMode: string | null = null;
+
+  selectedFolder: any = {};
+
+  changedName(): void {
+    this.isEditMode = null;
+  }
 
   async created(): Promise<void> {
     try {
@@ -168,14 +186,30 @@ export default class Files extends Vue {
     this.selectedFolder = id;
   }
 
+  editFolderName(): void {
+    /* eslint-disable */
+    /* tslint:disable */
+    console.log('this.selectedFolder._id', this.selectedFolder._id);
+    this.isEditMode = this.selectedFolder._id;
+  }
+
   modalActions(data: boolean): void {
     this.isVisibleAddFolderModal = data;
   }
 
   async deleteFolder(): Promise<void> {
-    const { data } = await FolderService.deleteFolder(this.selectedFolder);
-    // eslint-disable-next-line no-console
-    console.log('data', data);
+    const { showNotify } = this.$store.getters.user;
+    const { data } = await FolderService.deleteFolder(this.selectedFolder._id);
+    if (showNotify) {
+      // TODO сделать модал с подтверждение удаления
+      this.$toasted.show(`Папка ${this.selectedFolder.name} успешно удалена`, {
+        theme: 'bubble',
+        position: 'top-right',
+        duration: 3000,
+      });
+    }
+    const currentIndex = this.folders.findIndex((item) => item._id === this.selectedFolder._id);
+    this.folders.splice(currentIndex, 1);
   }
 
   async addNewFolder(): Promise<void> {
