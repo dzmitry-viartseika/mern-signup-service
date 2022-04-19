@@ -9,9 +9,8 @@ export default class UsersService {
     return $api.get<IUser[]>('/users');
   }
 
-  static updateUser(email: string, updatedUser): Promise<AxiosResponse<IUser>> {
-    // TODO обновлять только измененную инфу, а не весь объект
-    return $api.patch<IUser>('/update-user', { email, updatedUser });
+  static updateUser(updatedUser: IUser): Promise<AxiosResponse<IUser>> {
+    return $api.patch<IUser>('/update-user', { updatedUser });
   }
 
   static getCurrentUser(): Promise<AxiosResponse<IUser>> {

@@ -338,7 +338,7 @@ export default class Settings extends Vue {
       const formData = new FormData();
       formData.append('file', this.file);
       console.log('this.userData', this.userData);
-      const response = await UsersService.updateUser(this.$store.getters.user.email, this.userData);
+      const response = await UsersService.updateUser(this.userData);
       this.user = response.data;
     } catch (e) {
       console.error(e);

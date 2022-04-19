@@ -447,9 +447,17 @@ export default class Dashboard extends Vue {
 
     if (result) {
       try {
+        const { showNotify } = this.$store.getters.user;
         const { data } = this.isEditMode ? await this.editAction() : await this.addAction();
         if (!this.isEditMode) {
           this.rowData.push(data.addNewClient);
+          if (showNotify) {
+            this.$toasted.show(`Новый Клиент ${this.firstName} успешно добавлен`, {
+              theme: 'bubble',
+              position: 'top-right',
+              duration: 3000,
+            });
+          }
         } else {
           const currentIndex = this.rowData.findIndex((item) => item._id === this.selectedClient._id);
           const obj: IUsersListResponse = {
@@ -462,6 +470,13 @@ export default class Dashboard extends Vue {
           }
           this.selectedClient = {};
           this.rowData.splice(currentIndex, 1, obj);
+          if (showNotify) {
+            this.$toasted.show(`Новый Клиент ${this.firstName} успешно изменен`, {
+              theme: 'bubble',
+              position: 'top-right',
+              duration: 3000,
+            });
+          }
         }
         this.isVisibleAddUserModal = false;
       } catch (e) {

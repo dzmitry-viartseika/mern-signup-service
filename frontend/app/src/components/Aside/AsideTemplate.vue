@@ -1,7 +1,7 @@
 <template>
   <nav
     class="sidebar"
-    :class="{'close': isShortAside}"
+    :class="{'close': conditionAsideMenu}"
   >
     <header>
       <div class="image-text">
@@ -37,7 +37,7 @@
           :href="`#${item.route}`"
           :class="[
             {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route || item.children && isVisibleDropDown},
-            {'admin-left-sidebar-menu__item_height': item.children && !isShortAside}
+            {'admin-left-sidebar-menu__item_height': item.children && !asideMode}
           ]"
           @click.stop.prevent="proceedTo(item.route, item.children)"
           @mouseenter="showMenuPopup($event, index, item.children)"
@@ -55,7 +55,7 @@
               mode="out-in"
             >
               <div
-                v-if="curItemMenu === index && isShortAside"
+                v-if="curItemMenu === index && conditionAsideMenu"
                 class="admin-left-sidebar-popup"
                 :class="{'admin-left-sidebar-popup_no-hover': item.children}"
                 :style="popupPosition"
@@ -104,7 +104,7 @@
               tag="div"
             >
               <span
-                v-if="!isShortAside"
+                v-if="!conditionAsideMenu"
                 :key="index"
               >
                 {{ $t(`${item.name}`) }}
@@ -116,7 +116,7 @@
             <!--              tag="div"-->
             <!--            >-->
             <!--              <span-->
-            <!--                v-if="!isShortAside"-->
+            <!--                v-if="!asideMode"-->
             <!--                :key="index"-->
             <!--              >-->
             <!--                {{ $t(`${item.name}`) }}-->
@@ -124,7 +124,7 @@
             <!--            </transition>-->
           </div>
           <div
-            v-if="item.children && isVisibleDropDown && !isShortAside"
+            v-if="item.children && isVisibleDropDown && !conditionAsideMenu"
             class="admin-left-sidebar-menu__dropdown"
           >
             <transition-group name="fade-el">
@@ -184,13 +184,13 @@
       <li class="mode">
         <div
           class="sun-moon"
-          :class="{'sun-moon--short': isShortAside}"
+          :class="{'sun-moon--short': conditionAsideMenu}"
         >
           <i class="bx bx-moon icon moon" />
           <i class="bx bx-sun icon sun" />
         </div>
         <span
-          v-if="!isShortAside"
+          v-if="!asideMode"
           class="mode-text text"
         >
           <template v-if="toggleValue">
@@ -268,9 +268,15 @@ import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
 import { IUser } from '@/model/IUser';
+import AsideMenuMode from '@/model/aside/AsideMenuMode';
 
 const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
 const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
+
+interface IPopupPosition {
+  top: string;
+  right: string;
+}
 
 @Component({
   components: {
@@ -281,29 +287,32 @@ const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
 })
 export default class AsideTemplate extends Vue {
 
-  isShortAside: boolean | null = false;
+  asideMode:  string | 'Full' | 'Short' = 'Full';
 
   toggleValue: boolean = false;
 
   isVisibleWishesModal: boolean | null = false;
 
-  showSubmenuActive: boolean = false;
-
   isVisibleDropDown: boolean = false;
 
   activeSubMenuItem: string = '';
+
   activeMenuItem: string = '';
 
   curItemMenu: null = null;
 
-  popupPosition: any = {};
+  popupPosition: IPopupPosition = {} as IPopupPosition;
 
   navList: IAsideItem[] = [];
 
-  wishesValue = '';
+  wishesValue: string = '';
 
   get userInfo(): IUser {
     return this.$store.getters.user;
+  }
+
+  get conditionAsideMenu(): boolean {
+    return this.asideMode !== AsideMenuMode.FULL;
   }
 
   beforeMount(): void {
@@ -355,6 +364,8 @@ export default class AsideTemplate extends Vue {
   }
 
   created(): void {
+    const asideMode = localStorage.getItem('asideMode') || 'Full';
+    this.asideMode = asideMode;
     this.activeMenuItem = this.$route.name;
     if (ACTIVE_SUB_ROUTES.includes(this.$route.name)) {
       this.isVisibleDropDown = true;
@@ -371,12 +382,9 @@ export default class AsideTemplate extends Vue {
     }
   }
 
-  showSubmenu(): void {
-    this.showSubmenuActive = true;
-  }
-
   hideAside(): void {
-    this.isShortAside = !this.isShortAside;
+    this.asideMode = this.asideMode === AsideMenuMode.FULL ? AsideMenuMode.SHORT : AsideMenuMode.FULL;
+    localStorage.setItem('asideMode', this.asideMode);
     this.curItemMenu = null;
   }
 
@@ -398,7 +406,7 @@ export default class AsideTemplate extends Vue {
         name: page,
       });
     }
-    if (sub.length && this.isShortAside) {
+    if (sub.length && this.asideMode) {
       const { route } = sub[0];
       this.$router.push({
         name: page,
@@ -409,16 +417,16 @@ export default class AsideTemplate extends Vue {
     // this.curItemMenu = null;
   }
 
-  showMenuPopup(e, index, sub: any[] = []) {
+  showMenuPopup(e, index, sub: any[] = []): void {
     if (sub.length) {
       const position = e.target.getBoundingClientRect();
       if (position) {
         this.popupPosition = {
           top: `${position.top}px`,
           right: 'auto',
-        };
+        } as IPopupPosition;
       } else {
-        this.popupPosition = {};
+        this.popupPosition = {} as IPopupPosition;
       }
       this.curItemMenu = index;
     }

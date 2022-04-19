@@ -152,11 +152,11 @@ class UserService {
         return modifiedUsersList;
     }
 
-    async updateUser(email, updatedUser) {
-        if (!email) {
+    async updateUser(updatedUser) {
+        if (!updatedUser.email) {
             throw ApiError.unAuthorizedError();
         }
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: updatedUser.email });
 
         if (!user) {
             throw ApiError.badRequest('Пользователь с таким email не найден');
@@ -166,7 +166,10 @@ class UserService {
         user.firstName = updatedUser.firstName;
         user.lastName = updatedUser.lastName;
         user.phoneNumber = updatedUser.phoneNumber;
+        user.showNotify = updatedUser.showNotify;
+        user.emailNotify = updatedUser.emailNotify;
         user.save();
+        return user;
     }
 
     async googleUser(req, res,next) {

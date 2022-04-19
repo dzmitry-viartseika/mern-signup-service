@@ -46,6 +46,7 @@ import { Component, Watch, Vue } from 'vue-property-decorator';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import Checkbox from '@/components/Elements/Checkbox.vue';
 import '@/assets/icons/Eye';
+import UsersService from "@/services/Users/UsersService";
 
 @Component({
   components: {
@@ -87,11 +88,19 @@ export default class Notification extends Vue {
     this.selectedPeriod = emailNotify;
   }
 
-  acceptSettings(): void {
-    // eslint-disable-next-line no-console
-    console.log('acceptSettings');
-    // eslint-disable-next-line no-console
-    console.log('this.selectedPeriod', this.selectedPeriod);
+  async acceptSettings(): Promise<void> {
+    const userData = this.$store.getters.user;
+    const updatedUser = {
+      ...userData,
+      showNotify: this.isSendNotify,
+      emailNotify: this.selectedPeriod,
+    }
+    try {
+      const { data } = await UsersService.updateUser(updatedUser);
+      await this.$store.dispatch('setUser', data);
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 </script>
