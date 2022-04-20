@@ -27,6 +27,19 @@ class FoldersController {
         }
     }
 
+    async updateCreatedFolder(req, res, next) {
+        try {
+            console.log('req.params', req.params);
+            const { id } = req.params;
+            const { data } = req.body;
+            const response = await FoldersService.updateCreatedFolder(id, data);
+            return res.json(response);
+        } catch (e) {
+            next(e);
+            console.log(e);
+        }
+    }
+
     async deleteFolderById(req, res, next) {
         try {
             const { id } = req.params;

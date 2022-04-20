@@ -29,5 +29,6 @@ router.get('/get-users', UserController.getUsers);
 router.post('/folder', FolderController.createFolder);
 router.get('/folder/:id', FolderController.getAllFilesByUserId);
 router.delete('/folder/:id', FolderController.deleteFolderById);
+router.patch('/folder/:id', FolderController.updateCreatedFolder);
 
 module.exports = router;

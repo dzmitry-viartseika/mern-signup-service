@@ -19,28 +19,37 @@
     <div
       class="app-files-content"
       @contextmenu.prevent.stop="$refs.contextMenu.open"
+      @click="isVisibleConfirmModal = ''"
     >
       <div
         v-for="folder in folders"
         :key="folder._id"
         class="app-files-content__item"
-        :class="{'app-files-content__item--selected': selectedFolder.id === folder._id}"
+        :class="{'app-files-content__item--selected': selectedFolder._id === folder._id}"
         @click="selectedFolder = folder"
         @contextmenu.prevent.stop="$refs.selectedContextMenu.open"
       >
+        <transition name="fade-el">
+          <the-confirm-modal
+            v-if="isVisibleConfirmModal === folder._id"
+            :name-text="folder.name"
+            @closeConfirmModal="closeConfirmModal"
+            @actionConfirmModal="actionConfirmModal"
+          />
+        </transition>
         <svgicon
           class="icon"
           name="FolderFiles"
           width="60"
           height="60"
         />
-        isEditMode{{ isEditMode }}
         <div class="app-files-content__item-name">
-          <template v-if="selectedFolder._id !== folder._id">
+          <template v-if="!isEditMode">
             {{ folder.name }}
           </template>
-          <template v-else>
+          <template v-if="isEditMode && selectedFolder._id === folder._id">
             <input
+              class="app-files-content__item-input"
               ref="inputEdit"
               v-model="folder.name"
               type="text"
@@ -114,12 +123,14 @@ import validationErrorMessage from '@/locales/validationErrorMessage';
 import FolderService from '@/services/Folder/FolderService';
 import VueContext from 'vue-context';
 import '@/assets/icons/FolderFiles';
+import TheConfirmModal from '@/components/Modals/TheConfirmModal.vue';
 
 @Component({
   components: {
     ModalTemplateWithAction,
     TextInput,
     VueContext,
+    TheConfirmModal,
   },
   metaInfo() {
     return {
@@ -142,12 +153,24 @@ export default class Files extends Vue {
 
   folders: any[] = [];
 
-  isEditMode: string | null = null;
+  isEditMode: boolean = false;
+  isAgreedDeletingFile: boolean = false;
+
+  isVisibleConfirmModal: string = '';
 
   selectedFolder: any = {};
 
-  changedName(): void {
-    this.isEditMode = null;
+  async changedName(): Promise<void> {
+    this.isEditMode = false;
+    try {
+      const updatedData = {
+        name: this.selectedFolder.name,
+      };
+      await FolderService.updateCreatedFolder(this.selectedFolder._id, updatedData);
+      this.selectedFolder = {};
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async created(): Promise<void> {
@@ -187,9 +210,7 @@ export default class Files extends Vue {
   }
 
   editFolderName(): void {
-    /* eslint-disable */
-    /* tslint:disable */
-    console.log('this.selectedFolder._id', this.selectedFolder._id);
+    this.isEditMode = true;
     this.isEditMode = this.selectedFolder._id;
   }
 
@@ -197,11 +218,23 @@ export default class Files extends Vue {
     this.isVisibleAddFolderModal = data;
   }
 
-  async deleteFolder(): Promise<void> {
+  closeConfirmModal(): void {
+    this.isVisibleConfirmModal = '';
+  }
+
+  async actionConfirmModal(): Promise<void> {
+    this.isAgreedDeletingFile = true;
+    await this.deleteFolderRequest();
+  }
+
+  deleteFolder(): void {
+    this.isVisibleConfirmModal = this.selectedFolder._id;
+  }
+
+  async deleteFolderRequest(): Promise<void> {
     const { showNotify } = this.$store.getters.user;
     const { data } = await FolderService.deleteFolder(this.selectedFolder._id);
     if (showNotify) {
-      // TODO сделать модал с подтверждение удаления
       this.$toasted.show(`Папка ${this.selectedFolder.name} успешно удалена`, {
         theme: 'bubble',
         position: 'top-right',
@@ -262,7 +295,7 @@ export default class Files extends Vue {
     &-content {
       position: relative;
       margin-top: 20px;
-      box-shadow: 0 0 15px rgba(black, .2);
+      box-shadow: 0 0 15px rgba($color-black, .2);
       border-radius: 4px;
       padding: 35px 24px 24px;
       height: calc(100vh - 90px);
@@ -284,6 +317,11 @@ export default class Files extends Vue {
         border-radius: $borderRadius;
         transition: background-color .15s ease-in;
         cursor: pointer;
+        position: relative;
+
+        &-input {
+          border: none;
+        }
 
         &:hover {
           background-color: rgba(#695CFE, .2);

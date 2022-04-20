@@ -28,6 +28,18 @@ class FoldersService {
             message: 'File was deleted',
         }
     }
+
+    async updateCreatedFolder(id, data) {
+        let file = await FolderModel.updateOne({ _id: id },  data);
+        if (!file) {
+            return {
+                message: 'The File was not founded',
+            }
+        }
+        return {
+            message: 'File succesfully updated'
+        }
+    }
 }
 
 module.exports = new FoldersService();

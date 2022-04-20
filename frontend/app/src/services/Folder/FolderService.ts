@@ -14,4 +14,8 @@ export default class FolderService {
   static async deleteFolder(id: string): Promise<AxiosResponse<any>> {
     return $api.delete<any>(`/folder/${id}`);
   }
+
+  static async updateCreatedFolder(id: string, data: any): Promise<AxiosResponse<any>> {
+    return $api.patch<any>(`/folder/${id}`, { data });
+  }
 }
