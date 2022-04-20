@@ -11,7 +11,7 @@
           type="file"
           class="app-files__input"
           @change="fileHandler($event)"
-        />
+        >
         <button
           class="app__btn app__btn--primary"
           @click="uploadFile"
