@@ -13,16 +13,24 @@
           @change="fileHandler($event)"
         >
         <button
-          class="app__btn app__btn--primary"
+          class="app__btn app__btn--primary app__btn--rounded"
           @click="uploadFile"
         >
-          +
+          <svgicon
+            name="Plus"
+            width="24"
+            height="24"
+          />
         </button>
         <button
-          class="app__btn app__btn--primary"
+          class="app__btn app__btn--primary app__btn--rounded"
           @click="modalActions(true)"
         >
-          Create Folder
+          <svgicon
+            name="Upload"
+            width="24"
+            height="24"
+          />
         </button>
       </div>
     </div>
@@ -122,23 +130,68 @@
       </modal-template-with-action>
     </transition>
     <transition name="fade-el">
-      <vue-context ref="contextMenu">
-        <li>
-          <a @click.prevent="modalActions(true)">Создать папку</a>
-        </li>
-        <li>
-          <a @click.prevent="false">Загрузить файл</a>
-        </li>
+      <vue-context ref="contextMenu"
+                   class="app-context-menu"
+      >
+        <div class="app-context-menu__item">
+          <svgicon
+            name="Plus"
+            width="16"
+            height="16"
+          />
+          <div
+            class="app-context-menu__item-text"
+            @click.prevent="modalActions(true)"
+          >
+            Создать папку
+          </div>
+        </div>
+        <div class="app-context-menu__item">
+          <svgicon
+            name="Upload"
+            width="16"
+            height="16"
+          />
+          <div
+            class="app-context-menu__item-text"
+            @click.prevent="uploadFile"
+          >
+            Загрузить файл
+          </div>
+        </div>
       </vue-context>
     </transition>
     <transition name="fade-el">
-      <vue-context ref="selectedContextMenu">
-        <li>
-          <a @click.prevent="editFolderName">Переименовать папку</a>
-        </li>
-        <li>
-          <a @click.prevent="deleteFolder">Удалить папку</a>
-        </li>
+      <vue-context
+        ref="selectedContextMenu"
+        class="app-context-menu"
+      >
+        <div class="app-context-menu__item">
+          <svgicon
+            name="EditFolder"
+            width="16"
+            height="16"
+          />
+          <div
+            class="app-context-menu__item-text"
+            @click.prevent="editFolderName"
+          >
+            Переименовать папку
+          </div>
+        </div>
+        <div class="app-context-menu__item">
+          <svgicon
+            name="Delete"
+            width="16"
+            height="16"
+          />
+          <div
+            class="app-context-menu__item-text"
+            @click.prevent="deleteFolder"
+          >
+            Удалить папку
+          </div>
+        </div>
       </vue-context>
     </transition>
   </div>
@@ -147,7 +200,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import '@/assets/icons/Eye';
+import '@/assets/icons/Plus';
+import '@/assets/icons/Upload';
+import '@/assets/icons/EditFolder';
+import '@/assets/icons/Delete';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
@@ -378,15 +434,6 @@ export default class Files extends Vue {
       }
     }
 
-    &-context-menu {
-      width: 15%;
-      height: 150px;
-      padding: 5px 4px;
-      display: none;
-      position: absolute;
-      background: red;
-    }
-
     &-content {
       position: relative;
       margin-top: 20px;
@@ -436,4 +483,34 @@ export default class Files extends Vue {
       }
     }
   }
+</style>
+
+<style lang="scss">
+@import "../assets/scss/variables";
+
+.app-context-menu {
+  border: none!important;
+  box-shadow: none!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__item {
+    cursor: pointer;
+    text-decoration: none!important;
+    transition: background-color .15s ease-in;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+
+    &-text {
+      margin-left: 15px;
+    }
+
+    &:hover {
+      background-color: rgba(#695CFE, .2)!important;
+    }
+  }
+}
+
 </style>
