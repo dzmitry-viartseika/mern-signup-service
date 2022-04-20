@@ -26,7 +26,7 @@
         :key="folder._id"
         class="app-files-content__item"
         :class="{'app-files-content__item--selected': selectedFolder._id === folder._id}"
-        @click="selectedFolder = folder"
+        @click="selectFolderAction(folder)"
         @contextmenu.prevent.stop="$refs.selectedContextMenu.open"
       >
         <transition name="fade-el">
@@ -227,6 +227,11 @@ export default class Files extends Vue {
     await this.deleteFolderRequest();
   }
 
+  selectFolderAction(folder): void {
+    // this.isEditMode = false;
+    this.selectedFolder = folder;
+  }
+
   deleteFolder(): void {
     this.isVisibleConfirmModal = this.selectedFolder._id;
   }
@@ -333,6 +338,10 @@ export default class Files extends Vue {
 
         &-name {
           margin-top: 10px;
+          overflow: hidden;
+          word-break: break-all;
+          text-align: center;
+          user-select: none;
         }
       }
     }
