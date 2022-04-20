@@ -8,7 +8,7 @@ export default class FolderService {
   }
 
   static async getAllFilesByUserId(id: string): Promise<AxiosResponse<any>> {
-    return $api.get<any>(`/folder/${id}`);
+    return $api.get<any>(`/folder/all/${id}`);
   }
 
   static async deleteFolder(id: string): Promise<AxiosResponse<any>> {
@@ -16,6 +16,6 @@ export default class FolderService {
   }
 
   static async updateCreatedFolder(id: string, data: any): Promise<AxiosResponse<any>> {
-    return $api.patch<any>(`/folder/${id}`, { data });
+    return $api.patch<any>(`/folder/update/${id}`, { data });
   }
 }

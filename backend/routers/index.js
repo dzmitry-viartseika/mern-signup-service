@@ -27,8 +27,8 @@ router.patch('/changed-working-days', WeekBasedWorkingCalendarDateController.cha
 router.post('/send-wishes', WishesController.sendWishesToEmail);
 router.get('/get-users', UserController.getUsers);
 router.post('/folder', FolderController.createFolder);
-router.get('/folder/:id', FolderController.getAllFilesByUserId);
+router.get('/folder/all/:id', FolderController.getAllFilesByUserId);
 router.delete('/folder/:id', FolderController.deleteFolderById);
-router.patch('/folder/:id', FolderController.updateCreatedFolder);
+router.patch('/folder/update/:id', FolderController.updateCreatedFolder);
 
 module.exports = router;

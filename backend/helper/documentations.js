@@ -2,6 +2,7 @@
 const authDocs = require('../routers/auth.doc');
 const WorkingDays = require('../routers/working-days.doc');
 const WishesDoc = require('../routers/wishes.doc');
+const FolderDoc = require('../routers/folder.doc');
 
 const swaggerDocumentation = {
     openapi: '3.0.0',
@@ -29,6 +30,7 @@ const swaggerDocumentation = {
         ...authDocs,
         ...WorkingDays,
         ...WishesDoc,
+        ...FolderDoc,
     }
 }
 

@@ -168,9 +168,10 @@ app.use('/api', fileRoutes.routes);
 const startApp = async () => {
     try {
         await mongoose.connect(process.env.DB_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             useCreateIndex: true,
+            useUnifiedTopology: true,
+            useFindAndModify: true,
+            useNewUrlParser: true,
         })
         server.listen(PORT, () => {
             console.log(`Backend is running on the ${PORT}`);

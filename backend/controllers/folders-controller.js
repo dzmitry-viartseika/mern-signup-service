@@ -43,6 +43,7 @@ class FoldersController {
     async deleteFolderById(req, res, next) {
         try {
             const { id } = req.params;
+            console.log('id', id);
             const response = await FoldersService.deleteFolderById(id);
             return res.json(response);
         } catch (e) {
