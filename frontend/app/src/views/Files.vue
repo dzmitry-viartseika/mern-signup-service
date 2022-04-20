@@ -44,14 +44,14 @@
           height="60"
         />
         <div class="app-files-content__item-name">
-          <template v-if="!isEditMode">
+          <template v-if="!isEditMode || selectedFolder._id !== folder._id">
             {{ folder.name }}
           </template>
           <template v-if="isEditMode && selectedFolder._id === folder._id">
             <input
-              class="app-files-content__item-input"
               ref="inputEdit"
               v-model="folder.name"
+              class="app-files-content__item-input"
               type="text"
               :style="{'width': '70px'}"
               @change="changedName"
