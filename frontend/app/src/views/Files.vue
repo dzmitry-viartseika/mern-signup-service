@@ -130,8 +130,9 @@
       </modal-template-with-action>
     </transition>
     <transition name="fade-el">
-      <vue-context ref="contextMenu"
-                   class="app-context-menu"
+      <vue-context
+        ref="contextMenu"
+        class="app-context-menu"
       >
         <div class="app-context-menu__item">
           <svgicon
