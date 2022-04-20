@@ -4,19 +4,30 @@
       <h1 class="app__title">
         My Files
       </h1>
-      <button
-        class="app__btn app__btn--primary"
-      >
-        Add file
-      </button>
-      <button
-        class="app__btn app__btn--primary"
-        @click="modalActions(true)"
-      >
-        Create Folder
-      </button>
+      <div class="app-files-header__actions">
+        <input
+          id="file"
+          ref="file"
+          type="file"
+          class="app-files__input"
+          @change="fileHandler($event)"
+        />
+        <button
+          class="app__btn app__btn--primary"
+          @click="uploadFile"
+        >
+          +
+        </button>
+        <button
+          class="app__btn app__btn--primary"
+          @click="modalActions(true)"
+        >
+          Create Folder
+        </button>
+      </div>
     </div>
     <div
+      v-if="folders.length"
       class="app-files-content"
       @contextmenu.prevent.stop="$refs.contextMenu.open"
       @click="isVisibleConfirmModal = ''"
@@ -58,6 +69,26 @@
             >
           </template>
         </div>
+      </div>
+    </div>
+    <div v-else>
+      <div
+        class="app-files-placeholder"
+      >
+        <h2 class="app-files-placeholder__title">
+          Список файлов пуст
+        </h2>
+        <img
+          class="app-files-placeholder__image"
+          src="../assets/images/placeholders/clients-placeholder.png"
+          alt="placeholder"
+        >
+        <button
+          class="app__btn app__btn--primary"
+          @click="modalActions(true)"
+        >
+          Add Folder
+        </button>
       </div>
     </div>
     <transition name="fade-el">
@@ -125,6 +156,10 @@ import VueContext from 'vue-context';
 import '@/assets/icons/FolderFiles';
 import TheConfirmModal from '@/components/Modals/TheConfirmModal.vue';
 
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
+
 @Component({
   components: {
     ModalTemplateWithAction,
@@ -152,6 +187,8 @@ export default class Files extends Vue {
   isVisibleContextMenu: boolean = false;
 
   folders: any[] = [];
+
+  file: any = {};
 
   isEditMode: boolean = false;
   isAgreedDeletingFile: boolean = false;
@@ -216,6 +253,27 @@ export default class Files extends Vue {
 
   modalActions(data: boolean): void {
     this.isVisibleAddFolderModal = data;
+  }
+
+  uploadFile(): void {
+    this.$refs.file.click();
+  }
+
+  async fileHandler(event?: HTMLInputEvent): Promise<void> {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        /* eslint-disable */
+        /* tslint:disable */
+        // @ts-ignore
+        this.file = this.$refs!.file!.files[0];
+      }
+    };
+    if (event) {
+      const target = event.target as HTMLInputElement;
+      const files = target.files;
+      reader.readAsDataURL(files![0]);
+    }
   }
 
   closeConfirmModal(): void {
@@ -283,9 +341,41 @@ export default class Files extends Vue {
 
   .app-files {
 
+    &-placeholder {
+      margin-top: 20vh;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+
+      &__image {
+        margin-bottom: 10px;
+      }
+
+      &__title {
+        font-size: 30px;
+      }
+    }
+
+    &__input {
+      display: none;
+    }
+
     &-header {
       display: flex;
       justify-content: space-between;
+
+      &__actions {
+        margin-left: auto;
+        display: flex;
+
+        button + button {
+          margin-left: 10px;
+        }
+      }
     }
 
     &-context-menu {

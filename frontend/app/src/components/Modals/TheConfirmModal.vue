@@ -1,7 +1,7 @@
 <template>
   <div class="app-confirm-modal">
     <div class="app-confirm-modal__content">
-      Вы уверены, что хотите удалить файл "{{ nameText }}"
+      Вы уверены, что хотите удалить файл "{{ nameText }}"?
     </div>
     <div class="app-confirm-modal__footer">
       <button @click="closeConfirmModal">
