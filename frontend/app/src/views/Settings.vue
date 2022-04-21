@@ -283,13 +283,15 @@ export default class Settings extends Vue {
 
   async mounted(): Promise<any> {
     this.language = localStorage.getItem('language') || this.$i18n.locale;
-    if (Object.keys(this.$store.getters.user).length === 0) {
-      const response = await UsersService.getCurrentUser();
-      this.userData = response.data;
-    } else {
-      this.userData = this.user;
-      this.cachedUser =  JSON.parse(JSON.stringify(this.$store.getters.user));
-    }
+    this.userData = this.user;
+    this.cachedUser =  JSON.parse(JSON.stringify(this.$store.getters.user));
+    // if (Object.keys(this.$store.getters.user).length === 0) {
+    //   const response = await UsersService.getCurrentUser();
+    //   this.userData = response.data;
+    // } else {
+    //   this.userData = this.user;
+    //   this.cachedUser =  JSON.parse(JSON.stringify(this.$store.getters.user));
+    // }
   }
 
   deletePhoto(): void {

@@ -269,6 +269,7 @@ import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
 import { IUser } from '@/model/IUser';
 import AsideMenuMode from '@/model/enums/AsideMenuMode';
+import UsersService from "@/services/Users/UsersService";
 
 const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
 const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
@@ -363,7 +364,9 @@ export default class AsideTemplate extends Vue {
     }
   }
 
-  created(): void {
+  async created(): Promise<void> {
+    const { data } = await UsersService.getCurrentUser();
+    await this.$store.dispatch('setUser', data);
     const asideMode = localStorage.getItem('asideMode') || 'Full';
     this.asideMode = asideMode;
     this.activeMenuItem = this.$route.name;
