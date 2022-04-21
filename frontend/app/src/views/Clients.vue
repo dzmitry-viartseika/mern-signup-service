@@ -78,6 +78,16 @@
               @onClientSelected="onClientSelected"
             />
           </div>
+          <div class="app-clients-pagination">
+            <paginationTemplate
+              :pagination="{
+                    per_page: this.per_page,
+                    total: this.total,
+                    total_pages: this.total_pages
+                   }"
+              :current-page="currentPage"
+              @pagechanged="onPageChange"/>
+          </div>
         </div>
       </transition-group>
     </template>
@@ -216,7 +226,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import '@/assets/icons/Eye';
 import UsersService from '@/services/Users/UsersService';
 import Radio from '@/components/Elements/Radio.vue';
-import Pagination from '@/components/Paginations/Pagination.vue';
 import SelectTemplate from '@/components/Elements/SelectTemplate.vue';
 import TextInput from '@/components/Elements/TextInput.vue';
 import LoaderTemplate from '@/components/Elements/LoaderTemplate.vue';
@@ -232,6 +241,7 @@ import validationErrorMessage from '@/locales/validationErrorMessage';
 import queryString from 'query-string';
 import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
 import IFilterQueryClients from '@/model/filters/IFilterQueryClients';
+import paginationTemplate from '@/components/Paginations/Pagination.vue';
 
 export enum RowSelection {
   single = 'single',
@@ -252,7 +262,6 @@ export enum RowSelection {
   },
   components: {
     Radio,
-    Pagination,
     SelectTemplate,
     Toggle,
     TextInput,
@@ -260,6 +269,7 @@ export enum RowSelection {
     VueTelInput,
     LoaderTemplate,
     AGGridTable,
+    paginationTemplate,
   },
 })
 export default class Dashboard extends Vue {
@@ -311,6 +321,12 @@ export default class Dashboard extends Vue {
     search: '',
     filter: '',
   };
+
+  per_page: number = 0;
+  total: number = 0;
+  total_pages: number = 0;
+
+  currentPage: number = 1;
 
 
   onDetailRowClick (dataItem) {
@@ -393,6 +409,13 @@ export default class Dashboard extends Vue {
 
   onClientSelected(item): void {
     this.selectedClient = item;
+  }
+
+  onPageChange(page) {
+    console.log('page', page);
+    this.currentPage = page;
+    this.filterQuery.page = page;
+    this.addingParameterToLink();
   }
 
   async editAction(): Promise<any> {
@@ -652,9 +675,13 @@ export default class Dashboard extends Vue {
     const parsed = queryString.parse(location.search, { parseBooleans: true });
     const {
       role = this.filterQuery.role,
+      page = this.filterQuery.page || 1,
+      limit = this.filterQuery.limit || 20,
     } = parsed;
     this.filterQuery = {
       role,
+      page,
+      limit,
     } as IFilterQueryClients;
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
@@ -667,7 +694,23 @@ export default class Dashboard extends Vue {
       },
     });
     if (data.getAllUsers.length) {
+      // TODO сhange Users to Clients graphql
       this.rowData = data.getAllUsers;
+      this.total = this.rowData.length;
+      this.per_page = 1;
+      this.total_pages = Math.ceil(this.total / 5);
+      console.log('total', this.total);
+      console.log('per_page', this.per_page);
+      console.log('total_pages', this.total_pages);
+      // per_page: number = 0;
+      // total: number = 0;
+      // total_pages: number = 0;
+      // const start = (+this.per_page - 1) * 6;
+      // const end = +this.per_page * 6;
+      // console.log('start', start);
+      // console.log('end', end);
+      // const paginatedRows = this.rowData.filter((row) => this.rowData.includes((this.rowData).slice(start, end)));
+      // console.log('paginatedRows', paginatedRows);
     }
     try {
       await UsersService.success();
@@ -724,6 +767,7 @@ export default class Dashboard extends Vue {
 
   &-content {
     width: 100%;
+    margin-bottom: 20px;
 
     &--flex {
       display: flex;

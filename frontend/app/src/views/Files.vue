@@ -47,6 +47,7 @@
         :class="{'app-files-content__item--selected': selectedFolder._id === folder._id}"
         @click="selectFolderAction(folder)"
         @contextmenu.prevent.stop="$refs.selectedContextMenu.open"
+        @dblclick="proceedTo"
       >
         <transition name="fade-el">
           <the-confirm-modal
@@ -212,6 +213,7 @@ import FolderService from '@/services/Folder/FolderService';
 import VueContext from 'vue-context';
 import '@/assets/icons/FolderFiles';
 import TheConfirmModal from '@/components/Modals/TheConfirmModal.vue';
+import getUniqueId from '@/utils/uniqueId';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -272,6 +274,9 @@ export default class Files extends Vue {
       const user = this.$store.getters.user;
       const { data } = await FolderService.getAllFilesByUserId(user.id);
       this.folders = data.folders;
+      // eslint-disable-next-line no-console
+      console.log('1', this.folders.sort((prev, next) => prev.folderType - next.folderType));
+      this.folders = this.folders.sort((prev, next) => prev.folderType - next.folderType);
     } catch (e) {
       console.error(e);
     }
@@ -347,6 +352,17 @@ export default class Files extends Vue {
     this.selectedFolder = folder;
   }
 
+  proceedTo(): void {
+    console.log('selectedFolder', this.selectedFolder);
+    this.$router.push({
+      name: 'Files',
+      query: {
+        id: this.selectedFolder.parentFolder,
+      },
+    });
+    // this.folders = [];
+  }
+
   deleteFolder(): void {
     this.isVisibleConfirmModal = this.selectedFolder._id;
   }
@@ -373,7 +389,8 @@ export default class Files extends Vue {
     if (result) {
       try {
         const { showNotify, _id } = this.$store.getters.user;
-        const { data } = await FolderService.createFolder(this.folderName, '123', _id, 2);
+        const parentFolderId = `${getUniqueId()}`;
+        const { data } = await FolderService.createFolder(this.folderName, parentFolderId, _id, 2);
         if (showNotify) {
           this.$toasted.show(`Новая папка ${this.folderName} успешно создана`, {
             theme: 'bubble',
@@ -502,7 +519,7 @@ export default class Files extends Vue {
     transition: background-color .15s ease-in;
     display: flex;
     align-items: center;
-    padding: 5px;
+    padding: 10px;
 
     &-text {
       margin-left: 15px;

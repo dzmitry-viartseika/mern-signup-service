@@ -1,40 +1,141 @@
 <template>
-  <transition>
+  <div class="app-pagination">
     <div
-      v-if="data.totalPages > 1"
-      class="ub-pagination"
-      :class="{'ub-pagination_sticky': sticky}"
+      v-if="total_pages > 1"
+      class="app-pagination-list"
     >
       <div
-        v-if="data.totalPages > 1"
-        class="ub-pagination-item ub-pagination-item_nav"
-        :class="{'ub-pagination-item_disabled': activePage === 0}"
-        @click="clickPage(data.prevPage)"
+        class="app-pagination-list__item"
+        :class="{'bg-gray-200': isInFirstPage}"
       >
-        <i class="ub-icon-arrow-paginate icon-arrow icon-arrow_left ub-pagination__nav ub-pagination__nav_left" />
+        <button
+          type="button"
+          class="app__btn app__btn--border"
+          :class="{'cursor-not-allowed': isInFirstPage}"
+          :disabled="isInFirstPage"
+          @click="gotoFirst"
+        >
+          &laquo;
+        </button>
       </div>
+
+      <div
+        class="app-pagination-list__item"
+        :class="{'bg-gray-200': isInFirstPage}"
+      >
+        <button
+          type="button"
+          class="app__btn app__btn--border"
+          :class="{'cursor-not-allowed': isInFirstPage}"
+          :disabled="isInFirstPage"
+          @click="gotoPrevious"
+        >
+          &lsaquo;
+        </button>
+      </div>
+
+      <template v-if="showDots('left')">
+        <div
+          class="app-pagination-list__item"
+          :class="{'bg-gray-600': isInFirstPage}"
+        >
+          <button
+            type="button"
+            class="app__btn app__btn--primary"
+            :class="{'cursor-not-allowed': isInFirstPage}"
+            :disabled="isInFirstPage"
+            @click="gotoPageNumber(1)"
+          >
+            1
+          </button>
+        </div>
+
+        <div class="app-pagination-list__item">
+          <button
+            type="button"
+            class="app__btn app__btn--primary"
+            :disabled="true"
+          >
+            ...
+          </button>
+        </div>
+      </template>
+
       <div
         v-for="(page, index) in pages"
-        :key="`${index}bb${page}`"
-        class="ub-pagination-item"
-        :class="{
-          'ub-pagination-item_ellipsis': typeof page === 'string',
-          'ub-pagination-item_active': activePage === index
-        }"
-        @click="clickPage(page, index)"
+        :key="`pages_${index}`"
+        class="app-pagination-list__item"
+        :class="{'bg-gray-600': page === currentPage}"
       >
-        {{ page }}
+        <button
+          type="button"
+          class="app__btn app__btn--primary"
+          :class="{'cursor-not-allowed': page === currentPage}"
+          :disabled="page === currentPage"
+          @click="gotoPageNumber(page)"
+        >
+          {{ page }}
+        </button>
       </div>
+
+      <template v-if="showDots('right')">
+        <div class="app-pagination-list__item">
+          <button
+            type="button"
+            class="app__btn app__btn--primary"
+            :disabled="true"
+          >
+            ...
+          </button>
+        </div>
+
+        <div
+          class="app-pagination-list__item"
+          :class="{'bg-gray-600': isInLastPage}"
+        >
+          <button
+            type="button"
+            class="app__btn app__btn--primary"
+            :class="{'cursor-not-allowed': isInLastPage}"
+            :disabled="isInLastPage"
+            @click="gotoPageNumber(total_pages)"
+          >
+            {{ total_pages }}
+          </button>
+        </div>
+      </template>
+
       <div
-        v-if="data.totalPages > 1"
-        class="ub-pagination-item ub-pagination-item_nav"
-        :class="{'ub-pagination-item_disabled': activePage === pages.length - 1}"
-        @click="clickPage(data.nextPage)"
+        class="app-pagination-list__item"
+        :class="{'bg-gray-200': isInLastPage}"
       >
-        <i class="ub-icon-arrow-paginate icon-arrow icon-arrow_right ub-pagination__nav ub-pagination__nav_right" />
+        <button
+          type="button"
+          class="app__btn app__btn--border"
+          :class="{'cursor-not-allowed': isInLastPage}"
+          :disabled="isInLastPage"
+          @click="gotoNext"
+        >
+          &rsaquo;
+        </button>
+      </div>
+
+      <div
+        class="app-pagination-list__item"
+        :class="{'bg-gray-200': isInLastPage}"
+      >
+        <button
+          type="button"
+          class="app__btn app__btn--border"
+          :class="{'cursor-not-allowed': isInLastPage}"
+          :disabled="isInLastPage"
+          @click="gotoLast"
+        >
+          &raquo;
+        </button>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script lang="ts">
@@ -44,149 +145,107 @@ import '@/assets/icons/Caution-sign';
 @Component({})
 export default class Pagination extends Vue {
 
-  @Prop({ required: false, type: Boolean, default: true })
-  sticky: boolean;
+  @Prop({ type: Number, default: 1  })
+  currentPage: number;
 
-  @Prop({ required: false, type: Number, default: 1 })
-  limit: number;
+  @Prop({ type: Object, required: true  })
+  pagination: any;
 
-  @Prop({ required: false })
-  data: any;
+  @Prop({ type: Number, required: false, default: 5  })
+  maxVisibleButtons: number;
 
-  @Prop({ required: true, type: Function })
-  getQuery: Function;
+  per_page: number = 10;
+  total: number = 0;
+  total_pages: number = 0;
 
-  activePage = 0;
-  pages = [1, 2, 3];
-
-  @Watch('data')
-  test() {
-    this.setPages(this.data);
+  get isInFirstPage() {
+    return this.currentPage === 1;
   }
 
-  beforeMount() {
-    this.setPages(this.data);
+  get isInLastPage() {
+    return this.currentPage === this.total_pages;
   }
 
-  setPages({
-    totalPages, page, prevPage, nextPage,
-  }) {
-    if (totalPages <= 3) {
-      this.activePage = page - 1;
-      const firstPages = [1, 2, 3];
-      this.pages = firstPages.splice(0, totalPages);
-      return;
+  get pages() {
+    const range = [];
+
+    for (let i = this.startPage; i <= this.endPage; i += 1) {
+      range.push(i);
     }
-    if (prevPage && nextPage) {
-      this.activePage = 1;
-      this.pages = [prevPage, page, nextPage, '...', totalPages];
-    } else if (!prevPage && nextPage) {
-      this.activePage = 0;
-      let checkPage;
-      if (totalPages === nextPage + 1) {
-        checkPage = totalPages;
-      } else {
-        checkPage = nextPage + 1;
-      }
-      this.pages = [page, nextPage, checkPage, '...', totalPages];
-    } else if (prevPage && !nextPage) {
-      this.activePage = 2;
-      this.pages = [prevPage - 1, prevPage, page];
-    }
-    if (totalPages === nextPage) {
-      this.activePage = 3;
-      this.pages = [1, '...', prevPage, page, nextPage];
-    } else if (totalPages === page) {
-      this.activePage = 4;
-      this.pages = [1, '...', prevPage - 1, prevPage, page];
-    }
+
+    return range;
   }
 
-  clickPage(page) {
-    if (page === '...' || !page || this.data.page === page) {
-      return;
+  get startPage() {
+    if (this.currentPage === 1) {
+      return 1;
     }
-    const query = {
-      perPage: this.limit,
-      page,
-    };
-    this.getQuery(query);
+
+    if (this.currentPage === this.total_pages) {
+      return this.total_pages - this.maxVisibleButtons + 1;
+    }
+
+    return this.currentPage - 1;
+  }
+
+  get endPage() {
+    return Math.min(this.startPage + this.maxVisibleButtons - 1, this.total_pages);
+  }
+
+  showDots(position = 'left') {
+    const number = position === 'left' ? 1 : this.total_pages;
+    const nextNumber = position === 'left' ? 2 : this.total_pages - 1;
+
+    return !this.pages.includes(number) || !this.pages.includes(nextNumber);
+  }
+
+  gotoFirst() {
+    this.gotoPageNumber(1);
+  }
+
+  gotoLast() {
+    this.gotoPageNumber(this.total_pages);
+  }
+
+  gotoPrevious() {
+    this.gotoPageNumber(this.currentPage - 1);
+  }
+
+  gotoNext() {
+    this.gotoPageNumber(this.currentPage + 1);
+  }
+
+  gotoPageNumber(pageNumber) {
+    this.$emit('pagechanged', pageNumber);
+  }
+
+  created() {
+    this.per_page = this.pagination.per_page || 10;
+    this.total = this.pagination.total || 0;
+    this.total_pages = this.pagination.total_pages || 0;
+  }
+
+  @Watch('pagination')
+  test(pagination) {
+    this.per_page = pagination.per_page || 10;
+    this.total = pagination.total || 0;
+    this.total_pages = pagination.total_pages || 0;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../../assets/scss/variables";
-
-.ub-pagination {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  &_sticky {
-    position: sticky;
-    bottom: 0;
-  }
-  &-item {
+  .app-pagination {
     display: flex;
     justify-content: center;
-    align-items: center;
-    width: 26px;
-    height: 25px;
-    margin: 0 1px;
-    cursor: pointer;
-    border-radius: $borderRadius;
-    background: transparent;
-    line-height: 21px;
-    user-select: none;
-    font: $font-size-h3 $font-global;
-    color: $color-dodger-blue;
-    transition: background-color .2s ease-in;
-    &_disabled {
-      pointer-events: none;
-      color: $color-silver-chalice;
-    }
-    &_ellipsis {
-      width: auto;
-      background-color: transparent;
-    }
-    &_nav {
-      background-color: transparent;
-    }
-    &_double {
-      margin: 0;
-      i {
-        margin: -3px;
+
+    &-list {
+      display: flex;
+
+      &__item + .app-pagination-list__item {
+        margin-left: 15px;
       }
     }
-    &:last-child,
-    &:first-child {
-      margin: 0;
-    }
-    &:hover {
-      background: rgba($color-dodger-blue, .08);
-    }
-    &_active {
-      background-color: $color-dodger-blue !important;
-      color: $color-white !important;
-    }
   }
-  &__nav {
-    display: block;
-    font-size: $font-size-h6;
-    color: $color-white;
-  }
-}
-.icon-arrow {
-  color: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: $font-size-md;
-  position: relative;
-  transition: color .15s ease-in;
-  &_left {
-    transform: rotate(180deg);
-  }
-}
 </style>
