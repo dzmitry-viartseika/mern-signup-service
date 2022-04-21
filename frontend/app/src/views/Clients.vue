@@ -81,12 +81,13 @@
           <div class="app-clients-pagination">
             <paginationTemplate
               :pagination="{
-                    per_page: this.per_page,
-                    total: this.total,
-                    total_pages: this.total_pages
-                   }"
+                per_page: this.per_page,
+                total: this.total,
+                total_pages: this.total_pages
+              }"
               :current-page="currentPage"
-              @pagechanged="onPageChange"/>
+              @pagechanged="onPageChange"
+            />
           </div>
         </div>
       </transition-group>
