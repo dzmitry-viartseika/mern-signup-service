@@ -458,7 +458,7 @@ export default class Files extends Vue {
       box-shadow: 0 0 15px rgba($color-black, .2);
       border-radius: 4px;
       padding: 35px 24px 24px;
-      height: calc(100vh - 90px);
+      height: calc(100vh - 100px);
       display: grid;
       grid-template-columns: repeat(auto-fill,minmax(130px,1fr));
       grid-template-rows: repeat(auto-fit,142px);

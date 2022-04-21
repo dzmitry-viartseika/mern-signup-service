@@ -23,7 +23,7 @@
           <router-view />
         </keep-alive>
       </transition>
-      <chat v-if="showSidebar"/>
+      <chat v-if="showSidebar" />
     </main>
   </div>
 </template>
