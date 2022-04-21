@@ -15,6 +15,7 @@ export default class Chat extends Vue {
 
 <style scoped lang="scss">
 @import '../../assets/scss/variables';
+
   .app-chat {
     position: fixed;
     right: 25px;
@@ -28,8 +29,5 @@ export default class Chat extends Vue {
     align-items: center;
     color: $color-white;
   }
-</style>
-
-<style scoped>
 
 </style>

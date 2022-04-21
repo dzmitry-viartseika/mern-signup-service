@@ -28,119 +28,124 @@
     </header>
 
     <nav class="admin-left-sidebar-menu">
-      <template
-        v-for="(item, index) in navList"
+      <VuePerfectScrollbar
+        class="scroll-area"
+        :settings="settings"
       >
-        <a
-          :key="item.id"
-          class="admin-left-sidebar-menu__item"
-          :href="`#${item.route}`"
-          :class="[
+        <template
+          v-for="(item, index) in navList"
+        >
+            <a
+            :key="item.id"
+            class="admin-left-sidebar-menu__item"
+            :href="`#${item.route}`"
+            :class="[
             {'admin-left-sidebar-menu__item--active': activeMenuItem === item.route || item.children && isVisibleDropDown},
             {'admin-left-sidebar-menu__item_height': item.children && !asideMode}
           ]"
-          @click.stop.prevent="proceedTo(item.route, item.children)"
-          @mouseenter="showMenuPopup($event, index, item.children)"
-          @mouseleave="showMenuPopup($event, null, item.children)"
-        >
-          <div class="admin-left-sidebar-menu__content">
-            <svgicon
-              class="icon"
-              :name="item.icon"
-              width="20"
-              height="20"
-            />
-            <transition
-              name="fade-menu-item"
-              mode="out-in"
-            >
-              <div
-                v-if="curItemMenu === index && conditionAsideMenu"
-                class="admin-left-sidebar-popup"
-                :class="{'admin-left-sidebar-popup_no-hover': item.children}"
-                :style="popupPosition"
+            @click.stop.prevent="proceedTo(item.route, item.children)"
+            @mouseenter="showMenuPopup($event, index, item.children)"
+            @mouseleave="showMenuPopup($event, null, item.children)"
+          >
+            <div class="admin-left-sidebar-menu__content">
+              <svgicon
+                class="icon"
+                :name="item.icon"
+                width="20"
+                height="20"
+              />
+              <transition
+                name="fade-menu-item"
+                mode="out-in"
               >
+                <div
+                  v-if="curItemMenu === index && conditionAsideMenu"
+                  class="admin-left-sidebar-popup"
+                  :class="{'admin-left-sidebar-popup_no-hover': item.children}"
+                  :style="popupPosition"
+                >
                 <span
                   v-if="!item.children"
                   class="admin-left-sidebar-popup__title"
                 >
                   {{ $t(`${item.name}`) }}
                 </span>
-                <div
-                  v-else
-                  class="admin-left-sidebar-popup__list"
-                >
+                  <div
+                    v-else
+                    class="admin-left-sidebar-popup__list"
+                  >
                   <span
                     class="admin-left-sidebar-popup__title admin-left-sidebar-popup__title_disabled"
                     @click.stop
                   >
                     {{ $t(`${item.name}`) }}
                   </span>
-                  <div
-                    class="admin-left-sidebar-menu__dropdown admin-left-sidebar-menu__dropdown_alt"
-                  >
-                    <transition-group
-                      name="fade-el"
-                      mode="out-in"
-                      tag="div"
+                    <div
+                      class="admin-left-sidebar-menu__dropdown admin-left-sidebar-menu__dropdown_alt"
                     >
-                      <div
-                        v-for="el in item.children"
-                        :key="el.id"
-                        class="admin-left-sidebar-menu__dropdown-item"
-                        :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem}"
-                        @click.stop.prevent="proceedToRoute(el.route)"
+                      <transition-group
+                        name="fade-el"
+                        mode="out-in"
+                        tag="div"
                       >
-                        {{ $t(`${el.name}`) }}
-                      </div>
-                    </transition-group>
+                        <div
+                          v-for="el in item.children"
+                          :key="el.id"
+                          class="admin-left-sidebar-menu__dropdown-item"
+                          :class="{'admin-left-sidebar-menu__dropdown-item_active': el.route === activeSubMenuItem}"
+                          @click.stop.prevent="proceedToRoute(el.route)"
+                        >
+                          {{ $t(`${el.name}`) }}
+                        </div>
+                      </transition-group>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </transition>
-            <transition
-              name="fade-content"
-              mode="out-in"
-              tag="div"
-            >
+              </transition>
+              <transition
+                name="fade-content"
+                mode="out-in"
+                tag="div"
+              >
               <span
                 v-if="!conditionAsideMenu"
                 :key="index"
               >
                 {{ $t(`${item.name}`) }}
               </span>
-            </transition>
-            <!--            <transition-->
-            <!--              name="fade-content"-->
-            <!--              mode="out-in"-->
-            <!--              tag="div"-->
-            <!--            >-->
-            <!--              <span-->
-            <!--                v-if="!asideMode"-->
-            <!--                :key="index"-->
-            <!--              >-->
-            <!--                {{ $t(`${item.name}`) }}-->
-            <!--              </span>-->
-            <!--            </transition>-->
-          </div>
-          <div
-            v-if="item.children && isVisibleDropDown && !conditionAsideMenu"
-            class="admin-left-sidebar-menu__dropdown"
-          >
-            <transition-group name="fade-el">
-              <div
-                v-for="el in item.children"
-                :key="el.id"
-                class="admin-left-sidebar-menu__dropdown-item"
-                :class="{'admin-left-sidebar-menu__dropdown-item--active': el.route === activeSubMenuItem}"
-                @click.stop.prevent="proceedToRoute(el.route)"
-              >
-                {{ $t(`${el.name}`) }}
-              </div>
-            </transition-group>
-          </div>
-        </a>
-      </template>
+              </transition>
+              <!--            <transition-->
+              <!--              name="fade-content"-->
+              <!--              mode="out-in"-->
+              <!--              tag="div"-->
+              <!--            >-->
+              <!--              <span-->
+              <!--                v-if="!asideMode"-->
+              <!--                :key="index"-->
+              <!--              >-->
+              <!--                {{ $t(`${item.name}`) }}-->
+              <!--              </span>-->
+              <!--            </transition>-->
+            </div>
+            <div
+              v-if="item.children && isVisibleDropDown && !conditionAsideMenu"
+              class="admin-left-sidebar-menu__dropdown"
+            >
+              <transition-group name="fade-el">
+                <div
+                  v-for="el in item.children"
+                  :key="el.id"
+                  class="admin-left-sidebar-menu__dropdown-item"
+                  :class="{'admin-left-sidebar-menu__dropdown-item--active': el.route === activeSubMenuItem}"
+                  @click.stop.prevent="proceedToRoute(el.route)"
+                >
+                  {{ $t(`${el.name}`) }}
+                </div>
+              </transition-group>
+            </div>
+          </a>
+        </template>
+      </VuePerfectScrollbar>
     </nav>
 
     <div
@@ -270,6 +275,7 @@ import WishesService from '@/services/Wishes/Wishes';
 import { IUser } from '@/model/IUser';
 import AsideMenuMode from '@/model/enums/AsideMenuMode';
 import UsersService from '@/services/Users/UsersService';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
 const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
@@ -284,6 +290,7 @@ interface IPopupPosition {
     ModalTemplateWithAction,
     Toggle,
     TextareaTemplate,
+    VuePerfectScrollbar,
   },
 })
 export default class AsideTemplate extends Vue {
@@ -301,6 +308,10 @@ export default class AsideTemplate extends Vue {
   activeMenuItem: string = '';
 
   curItemMenu: null = null;
+
+  settings = {
+    maxScrollbarLength: 60,
+  };
 
   popupPosition: IPopupPosition = {} as IPopupPosition;
 
@@ -1019,5 +1030,12 @@ export default class AsideTemplate extends Vue {
   .bottom-content {
     flex: 0 0 auto;
   }
+}
+</style>
+
+<style lang="scss">
+  .scroll-area {
+  position: relative;
+  height: 600px;
 }
 </style>
