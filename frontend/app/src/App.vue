@@ -23,6 +23,7 @@
           <router-view />
         </keep-alive>
       </transition>
+      <chat v-if="showSidebar"/>
     </main>
   </div>
 </template>
@@ -33,11 +34,13 @@ import AsideTemplate from '@/components/Aside/AsideTemplate.vue';
 import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
+import Chat from '@/components/Chat/Chat.vue';
 
 @Component({
   components: {
     AsideTemplate,
     ModalTemplate,
+    Chat,
   },
 })
 export default class App extends Vue {
