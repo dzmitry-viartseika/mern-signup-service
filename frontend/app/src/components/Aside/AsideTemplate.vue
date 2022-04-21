@@ -376,8 +376,12 @@ export default class AsideTemplate extends Vue {
   }
 
   async created(): Promise<void> {
-    const { data } = await UsersService.getCurrentUser();
-    await this.$store.dispatch('setUser', data);
+    try {
+      const { data } = await UsersService.getCurrentUser();
+      await this.$store.dispatch('setUser', data);
+    } catch (e) {
+      console.error(e);
+    }
     const asideMode = localStorage.getItem('asideMode') || 'Full';
     this.asideMode = asideMode;
     this.activeMenuItem = this.$route.name;
