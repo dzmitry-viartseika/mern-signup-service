@@ -276,6 +276,7 @@ import { IUser } from '@/model/IUser';
 import AsideMenuMode from '@/model/enums/AsideMenuMode';
 import UsersService from '@/services/Users/UsersService';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+import AuthService from '@/services/Auth/AuthService';
 
 const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
 const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
@@ -406,11 +407,15 @@ export default class AsideTemplate extends Vue {
     this.curItemMenu = null;
   }
 
-  logOut(): void {
-    // this.setUser(null);
-    localStorage.removeItem('token');
-    this.$store.dispatch('setUser', {});
-    this.$router.push('/sign-in');
+  async logOut(): Promise<void> {
+    try {
+      await AuthService.logout();
+      localStorage.removeItem('token');
+      await this.$store.dispatch('setUser', {});
+      await this.$router.push('/sign-in');
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   modalActions(data: boolean): void {
