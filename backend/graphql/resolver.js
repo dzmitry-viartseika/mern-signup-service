@@ -1,5 +1,6 @@
-const User = require('../models/user-model');
 const Client = require('../models/client-model');
+const aggregateQuery = Client.aggregate();
+
 
 module.exports = {
   async getAllUsers(arg) {
@@ -8,15 +9,22 @@ module.exports = {
       const { role = 'ALL', searchText = '', page, limit } = arg.input.filter;
       let clients;
       if (!searchText) {
-         clients = await Client.find({})
-             .skip(Number(page) > 0 ? ( ( Number(page) - 1 ) * Number(limit) ) : 0)
-             .limit(Number(limit))
-             .sort({
-               firstName: 'desc'
-             })
-             .exec();
-        console.log('clients', clients);
-        return clients;
+        const params = {};
+        const data = await Client.paginate(params, {
+          page,
+          limit
+        });
+        console.log('data', data);
+        return data;
+        //  clients = await Client.find({})
+        //      .skip(Number(page) > 0 ? ( ( Number(page) - 1 ) * Number(limit) ) : 0)
+        //      .limit(Number(limit))
+        //      .sort({
+        //        firstName: 'desc'
+        //      })
+        //      .exec();
+        // console.log('clients', clients);
+        // return clients;
       }
       if (searchText) {
         clients = await Client.find({$text: {$search: searchText}});

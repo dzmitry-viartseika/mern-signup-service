@@ -87,7 +87,20 @@ export default gql`
       deleteClient(id: String!): Status!
     }
 
+    type Test {
+      docs: [User],
+      totalDocs: Int
+      limit: Int
+      totalPages: Int
+      page: Int
+      pagingCounter: Int
+      hasPrevPage: Boolean
+      hasNextPage: Boolean
+      prevPage: Int
+      nextPage: Int
+    }
+
     type Query {
-      getAllUsers(input: UserInput): [User!]!
+      getAllUsers(input: UserInput): Test
     }
 `;

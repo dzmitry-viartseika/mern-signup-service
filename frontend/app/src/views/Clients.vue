@@ -82,11 +82,11 @@
             v-if="rowData.length"
             class="app-clients-pagination"
           >
-            <paginationTemplate
+            <pagination-template
               :pagination="{
                 per_page: filterQuery.page,
                 total: rowData.length,
-                total_pages: 13
+                total_pages: total_pages
               }"
               :current-page="currentPage"
               @pagechanged="onPageChange"
@@ -432,7 +432,7 @@ export default class Dashboard extends Vue {
         }
       },
     });
-    this.rowData = data.getAllUsers;
+    this.rowData = data.getAllUsers.docs;
   }
 
   async editAction(): Promise<any> {
@@ -714,15 +714,13 @@ export default class Dashboard extends Vue {
         }
       },
     });
-    if (data.getAllUsers.length) {
+    if (data.getAllUsers.docs.length) {
       // TODO сhange Users to Clients graphql
-      this.rowData = data.getAllUsers;
+      this.rowData = data.getAllUsers.docs;
       this.total = this.rowData.length;
       this.per_page = this.filterQuery.page;
       this.total_pages = Math.ceil(this.total / 5);
-      console.log('total', this.total);
-      console.log('per_page', this.per_page);
-      console.log('total_pages', this.total_pages);
+      this.total_pages = Math.ceil(data.getAllUsers.totalDocs / this.filterQuery.limit);
       // per_page: number = 0;
       // total: number = 0;
       // total_pages: number = 0;

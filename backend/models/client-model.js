@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const ClientSchema = new Schema({
     email: {
@@ -24,7 +25,8 @@ const ClientSchema = new Schema({
     },
 });
 
-ClientSchema.index({ firstName: 'text', lastName: 'text', email: 'text' })
+ClientSchema.index({ firstName: 'text', lastName: 'text', email: 'text' });
+ClientSchema.plugin(mongoosePaginate);
 ClientSchema.set('toJSON', {
     virtuals: true,
 })
