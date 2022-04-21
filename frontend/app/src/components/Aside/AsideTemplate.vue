@@ -269,7 +269,7 @@ import validationErrorMessage from '@/locales/validationErrorMessage';
 import WishesService from '@/services/Wishes/Wishes';
 import { IUser } from '@/model/IUser';
 import AsideMenuMode from '@/model/enums/AsideMenuMode';
-import UsersService from "@/services/Users/UsersService";
+import UsersService from '@/services/Users/UsersService';
 
 const ACTIVE_SUB_ROUTES: string[] = ['Others', 'Test'];
 const MAIN_ROUTE_FOR_OTHER_CHILDREN: string = 'Others';
