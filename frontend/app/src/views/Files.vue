@@ -17,7 +17,7 @@
           @click="uploadFile"
         >
           <svgicon
-            name="Plus"
+            name="Upload"
             width="24"
             height="24"
           />
@@ -27,7 +27,7 @@
           @click="modalActions(true)"
         >
           <svgicon
-            name="Upload"
+            name="Plus"
             width="24"
             height="24"
           />
