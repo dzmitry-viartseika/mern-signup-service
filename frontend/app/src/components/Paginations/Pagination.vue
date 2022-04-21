@@ -1,7 +1,6 @@
 <template>
   <div class="app-pagination">
     <div
-      v-if="total_pages > 1"
       class="app-pagination-list"
     >
       <div

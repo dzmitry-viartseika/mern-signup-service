@@ -12,7 +12,9 @@ module.exports = buildSchema(`
   
   input UsersFilter {
     role: String,
-    searchText: String
+    searchText: String,
+    page: String,
+    limit: String,
   }
   
   input UserInput {

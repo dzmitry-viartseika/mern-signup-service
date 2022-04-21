@@ -78,12 +78,15 @@
               @onClientSelected="onClientSelected"
             />
           </div>
-          <div class="app-clients-pagination">
+          <div
+            v-if="rowData.length"
+            class="app-clients-pagination"
+          >
             <paginationTemplate
               :pagination="{
-                per_page: this.per_page,
-                total: this.total,
-                total_pages: this.total_pages
+                per_page: filterQuery.page,
+                total: rowData.length,
+                total_pages: 13
               }"
               :current-page="currentPage"
               @pagechanged="onPageChange"
@@ -412,11 +415,24 @@ export default class Dashboard extends Vue {
     this.selectedClient = item;
   }
 
-  onPageChange(page) {
+  async onPageChange(page): Promise<void> {
     console.log('page', page);
     this.currentPage = page;
     this.filterQuery.page = page;
     this.addingParameterToLink();
+    const { data } = await this.$apollo.query({
+      query: GET_ALL_USERS,
+      variables: {
+        input: {
+          filter: {
+            role: 'ALL',
+            page: String(this.filterQuery.page),
+            limit: String(this.filterQuery.limit),
+          },
+        }
+      },
+    });
+    this.rowData = data.getAllUsers;
   }
 
   async editAction(): Promise<any> {
@@ -673,23 +689,27 @@ export default class Dashboard extends Vue {
 
   async created() {
     const { location } = window;
-    const parsed = queryString.parse(location.search, { parseBooleans: true });
+    const parsed = queryString.parse(location.search, { parseNumbers: true });
     const {
       role = this.filterQuery.role,
       page = this.filterQuery.page || 1,
-      limit = this.filterQuery.limit || 20,
+      limit = this.filterQuery.limit || 5,
     } = parsed;
+    console.log('parsed', parsed);
     this.filterQuery = {
       role,
-      page,
-      limit,
+      page: parsed.page || 1,
+      limit: parsed.limit || 5,
     } as IFilterQueryClients;
+    this.addingParameterToLink();
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
       variables: {
         input: {
           filter: {
             role: 'ALL',
+            page: String(page),
+            limit: String(limit),
           },
         }
       },
@@ -698,7 +718,7 @@ export default class Dashboard extends Vue {
       // TODO сhange Users to Clients graphql
       this.rowData = data.getAllUsers;
       this.total = this.rowData.length;
-      this.per_page = 1;
+      this.per_page = this.filterQuery.page;
       this.total_pages = Math.ceil(this.total / 5);
       console.log('total', this.total);
       console.log('per_page', this.per_page);

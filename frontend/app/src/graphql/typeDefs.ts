@@ -72,7 +72,9 @@ export default gql`
 
     input UsersFilter {
       role: String,
-      searchText: String
+      searchText: String,
+      page: String,
+      limit: String
     }
 
     input UserInput {

@@ -4,10 +4,19 @@ const Client = require('../models/client-model');
 module.exports = {
   async getAllUsers(arg) {
     try {
-      const { role = 'ALL', searchText = '' } = arg.input.filter;
+      console.log('arg', arg);
+      const { role = 'ALL', searchText = '', page, limit } = arg.input.filter;
       let clients;
       if (!searchText) {
-         clients = await Client.find({});
+         clients = await Client.find({})
+             .skip(Number(page) > 0 ? ( ( Number(page) - 1 ) * Number(limit) ) : 0)
+             .limit(Number(limit))
+             .sort({
+               firstName: 'desc'
+             })
+             .exec();
+        console.log('clients', clients);
+        return clients;
       }
       if (searchText) {
         clients = await Client.find({$text: {$search: searchText}});
