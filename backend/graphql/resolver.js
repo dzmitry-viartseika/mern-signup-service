@@ -5,16 +5,30 @@ const aggregateQuery = Client.aggregate();
 module.exports = {
   async getAllUsers(arg) {
     try {
-      console.log('arg', arg);
       const { role = 'ALL', searchText = '', page, limit } = arg.input.filter;
-      let clients;
-      if (!searchText) {
-        const params = {};
+      const params = {};
+      if (role === 'ADMIN' || role === 'CLIENT' && !searchText) {
+        params.role = { $in: [role === 'ADMIN' ? 'ADMIN' : 'CLIENT'] }
         const data = await Client.paginate(params, {
           page,
           limit
         });
-        console.log('data', data);
+        return data;
+      }
+      if (role === 'ALL' && !searchText) {
+        console.log('all')
+        const data = await Client.paginate(params, {
+          page,
+          limit
+        });
+        console.log('data', data)
+        return data;
+      }
+      if (!searchText) {
+        const data = await Client.paginate(params, {
+          page,
+          limit
+        });
         return data;
         //  clients = await Client.find({})
         //      .skip(Number(page) > 0 ? ( ( Number(page) - 1 ) * Number(limit) ) : 0)
@@ -27,14 +41,13 @@ module.exports = {
         // return clients;
       }
       if (searchText) {
-        clients = await Client.find({$text: {$search: searchText}});
+        console.log('search')
+        // clients = await Client.find({$text: {$search: searchText}});
+        params.role = { $in: [role === 'ADMIN' ? 'ADMIN' : 'CLIENT'] }
+        const data = await Client.paginate(params, {$text: {$search: searchText}});
+        console.log('data', data);
+        return data;
       }
-
-      if (role === 'ALL') {
-        return clients;
-      }
-      const filteredUsers = clients.filter((item) => item.role === role);
-      return filteredUsers;
     } catch (e) {
       console.error(e);
     }

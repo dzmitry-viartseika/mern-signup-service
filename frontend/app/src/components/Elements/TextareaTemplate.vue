@@ -15,6 +15,7 @@
       cols="30"
       rows="5"
       :autofocus="true"
+      spellcheck
       :placeholder="placeholder"
     />
     <p

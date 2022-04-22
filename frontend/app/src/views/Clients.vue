@@ -310,8 +310,6 @@ export default class Dashboard extends Vue {
 
   gridApi: GridApi;
 
-  allTypeServicesList: any[] = [];
-
   servicesList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
 
   defaultColDef = {
@@ -365,6 +363,8 @@ export default class Dashboard extends Vue {
 
   clearFilters() {
     this.filterQuery.role = 'ALL';
+    this.filterQuery.page = 1;
+    this.filterQuery.limit = 5;
     this.searchValue = '';
     this.addingParameterToLink();
     this.filterClients();
@@ -378,11 +378,13 @@ export default class Dashboard extends Vue {
           filter: {
             role: this.filterQuery.role || 'ALL',
             searchText: this.searchValue,
+            page: String(this.filterQuery.page),
+            limit: String(this.filterQuery.limit),
           },
         }
       },
     });
-    this.rowData = data.getAllUsers;
+    this.rowData = data.getAllUsers.docs;
   }
 
   async deleteClient(): Promise<void> {
@@ -541,23 +543,6 @@ export default class Dashboard extends Vue {
 
   onSelect(): void {
     this.addingParameterToLink();
-  }
-
-  mounted() {
-    this.allTypeServicesList = [
-      {
-        id: '1',
-        name: 'wertey',
-      },
-      {
-        id: '2',
-        name: 'test',
-      },
-      {
-        id: '3',
-        name: 'gdfgdfgd',
-      },
-    ];
   }
 
   getRequests(queryParams) {

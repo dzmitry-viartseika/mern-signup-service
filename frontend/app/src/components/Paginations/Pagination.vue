@@ -2,6 +2,7 @@
   <div class="app-pagination">
     <div
       class="app-pagination-list"
+      v-if="total_pages > 1"
     >
       <div
         class="app-pagination-list__item"
@@ -10,7 +11,7 @@
         <button
           type="button"
           class="app__btn app__btn--border"
-          :class="{'cursor-not-allowed': isInFirstPage}"
+          :class="{'app__btn--disabled': isInFirstPage}"
           :disabled="isInFirstPage"
           @click="gotoFirst"
         >
@@ -25,7 +26,7 @@
         <button
           type="button"
           class="app__btn app__btn--border"
-          :class="{'cursor-not-allowed': isInFirstPage}"
+          :class="{'app__btn--disabled': isInFirstPage}"
           :disabled="isInFirstPage"
           @click="gotoPrevious"
         >
@@ -41,7 +42,7 @@
           <button
             type="button"
             class="app__btn app__btn--primary"
-            :class="{'cursor-not-allowed': isInFirstPage}"
+            :class="{'app__btn--disabled': isInFirstPage}"
             :disabled="isInFirstPage"
             @click="gotoPageNumber(1)"
           >
@@ -64,12 +65,12 @@
         v-for="(page, index) in pages"
         :key="`pages_${index}`"
         class="app-pagination-list__item"
-        :class="{'bg-gray-600': page === currentPage}"
+        :class="{'app-pagination-list__item--active': page === currentPage}"
       >
         <button
           type="button"
           class="app__btn app__btn--primary"
-          :class="{'cursor-not-allowed': page === currentPage}"
+          :class="{'app__btn--disabled': page === currentPage}"
           :disabled="page === currentPage"
           @click="gotoPageNumber(page)"
         >
@@ -95,7 +96,7 @@
           <button
             type="button"
             class="app__btn app__btn--primary"
-            :class="{'cursor-not-allowed': isInLastPage}"
+            :class="{'app__btn--disabled': isInLastPage}"
             :disabled="isInLastPage"
             @click="gotoPageNumber(total_pages)"
           >
@@ -111,7 +112,7 @@
         <button
           type="button"
           class="app__btn app__btn--border"
-          :class="{'cursor-not-allowed': isInLastPage}"
+          :class="{'app__btn--disabled': isInLastPage}"
           :disabled="isInLastPage"
           @click="gotoNext"
         >
@@ -126,7 +127,7 @@
         <button
           type="button"
           class="app__btn app__btn--border"
-          :class="{'cursor-not-allowed': isInLastPage}"
+          :class="{'app__btn--disabled': isInLastPage}"
           :disabled="isInLastPage"
           @click="gotoLast"
         >
@@ -167,9 +168,10 @@ export default class Pagination extends Vue {
 
   get pages() {
     const range = [];
-
-    for (let i = this.startPage; i <= this.endPage; i += 1) {
-      range.push(i);
+    if (this.startPage > 0) {
+      for (let i = this.startPage; i <= this.endPage; i += 1) {
+        range.push(i);
+      }
     }
 
     return range;
@@ -244,6 +246,16 @@ export default class Pagination extends Vue {
 
       &__item + .app-pagination-list__item {
         margin-left: 15px;
+      }
+
+      &__item {
+
+        &--active {
+
+          button {
+            background-color: #695CFE;
+          }
+        }
       }
     }
   }
