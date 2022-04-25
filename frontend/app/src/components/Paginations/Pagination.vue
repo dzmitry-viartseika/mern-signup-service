@@ -141,6 +141,12 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import '@/assets/icons/Caution-sign';
 
+interface IPagination {
+  perPage: number;
+  total: number;
+  totalPages: number;
+}
+
 @Component({})
 export default class Pagination extends Vue {
 
@@ -148,7 +154,7 @@ export default class Pagination extends Vue {
   currentPage: number;
 
   @Prop({ type: Object, required: true  })
-  pagination: any;
+  pagination: IPagination;
 
   @Prop({ type: Number, required: false, default: 5  })
   maxVisibleButtons: number;
@@ -157,26 +163,25 @@ export default class Pagination extends Vue {
   total: number = 0;
   totalPages: number = 0;
 
-  get isInFirstPage() {
+  get isInFirstPage(): boolean {
     return this.currentPage === 1;
   }
 
-  get isInLastPage() {
+  get isInLastPage(): boolean {
     return this.currentPage === this.totalPages;
   }
 
-  get pages() {
+  get pages(): number[] {
     const range = [];
     if (this.startPage > 0) {
       for (let i = this.startPage; i <= this.endPage; i += 1) {
         range.push(i);
       }
     }
-
     return range;
   }
 
-  get startPage() {
+  get startPage(): number {
     if (this.currentPage === 1) {
       return 1;
     }
@@ -188,45 +193,45 @@ export default class Pagination extends Vue {
     return this.currentPage - 1;
   }
 
-  get endPage() {
+  get endPage(): number {
     return Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
   }
 
-  showDots(position = 'left') {
+  showDots(position: string = 'left'): boolean {
     const number = position === 'left' ? 1 : this.totalPages;
     const nextNumber = position === 'left' ? 2 : this.totalPages - 1;
 
     return !this.pages.includes(number) || !this.pages.includes(nextNumber);
   }
 
-  gotoFirst() {
+  gotoFirst(): void {
     this.gotoPageNumber(1);
   }
 
-  gotoLast() {
+  gotoLast(): void {
     this.gotoPageNumber(this.totalPages);
   }
 
-  gotoPrevious() {
+  gotoPrevious(): void {
     this.gotoPageNumber(this.currentPage - 1);
   }
 
-  gotoNext() {
+  gotoNext(): void {
     this.gotoPageNumber(this.currentPage + 1);
   }
 
-  gotoPageNumber(pageNumber: number) {
+  gotoPageNumber(pageNumber: number): void {
     this.$emit('pagechanged', pageNumber);
   }
 
-  created() {
+  created(): void {
     this.perPage = this.pagination.perPage || 10;
     this.total = this.pagination.total || 0;
     this.totalPages = this.pagination.totalPages || 0;
   }
 
   @Watch('pagination')
-  test(pagination) {
+  changePaginationFields(pagination: IPagination) {
     this.perPage = pagination.perPage || 10;
     this.total = pagination.total || 0;
     this.totalPages = pagination.totalPages || 0;
