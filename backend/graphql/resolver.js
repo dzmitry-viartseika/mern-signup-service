@@ -1,13 +1,37 @@
 const Client = require('../models/client-model');
-const aggregateQuery = Client.aggregate();
+const Enum = require('enum');
+
+const ADMIN = 'ADMIN';
+const CLIENT = 'CLIENT';
+const ALL = 'ALL';
+
+const ClientRole = new Enum(
+    [
+      ALL,
+      ADMIN,
+      CLIENT,
+    ],
+    { freeze: true }
+);
+
 
 
 module.exports = {
   async getAllUsers(arg) {
+    console.log('enum', ClientRole.ALL);
     try {
-      const { role = 'ALL', searchText = '', page, limit } = arg.input.filter;
+      const { role, searchText = '', page, limit } = arg.input.filter;
       const params = {};
-      if (role === 'ADMIN' || role === 'CLIENT' && !searchText) {
+
+      if (ClientRole.ALL.is(role) && !searchText) {
+        const data = await Client.paginate(params, {
+          page,
+          limit
+        });
+        return data;
+      }
+
+      if ((ClientRole.ADMIN.is(role) || role === ClientRole.CLIENT.is(role)) && !searchText) {
         params.role = { $in: [role === 'ADMIN' ? 'ADMIN' : 'CLIENT'] }
         const data = await Client.paginate(params, {
           page,
@@ -15,39 +39,12 @@ module.exports = {
         });
         return data;
       }
-      if (role === 'ALL' && !searchText) {
-        console.log('all')
-        const data = await Client.paginate(params, {
-          page,
-          limit
-        });
-        console.log('data', data)
-        return data;
-      }
-      if (!searchText) {
-        const data = await Client.paginate(params, {
-          page,
-          limit
-        });
-        return data;
-        //  clients = await Client.find({})
-        //      .skip(Number(page) > 0 ? ( ( Number(page) - 1 ) * Number(limit) ) : 0)
-        //      .limit(Number(limit))
-        //      .sort({
-        //        firstName: 'desc'
-        //      })
-        //      .exec();
-        // console.log('clients', clients);
-        // return clients;
-      }
+
       if (searchText) {
-        console.log('search')
-        // clients = await Client.find({$text: {$search: searchText}});
-        params.role = { $in: [role === 'ADMIN' ? 'ADMIN' : 'CLIENT'] }
-        const data = await Client.paginate(params, {$text: {$search: searchText}});
-        console.log('data', data);
+        const data = await Client.paginate({$text: {$search: searchText}});
         return data;
       }
+
     } catch (e) {
       console.error(e);
     }
