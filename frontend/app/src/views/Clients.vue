@@ -686,6 +686,7 @@ export default class Dashboard extends Vue {
       page: parsed.page || DEFAULT_PAGE,
       limit: parsed.limit || LIMIT_PAGE,
     } as IFilterQueryClients;
+    this.currentPage = this.filterQuery.page;
     this.addingParameterToLink();
     const { data } = await this.$apollo.query({
       query: GET_ALL_USERS,
@@ -703,8 +704,8 @@ export default class Dashboard extends Vue {
       // TODO сhange Users to Clients graphql
       this.rowData = data.getAllUsers.docs;
       this.total = this.rowData.length;
+      console.log('this.filterQuery.page', this.filterQuery.page);
       this.per_page = this.filterQuery.page;
-      this.total_pages = Math.ceil(this.total / LIMIT_PAGE);
       this.total_pages = Math.ceil(data.getAllUsers.totalDocs / this.filterQuery.limit);
       // per_page: number = 0;
       // total: number = 0;

@@ -87,7 +87,7 @@ export default gql`
       deleteClient(id: String!): Status!
     }
 
-    type Test {
+    type ClientsPagination {
       docs: [User],
       totalDocs: Int
       limit: Int
@@ -101,6 +101,6 @@ export default gql`
     }
 
     type Query {
-      getAllUsers(input: UserInput): Test
+      getAllUsers(input: UserInput): ClientsPagination
     }
 `;

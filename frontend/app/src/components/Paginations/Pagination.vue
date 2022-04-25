@@ -60,7 +60,6 @@
           </button>
         </div>
       </template>
-
       <div
         v-for="(page, index) in pages"
         :key="`pages_${index}`"

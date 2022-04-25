@@ -21,7 +21,7 @@ module.exports = buildSchema(`
     filter: UsersFilter
   }
   
-  type Test {
+  type ClientsPagination {
     docs: [User],
     totalDocs: Int
     limit: Int
@@ -35,7 +35,7 @@ module.exports = buildSchema(`
   }
 
   type Query {
-    getAllUsers(input: UserInput): Test 
+    getAllUsers(input: UserInput): ClientsPagination 
   }
   
   input ClientInput {
