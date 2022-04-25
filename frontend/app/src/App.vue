@@ -25,7 +25,7 @@
       </transition>
       <chat
         v-if="showSidebar"
-        :openChat.sync="openChat"
+        :open-chat.sync="openChat"
         @click="openChat = true"
       />
     </main>

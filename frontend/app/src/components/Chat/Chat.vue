@@ -1,38 +1,41 @@
 <template>
   <div class="app-chat">
     <div
-      class="chat-status"
+      class="app-chat-status"
     >
-<!--      @click.prevent="toggleStatus()"-->
       <div
         v-if="messageCount"
         class="chat-status__number"
       >
         <span>{{ messageCount }}</span>
       </div>
-      <transition
-        name="fade-content"
-        mode="out-in"
-      >
-        <div
-          v-if="statusChat"
-          :key="'first'"
-        >
-          on
-        </div>
-        <div
-          v-else
-          :key="'second'"
-        >
-          off
-        </div>
-      </transition>
+     <div
+       @click.prevent="toggleStatus()"
+     >
+       <transition
+         name="fade-content"
+         mode="out-in"
+       >
+         <div
+           v-if="statusChat"
+           :key="'first'"
+         >
+           on
+         </div>
+         <div
+           v-else
+           :key="'second'"
+         >
+           off
+         </div>
+       </transition>
+     </div>
       <transition name="fade-content">
         <div
           v-if="statusChat"
           class="app-chat-window"
         >
-<!--          @mouseenter="checkUnreadMessage"-->
+          <!--          @mouseenter="checkUnreadMessage"-->
           <div class="app-chat-window__header">
             <div
               class="app-chat-window__order"
@@ -44,14 +47,14 @@
             ref="chatScroll"
             class="app-chat-window__body"
           >
-<!--            @ps-scroll-y="checkUnreadMessage"-->
+            <!--            @ps-scroll-y="checkUnreadMessage"-->
             <div
               class="message__list"
             >
-<!--              :class="{'message__list_empty': !messagesList.length}"-->
+              <!--              :class="{'message__list_empty': !messagesList.length}"-->
               <div
-                class="message__list-placeholder"
                 v-if="!messagesList.length"
+                class="message__list-placeholder"
               >
                 Сообщений пока нет
               </div>
@@ -61,35 +64,35 @@
                   :key="i"
                 >
                   <div
-                    class="message__row message__row_center"
                     v-if="showChatDateRow(item.date, i)"
+                    class="message__row message__row_center"
                   >
                     <div
                       class="message-item message-item_date"
                     >
-                    <span>
-                      <template
-                        v-if="showTodayText(item.date)"
-                      >
-                        {{ 'Today' }},
-                      </template>
-                      {{ messageDate(item.date) }}
-                    </span>
+                      <span>
+                        <template
+                          v-if="showTodayText(item.date)"
+                        >
+                          {{ 'Today' }},
+                        </template>
+                        {{ messageDate(item.date) }}
+                      </span>
                     </div>
                   </div>
                   <div
                     :ref="'messageRow'"
                     class="message__row"
                   >
-<!--                    :class="{-->
-<!--                    'message__row_end': userInfo._id === item.senderId-->
-<!--                    }"-->
+                    <!--                    :class="{-->
+                    <!--                    'message__row_end': userInfo._id === item.senderId-->
+                    <!--                    }"-->
                     <div
                       class="message-item"
                     >
-<!--                      :id="item._id"-->
-<!--                      :ref="!item.isRead.includes(userInfo._id) && userInfo._id !== item.senderId ? 'unread' : 'read'"-->
-<!--                      :class="{'message-item_me': userInfo._id === item.senderId}"-->
+                      <!--                      :id="item._id"-->
+                      <!--                      :ref="!item.isRead.includes(userInfo._id) && userInfo._id !== item.senderId ? 'unread' : 'read'"-->
+                      <!--                      :class="{'message-item_me': userInfo._id === item.senderId}"-->
                       <transition name="fade-content">
                         <ChatMessage
                           :item="item"
@@ -112,9 +115,9 @@
               class="app-chat-window__form"
               @submit.prevent="sendMessage($event)"
             >
-<!--              <textarea-template-->
-<!--                :value.sync="message"-->
-<!--              />-->
+              <!--              <textarea-template-->
+              <!--                :value.sync="message"-->
+              <!--              />-->
               <text-input
                 :value.sync="message"
                 input-type="text"
@@ -163,8 +166,7 @@ export default class Chat extends Vue {
   messagesList: any[] = [];
 
   get statusChat(): boolean {
-    // return this.openChat;
-    return true;
+    return this.openChat;
   }
 
   set statusChat(data: string): void {
@@ -213,7 +215,7 @@ export default class Chat extends Vue {
       user: this.$store.getters.user.firstName,
       id: new Date().getTime(),
       date: '2022-04-25',
-    }
+    };
     this.messagesList.push(message);
     this.message = '';
     this.$socket.emit('event-from-frontend-1', message);
@@ -527,6 +529,7 @@ export default class Chat extends Vue {
     max-width: 60px;
     min-width: 60px;
     height: 60px;
+    z-index: 1000;
     border-radius: 50%;
     background: $color-dodger-blue;
     display: flex;
