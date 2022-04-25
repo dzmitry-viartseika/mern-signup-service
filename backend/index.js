@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io').listen(server);
+// const io = require('socket.io').listen(server);
 
 app.use(cookieSession({
     name: 'google-auth-session',
@@ -129,39 +129,90 @@ app.get("/logout", (req, res) => {
     res.redirect('/');
 })
 
-io
-    .sockets
-    .on('connection', function (socket) {
-        console.log('socket', socket.id);
-        // socket.emit("hello", "world");
-        // socket.send({
-        //     type: 'hello',
-        //     message: 'Hello my friend. Im Socket IO'
-        // })
-       // socket.on('message', message => {
-       //     socket.send({
-       //         type: 'message',
-       //         message: message
-       //     });
-       //     socket
-       //         .setBroadcast.send({
-       //         type: 'message',
-       //         message: message
-       //     })
-       // })
-       // socket.on('disconnect', (data) => {
-       //     console.log('disconnect');
-       // });
+const io = require('socket.io')(server, {
+    cors: {
+        origins: [
+            "http://localhost:5000",
+        ],
+        credentials: true
+    },
+});
 
-        // там походу схема на один ивент закидываешь с фронта объект например, записываешь его в базу,
-        //     и потом достаешь уже обновленные объекты из базы и эмитишь другой ивент их отдаешь, и
-        // на фронте где подписался на него там обновляешь ui новыми объектами
-       socket.on('send-message', (message) => {
-           io.emit("receive-message", message);
-           console.log('message', message);
-       })
-    }
-)
+io.on('connection', (socket) => {
+    // join user's own room
+    socket.join(socket.user);
+    socket.join('myRandomChatRoomId');
+    // find user's all channels from the database and call join event on all of them.
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+    socket.on('my message', (msg) => {
+        console.log('message: ' + msg);
+        io.emit('my broadcast', `server: ${msg}`);
+    });
+
+    socket.on('join', (roomName) => {
+        console.log('join: ' + roomName);
+        socket.join(roomName);
+    });
+
+    socket.on('message', ({message, roomName}, callback) => {
+        console.log('message: ' + message + ' in ' + roomName);
+
+        // generate data to send to receivers
+        const outgoingMessage = {
+            name: socket.user.name,
+            id: socket.user.id,
+            message,
+        };
+        // send socket to all in room except sender
+        socket.to(roomName).emit("message", outgoingMessage);
+        callback({
+            status: "ok"
+        });
+        // send to all including sender
+        // io.to(roomName).emit('message', message);
+    })
+});
+
+// io
+//     .sockets
+//     .on('connection', function (socket) {
+//         console.log('User connected socket', socket.id);
+//
+//         socket.on('disconnect', () => {
+//             console.log(`User ${socket.id} left`)
+//         })
+//
+//         socket.on('my message', (msg) => {
+//             console.log('message: ' + msg);
+//         });
+//         // socket.emit("hello", "world");
+//         // socket.send({
+//         //     type: 'hello',
+//         //     message: 'Hello my friend. Im Socket IO'
+//         // })
+//        // socket.on('message', message => {
+//        //     socket.send({
+//        //         type: 'message',
+//        //         message: message
+//        //     });
+//        //     socket
+//        //         .setBroadcast.send({
+//        //         type: 'message',
+//        //         message: message
+//        //     })
+//        // })
+//        // socket.on('disconnect', (data) => {
+//        //     console.log('disconnect');
+//        // });
+//
+//         // там походу схема на один ивент закидываешь с фронта объект например, записываешь его в базу,
+//         //     и потом достаешь уже обновленные объекты из базы и эмитишь другой ивент их отдаешь, и
+//         // на фронте где подписался на него там обновляешь ui новыми объектами
+//     }
+// )
 
 
 app.use('/api', fileRoutes.routes);

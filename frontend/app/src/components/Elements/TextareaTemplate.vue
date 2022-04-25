@@ -35,7 +35,7 @@ export default class TextareaTemplate extends Vue {
   @Prop({ required: false, type: String })
   value: string;
 
-  @Prop({ required: true, type: String })
+  @Prop({ required: false, type: String })
   label: string;
 
   @Prop({ required: false, type: Number })

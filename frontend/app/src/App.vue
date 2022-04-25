@@ -23,7 +23,11 @@
           <router-view />
         </keep-alive>
       </transition>
-      <chat v-if="showSidebar" />
+      <chat
+        v-if="showSidebar"
+        :openChat.sync="openChat"
+        @click="openChat = true"
+      />
     </main>
   </div>
 </template>
@@ -35,6 +39,7 @@ import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import Chat from '@/components/Chat/Chat.vue';
+import SocketioService from '@/services/Sockets/SocketService';
 
 @Component({
   components: {
@@ -45,12 +50,18 @@ import Chat from '@/components/Chat/Chat.vue';
 })
 export default class App extends Vue {
   test: any[] = [];
+  openChat: boolean = false;
   get showSidebar(): boolean {
     const token = localStorage.getItem('token');
     return !!(this.$route.path.includes('crm') && token);
   }
 
+  beforeUnmount() {
+    SocketioService.disconnect();
+  }
+
   async created(): Promise<any> {
+    // SocketioService.setupSocketConnection();
     const lang = localStorage.getItem('language');
 
     const token = localStorage.getItem('token');

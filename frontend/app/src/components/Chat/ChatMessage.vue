@@ -3,7 +3,9 @@
     <div
       class="message-item__label"
     >
-      LabelText
+      <template>
+        {{ lableText }}
+      </template>
     </div>
     <span>
       {{ item.message }}
@@ -18,6 +20,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class ChatMessage extends Vue {
   @Prop({ required: false, type: Object })
   item: object;
+
+  get lableText() {
+    const { user } = this.item;
+    return user;
+  }
 }
 </script>
 
