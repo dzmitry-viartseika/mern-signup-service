@@ -22,10 +22,10 @@ class FoldersService {
                 message: 'The File was not founded',
             }
         }
-        console.log('file', file);
         file.remove();
         return {
             message: 'File was deleted',
+            code: 200
         }
     }
 
@@ -37,7 +37,8 @@ class FoldersService {
             }
         }
         return {
-            message: 'File succesfully updated'
+            message: 'File succesfully updated',
+            code: 200
         }
     }
 }

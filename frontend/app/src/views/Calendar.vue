@@ -74,7 +74,7 @@ import '@/assets/icons/Eye';
 import WorkingDaysService from '@/services/WorkingDays/WorkingDays';
 import WeekBasedWorkingCalendarDateInterval from '@/model/WeekBasedWorkingCalendarDateInterval';
 import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
-import { DayIntervalType } from '@/model/types/DayIntervalType';
+import { DayIntervalType } from '@/model/enums/DayIntervalType';
 import { AxiosResponse } from 'axios';
 
 const DATE_FORMAT = 'YYYY-MM-DD';

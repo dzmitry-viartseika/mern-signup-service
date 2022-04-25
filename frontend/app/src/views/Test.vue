@@ -1,7 +1,7 @@
 <template>
   <div class="app-notification">
     <h1 class="app__title">
-      Test
+      Тестовый роут
     </h1>
   </div>
 </template>

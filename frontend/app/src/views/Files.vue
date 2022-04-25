@@ -214,6 +214,8 @@ import VueContext from 'vue-context';
 import '@/assets/icons/FolderFiles';
 import TheConfirmModal from '@/components/Modals/TheConfirmModal.vue';
 import getUniqueId from '@/utils/uniqueId';
+import IFolder from '@/model/IFolder';
+import IFolderResponse from '@/model/response/IFolderResponse';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -245,16 +247,16 @@ export default class Files extends Vue {
 
   isVisibleContextMenu: boolean = false;
 
-  folders: any[] = [];
+  folders: IFolder[] = [];
 
-  file: any = {};
+  file: File = {} as File;
 
   isEditMode: boolean = false;
   isAgreedDeletingFile: boolean = false;
 
   isVisibleConfirmModal: string = '';
 
-  selectedFolder: any = {};
+  selectedFolder: IFolder = {} as IFolder;
 
   async changedName(): Promise<void> {
     this.isEditMode = false;
@@ -263,7 +265,7 @@ export default class Files extends Vue {
         name: this.selectedFolder.name,
       };
       await FolderService.updateCreatedFolder(this.selectedFolder._id, updatedData);
-      this.selectedFolder = {};
+      this.selectedFolder = {} as IFolder;
     } catch (e) {
       console.error(e);
     }
@@ -274,7 +276,7 @@ export default class Files extends Vue {
       const user = this.$store.getters.user;
       const { data } = await FolderService.getAllFilesByUserId(user.id);
       this.folders = data.folders;
-      this.folders = this.folders.sort((prev, next) => prev.folderType - next.folderType);
+      this.folders = this.folders.sort((prev, next) => prev.folderType - next.folderType) as IFolder[];
     } catch (e) {
       console.error(e);
     }
@@ -300,7 +302,7 @@ export default class Files extends Vue {
 
   editFolderName(): void {
     this.isEditMode = true;
-    this.isEditMode = this.selectedFolder._id;
+    // this.isEditMode = this.selectedFolder._id;
   }
 
   modalActions(data: boolean): void {
@@ -337,8 +339,8 @@ export default class Files extends Vue {
     await this.deleteFolderRequest();
   }
 
-  selectFolderAction(folder): void {
-    // this.isEditMode = false;
+  selectFolderAction(folder: IFolder): void {
+    console.log('folder', folder);
     this.selectedFolder = folder;
   }
 
@@ -386,7 +388,8 @@ export default class Files extends Vue {
             duration: 3000,
           });
         }
-        this.folders.push(data.folder);
+        const updatedFolder = (data as IFolderResponse).folder as IFolder;
+        this.folders.push(updatedFolder);
         this.isVisibleAddFolderModal = false;
         this.folderName = '';
       } catch (e) {
