@@ -318,7 +318,7 @@ export default class Files extends Vue {
   }
 
   uploadFile(): void {
-    this.$refs.file.click();
+    (this.$refs.file as HTMLElement).click();
   }
 
   async fileHandler(event?: HTMLInputEvent): Promise<void> {

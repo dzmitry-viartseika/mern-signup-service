@@ -129,7 +129,7 @@
               :value.sync="firstName"
               :autofocus="true"
               :error-status="$validator.errors.has('firstName')"
-              input-type="text"
+              :input-type="'text'"
               :required="true"
               :placeholder-text="$t('addNewUser.placeholderFirstName')"
               :label-text="$t('addNewUser.firstName')"
@@ -147,7 +147,7 @@
             <text-input
               :value.sync="lastName"
               :error-status="$validator.errors.has('lastName')"
-              input-type="text"
+              :input-type="'text'"
               :required="true"
               :placeholder-text="$t('addNewUser.placeholderLastName')"
               :label-text="$t('addNewUser.lastName')"
@@ -165,7 +165,7 @@
             <text-input
               :value.sync="email"
               :error-status="$validator.errors.has('email')"
-              input-type="email"
+              :input-type="'email'"
               :required="true"
               :placeholder-text="$t('addNewUser.placeholderEmail')"
               :label-text="$t('addNewUser.email')"
@@ -239,13 +239,14 @@ import { GridApi } from 'ag-grid-community';
 import { VueTelInput } from 'vue-tel-input';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
 import { GET_ALL_USERS } from '@/graphql/querries';
+import { LIMIT_PAGE, DEFAULT_PAGE } from '@/constants/paginationSettings';
 import { ADD_NEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '@/graphql/mutations';
 import ModalTemplateWithAction from '@/components/Modals/ModalTemplateWithAction.vue';
 import validationErrorMessage from '@/locales/validationErrorMessage';
 import queryString from 'query-string';
-import IFilterQueryCalendar from '@/model/filters/IFilterQueryCalendar';
 import IFilterQueryClients from '@/model/filters/IFilterQueryClients';
 import paginationTemplate from '@/components/Paginations/Pagination.vue';
+import ClientRoles from "@/model/enums/ClientRoles";
 
 export enum RowSelection {
   single = 'single',
@@ -291,10 +292,10 @@ export default class Dashboard extends Vue {
 
   roles = [
     {
-      value: 'ADMIN', text: 'Админ',
+      value: ClientRoles.ADMIN, text: 'Админ',
     },
     {
-      value: 'CLIENT', text: 'Клиент',
+      value: ClientRoles.CLIENT, text: 'Клиент',
     },
   ];
 
@@ -362,9 +363,9 @@ export default class Dashboard extends Vue {
   }
 
   clearFilters() {
-    this.filterQuery.role = 'ALL';
-    this.filterQuery.page = 1;
-    this.filterQuery.limit = 5;
+    this.filterQuery.role = ClientRoles.ALL;
+    this.filterQuery.page = DEFAULT_PAGE;
+    this.filterQuery.limit = LIMIT_PAGE;
     this.searchValue = '';
     this.addingParameterToLink();
     this.filterClients();
@@ -376,7 +377,7 @@ export default class Dashboard extends Vue {
       variables: {
         input: {
           filter: {
-            role: this.filterQuery.role || 'ALL',
+            role: this.filterQuery.role || ClientRoles.ALL,
             searchText: this.searchValue,
             page: String(this.filterQuery.page),
             limit: String(this.filterQuery.limit),
@@ -427,7 +428,7 @@ export default class Dashboard extends Vue {
       variables: {
         input: {
           filter: {
-            role: 'ALL',
+            role: ClientRoles.ALL,
             page: String(this.filterQuery.page),
             limit: String(this.filterQuery.limit),
           },
@@ -536,7 +537,7 @@ export default class Dashboard extends Vue {
     this.phoneNumber = '';
     this.email = '';
     this.searchValue = '';
-    this.filterQuery.role = 'ALL';
+    this.filterQuery.role = ClientRoles.ALL;
     this.addingParameterToLink();
     await this.filterClients();
   }
@@ -677,14 +678,13 @@ export default class Dashboard extends Vue {
     const parsed = queryString.parse(location.search, { parseNumbers: true });
     const {
       role = this.filterQuery.role,
-      page = this.filterQuery.page || 1,
-      limit = this.filterQuery.limit || 5,
+      page = this.filterQuery.page || DEFAULT_PAGE,
+      limit = this.filterQuery.limit || LIMIT_PAGE,
     } = parsed;
-    console.log('parsed', parsed);
     this.filterQuery = {
       role,
-      page: parsed.page || 1,
-      limit: parsed.limit || 5,
+      page: parsed.page || DEFAULT_PAGE,
+      limit: parsed.limit || LIMIT_PAGE,
     } as IFilterQueryClients;
     this.addingParameterToLink();
     const { data } = await this.$apollo.query({
@@ -692,7 +692,7 @@ export default class Dashboard extends Vue {
       variables: {
         input: {
           filter: {
-            role: 'ALL',
+            role: ClientRoles.ALL,
             page: String(page),
             limit: String(limit),
           },
@@ -704,7 +704,7 @@ export default class Dashboard extends Vue {
       this.rowData = data.getAllUsers.docs;
       this.total = this.rowData.length;
       this.per_page = this.filterQuery.page;
-      this.total_pages = Math.ceil(this.total / 5);
+      this.total_pages = Math.ceil(this.total / LIMIT_PAGE);
       this.total_pages = Math.ceil(data.getAllUsers.totalDocs / this.filterQuery.limit);
       // per_page: number = 0;
       // total: number = 0;
