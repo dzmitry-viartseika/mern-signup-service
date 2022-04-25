@@ -18,9 +18,8 @@ const ClientRole = new Enum(
 
 module.exports = {
   async getAllUsers(arg) {
-    console.log('enum', ClientRole.ALL);
     try {
-      const { role, searchText = '', page, limit } = arg.input.filter;
+      const { role = ClientRole.get(ALL), searchText = '', page, limit } = arg.input.filter;
       const params = {};
 
       if (ClientRole.ALL.is(role) && !searchText) {
@@ -31,8 +30,8 @@ module.exports = {
         return data;
       }
 
-      if ((ClientRole.ADMIN.is(role) || role === ClientRole.CLIENT.is(role)) && !searchText) {
-        params.role = { $in: [role === 'ADMIN' ? 'ADMIN' : 'CLIENT'] }
+      if ((ClientRole.ADMIN.is(role) || ClientRole.CLIENT.is(role)) && !searchText) {
+        params.role = { $in: [ClientRole.ADMIN.is(role) ? ClientRole.get(ADMIN) : ClientRole.get(CLIENT)] }
         const data = await Client.paginate(params, {
           page,
           limit
