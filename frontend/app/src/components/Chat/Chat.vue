@@ -156,6 +156,9 @@ import TextInput from '@/components/Elements/TextInput.vue';
 import moment from 'moment';
 import '@/assets/icons/Chat';
 import '@/assets/icons/ChatClose';
+import io from 'socket.io-client';
+
+const socket = io();
 
 @Component({
   components: {
@@ -175,6 +178,59 @@ export default class Chat extends Vue {
 
   messagesList: any[] = [];
 
+  created() {
+    /* eslint-disable */
+    /* tslint:disable */
+    // @ts-ignore
+    console.log('socket', socket);
+    /* eslint-disable */
+    /* tslint:disable */
+    // @ts-ignore
+    socket.on('chat-message', (data) => {
+      console.log('data', data);
+      this.messagesList.push({
+        message: data.message,
+        type: 1,
+        user: data.user,
+      });
+    });
+
+    socket.on('typing', (data) => {
+      this.typing = data;
+    });
+
+
+    socket.on('stopTyping', () => {
+      this.typing = false;
+    });
+
+    socket.on('joined', (data) => {
+      this.info.push({
+        username: data,
+        type: 'joined'
+      });
+
+      setTimeout(() => {
+        this.info = [];
+      }, 5000);
+    });
+
+    socket.on('leave', (data) => {
+      this.info.push({
+        username: data,
+        type: 'left'
+      });
+
+      setTimeout(() => {
+        this.info = [];
+      }, 5000);
+    });
+
+    socket.on('connections', (data) => {
+      this.connections = data;
+    });
+  }
+
   get statusChat(): boolean {
     return this.openChat;
   }
@@ -192,7 +248,7 @@ export default class Chat extends Vue {
     return moment(currentDate).isSame(moment(date).format('DD MMM YY'));
   }
 
-  messageDate(date): void {
+  messageDate(date): any {
     const format = this.language === 'ru' ? 'DD MMMM' : 'MMM, DD';
     return moment(date).locale(this.language).format(format);
   }
@@ -220,6 +276,7 @@ export default class Chat extends Vue {
 
   sendMessage() {
     // eslint-disable-next-line no-console
+    socket.emit('connections');
     const message = {
       message: this.message,
       user: this.$store.getters.user.firstName,
@@ -227,8 +284,13 @@ export default class Chat extends Vue {
       date: '2022-04-25',
     };
     this.messagesList.push(message);
+    socket.emit('chat-message', {
+      message: this.message,
+      user: this.$store.getters.user.firstName,
+      id: new Date().getTime(),
+      date: '2022-04-25',
+    });
     this.message = '';
-    this.$socket.emit('event-from-frontend-1', message);
   }
 }
 </script>
@@ -497,6 +559,10 @@ export default class Chat extends Vue {
     &__form {
       display: flex;
       width: 100%;
+
+      button {
+        margin-left: auto;
+      }
     }
 
     &__send {

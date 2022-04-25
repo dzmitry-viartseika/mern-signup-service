@@ -139,41 +139,32 @@ const io = require('socket.io')(server, {
 });
 
 io.on('connection', (socket) => {
-    // join user's own room
-    socket.join(socket.user);
-    socket.join('myRandomChatRoomId');
-    // find user's all channels from the database and call join event on all of them.
-    console.log('a user connected');
+    socket.on('connections', Object.keys(io.sockets.connected).length);
+
     socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-    socket.on('my message', (msg) => {
-        console.log('message: ' + msg);
-        io.emit('my broadcast', `server: ${msg}`);
+        console.log("A user disconnected");
     });
 
-    socket.on('join', (roomName) => {
-        console.log('join: ' + roomName);
-        socket.join(roomName);
+    socket.on('chat-message', (data) => {
+        console.log('data', data);
+        socket.broadcast.emit('chat-message', (data));
     });
 
-    socket.on('message', ({message, roomName}, callback) => {
-        console.log('message: ' + message + ' in ' + roomName);
+    socket.on('typing', (data) => {
+        socket.broadcast.emit('typing', (data));
+    });
 
-        // generate data to send to receivers
-        const outgoingMessage = {
-            name: socket.user.name,
-            id: socket.user.id,
-            message,
-        };
-        // send socket to all in room except sender
-        socket.to(roomName).emit("message", outgoingMessage);
-        callback({
-            status: "ok"
-        });
-        // send to all including sender
-        // io.to(roomName).emit('message', message);
-    })
+    socket.on('stopTyping', () => {
+        socket.broadcast.emit('stopTyping');
+    });
+
+    socket.on('joined', (data) => {
+        socket.broadcast.emit('joined', (data));
+    });
+
+    socket.on('leave', (data) => {
+        socket.broadcast.emit('leave', (data));
+    });
 });
 
 // io
