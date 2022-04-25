@@ -1,9 +1,8 @@
 import { AxiosResponse } from 'axios';
 import $api from '@/api/api';
-import IFolder from '@/model/IFolder';
 import ISuccessResponse from '@/model/response/ISuccessResponse';
 import IFoldersResponse from '@/model/response/IFoldersResponse';
-import IFolderResponse from "@/model/response/IFolderResponse";
+import IFolderResponse from '@/model/response/IFolderResponse';
 
 /**
  * Класс для взаимодействия с папками в системе
