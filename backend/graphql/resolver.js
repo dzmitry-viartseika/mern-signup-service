@@ -15,7 +15,6 @@ const ClientRole = new Enum(
 );
 
 
-
 module.exports = {
   async getAllUsers(arg) {
     try {
