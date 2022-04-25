@@ -9,27 +9,27 @@
       >
         <span>{{ messageCount }}</span>
       </div>
-     <div
-       @click.prevent="toggleStatus()"
-     >
-       <transition
-         name="fade-content"
-         mode="out-in"
-       >
-         <div
-           v-if="statusChat"
-           :key="'first'"
-         >
-           on
-         </div>
-         <div
-           v-else
-           :key="'second'"
-         >
-           off
-         </div>
-       </transition>
-     </div>
+      <div
+        @click.prevent="toggleStatus()"
+      >
+        <transition
+          name="fade-content"
+          mode="out-in"
+        >
+          <div
+            v-if="statusChat"
+            :key="'first'"
+          >
+            on
+          </div>
+          <div
+            v-else
+            :key="'second'"
+          >
+            off
+          </div>
+        </transition>
+      </div>
       <transition name="fade-content">
         <div
           v-if="statusChat"
