@@ -5,7 +5,7 @@
     >
       <div
         v-if="messageCount"
-        class="chat-status__number"
+        class="app-chat-status__number"
       >
         <span>{{ messageCount }}</span>
       </div>
@@ -20,13 +20,21 @@
             v-if="statusChat"
             :key="'first'"
           >
-            on
+            <svgicon
+              name="ChatClose"
+              width="16"
+              height="16"
+            />
           </div>
           <div
             v-else
             :key="'second'"
           >
-            off
+            <svgicon
+              name="Chat"
+              width="16"
+              height="16"
+            />
           </div>
         </transition>
       </div>
@@ -146,6 +154,8 @@ import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import TextInput from '@/components/Elements/TextInput.vue';
 import moment from 'moment';
+import '@/assets/icons/Chat';
+import '@/assets/icons/ChatClose';
 
 @Component({
   components: {
@@ -205,7 +215,7 @@ export default class Chat extends Vue {
     //   (message) => message.senderId !== this.userInfo._id && !message.isRead.includes(this.userInfo._id),
     // );
     // return unreadMessages.length > 99 ? 99 : unreadMessages.length;
-    return 99;
+    return this.messagesList.length;
   }
 
   sendMessage() {
@@ -526,9 +536,9 @@ export default class Chat extends Vue {
     position: fixed;
     bottom: 25px;
     right: 25px;
-    max-width: 60px;
-    min-width: 60px;
-    height: 60px;
+    max-width: 40px;
+    min-width: 40px;
+    height: 40px;
     z-index: 1000;
     border-radius: 50%;
     background: $color-dodger-blue;
@@ -539,13 +549,14 @@ export default class Chat extends Vue {
     transition: background-color .15s ease-in;
     box-shadow: 0 0 8px rgba($color-black, .04);
 
+
     &_disabled {
       background: $color-silver-chalice;
       pointer-events: none;
     }
 
-    i {
-      color: $color-white;
+    svg {
+      fill: $color-white;
     }
 
     &__off {
