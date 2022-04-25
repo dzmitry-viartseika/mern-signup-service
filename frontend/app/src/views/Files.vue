@@ -274,8 +274,6 @@ export default class Files extends Vue {
       const user = this.$store.getters.user;
       const { data } = await FolderService.getAllFilesByUserId(user.id);
       this.folders = data.folders;
-      // eslint-disable-next-line no-console
-      console.log('1', this.folders.sort((prev, next) => prev.folderType - next.folderType));
       this.folders = this.folders.sort((prev, next) => prev.folderType - next.folderType);
     } catch (e) {
       console.error(e);
@@ -298,14 +296,6 @@ export default class Files extends Vue {
     };
     this.$validator.localize(dict);
     this.$validator.attach({ name: 'folderName', rules: { required: true } });
-  }
-
-  showModal(): void {
-    this.isVisibleContextMenu = true;
-  }
-
-  selectFolder(id: string): void {
-    this.selectedFolder = id;
   }
 
   editFolderName(): void {
@@ -353,14 +343,12 @@ export default class Files extends Vue {
   }
 
   proceedTo(): void {
-    console.log('selectedFolder', this.selectedFolder);
     this.$router.push({
       name: 'Files',
       query: {
         id: this.selectedFolder.parentFolder,
       },
     });
-    // this.folders = [];
   }
 
   deleteFolder(): void {
