@@ -2,11 +2,25 @@ import { AxiosResponse } from 'axios';
 import $api from '@/api/api';
 import { IAuthResponse } from '@/model/response/IAuthResponse';
 
+/**
+ * Класс для создания нового пользователя и взаимодействия в системе.
+ */
 export default class AuthService {
+  /**
+   * Авторизация пользователя для входа в систему.
+   * @param email - почта нового пользователя
+   * @param password - пароль нового пользователя
+   * @returns промис, Возвращает екущего пользователя
+   */
   static async login(email: string, password: string): Promise<AxiosResponse<IAuthResponse>> {
     return $api.post<IAuthResponse>('/login', { email, password });
   }
 
+  /**
+   * Создание нового пользователя для входа в систему.
+   * @param email - почта нового пользователя
+   * @param password - пароль нового пользователя
+   */
   static async registration(email: string, password: string):
   Promise<AxiosResponse<IAuthResponse>> {
     return $api.post<IAuthResponse>('/registration', { email, password });
