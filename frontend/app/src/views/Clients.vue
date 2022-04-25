@@ -84,9 +84,9 @@
           >
             <pagination-template
               :pagination="{
-                per_page: filterQuery.page,
+                perPage: filterQuery.page,
                 total: rowData.length,
-                total_pages: total_pages
+                totalPages: totalPages
               }"
               :current-page="currentPage"
               @pagechanged="onPageChange"
@@ -325,16 +325,11 @@ export default class Dashboard extends Vue {
     filter: '',
   };
 
-  per_page: number = 0;
+  perPage: number = 0;
   total: number = 0;
-  total_pages: number = 0;
+  totalPages: number = 0;
 
   currentPage: number = 1;
-
-
-  onDetailRowClick (dataItem) {
-    this.selectedClient = dataItem.data;
-  }
 
   getPaginationData({ totalDocs, page, perPage }) {
     const totalPages = Math.ceil(totalDocs / perPage);
@@ -419,7 +414,6 @@ export default class Dashboard extends Vue {
   }
 
   async onPageChange(page): Promise<void> {
-    console.log('page', page);
     this.currentPage = page;
     this.filterQuery.page = page;
     this.addingParameterToLink();
@@ -704,18 +698,8 @@ export default class Dashboard extends Vue {
       // TODO сhange Users to Clients graphql
       this.rowData = data.getAllUsers.docs;
       this.total = this.rowData.length;
-      console.log('this.filterQuery.page', this.filterQuery.page);
-      this.per_page = this.filterQuery.page;
-      this.total_pages = Math.ceil(data.getAllUsers.totalDocs / this.filterQuery.limit);
-      // per_page: number = 0;
-      // total: number = 0;
-      // total_pages: number = 0;
-      // const start = (+this.per_page - 1) * 6;
-      // const end = +this.per_page * 6;
-      // console.log('start', start);
-      // console.log('end', end);
-      // const paginatedRows = this.rowData.filter((row) => this.rowData.includes((this.rowData).slice(start, end)));
-      // console.log('paginatedRows', paginatedRows);
+      this.perPage = this.filterQuery.page;
+      this.totalPages = Math.ceil(data.getAllUsers.totalDocs / this.filterQuery.limit);
     }
     try {
       await UsersService.success();

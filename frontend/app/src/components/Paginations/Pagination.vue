@@ -1,7 +1,7 @@
 <template>
   <div class="app-pagination">
     <div
-      v-if="total_pages > 1"
+      v-if="totalPages > 1"
       class="app-pagination-list"
     >
       <div
@@ -97,9 +97,9 @@
             class="app__btn app__btn--primary"
             :class="{'app__btn--disabled': isInLastPage}"
             :disabled="isInLastPage"
-            @click="gotoPageNumber(total_pages)"
+            @click="gotoPageNumber(totalPages)"
           >
-            {{ total_pages }}
+            {{ totalPages }}
           </button>
         </div>
       </template>
@@ -153,16 +153,16 @@ export default class Pagination extends Vue {
   @Prop({ type: Number, required: false, default: 5  })
   maxVisibleButtons: number;
 
-  per_page: number = 10;
+  perPage: number = 10;
   total: number = 0;
-  total_pages: number = 0;
+  totalPages: number = 0;
 
   get isInFirstPage() {
     return this.currentPage === 1;
   }
 
   get isInLastPage() {
-    return this.currentPage === this.total_pages;
+    return this.currentPage === this.totalPages;
   }
 
   get pages() {
@@ -181,20 +181,20 @@ export default class Pagination extends Vue {
       return 1;
     }
 
-    if (this.currentPage === this.total_pages) {
-      return this.total_pages - this.maxVisibleButtons + 1;
+    if (this.currentPage === this.totalPages) {
+      return this.totalPages - this.maxVisibleButtons + 1;
     }
 
     return this.currentPage - 1;
   }
 
   get endPage() {
-    return Math.min(this.startPage + this.maxVisibleButtons - 1, this.total_pages);
+    return Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
   }
 
   showDots(position = 'left') {
-    const number = position === 'left' ? 1 : this.total_pages;
-    const nextNumber = position === 'left' ? 2 : this.total_pages - 1;
+    const number = position === 'left' ? 1 : this.totalPages;
+    const nextNumber = position === 'left' ? 2 : this.totalPages - 1;
 
     return !this.pages.includes(number) || !this.pages.includes(nextNumber);
   }
@@ -204,7 +204,7 @@ export default class Pagination extends Vue {
   }
 
   gotoLast() {
-    this.gotoPageNumber(this.total_pages);
+    this.gotoPageNumber(this.totalPages);
   }
 
   gotoPrevious() {
@@ -220,16 +220,16 @@ export default class Pagination extends Vue {
   }
 
   created() {
-    this.per_page = this.pagination.per_page || 10;
+    this.perPage = this.pagination.perPage || 10;
     this.total = this.pagination.total || 0;
-    this.total_pages = this.pagination.total_pages || 0;
+    this.totalPages = this.pagination.totalPages || 0;
   }
 
   @Watch('pagination')
   test(pagination) {
-    this.per_page = pagination.per_page || 10;
+    this.perPage = pagination.perPage || 10;
     this.total = pagination.total || 0;
-    this.total_pages = pagination.total_pages || 0;
+    this.totalPages = pagination.totalPages || 0;
   }
 }
 </script>
