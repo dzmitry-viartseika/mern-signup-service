@@ -226,7 +226,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import '@/assets/icons/Eye';
 import UsersService from '@/services/Users/UsersService';
 import Radio from '@/components/Elements/Radio.vue';
@@ -330,19 +330,6 @@ export default class Dashboard extends Vue {
   totalPages: number = 0;
 
   currentPage: number = 1;
-
-  getPaginationData({ totalDocs, page, perPage }) {
-    const totalPages = Math.ceil(totalDocs / perPage);
-    const nextPage = totalPages > page ? page + 1 : undefined;
-    const prevPage = page !== 1 ? page - 1 : undefined;
-    this.fullInfo = {
-      totalPages,
-      page,
-      nextPage,
-      prevPage,
-      totalDocs,
-    };
-  }
 
   addingParameterToLink(): void {
     this.$router.push({
@@ -538,58 +525,6 @@ export default class Dashboard extends Vue {
 
   onSelect(): void {
     this.addingParameterToLink();
-  }
-
-  getRequests(queryParams) {
-    const {
-      page = this.queryParams.page,
-      perPage = this.queryParams.perPage,
-      search = this.queryParams.search,
-      filter = this.queryParams.filter,
-    } = queryParams;
-    this.queryParams = {
-      page,
-      perPage,
-      search,
-      filter,
-    };
-    const filterQuery = filter ? JSON.stringify({ 'country._id': filter }) : undefined;
-    this.$router.push({
-      query: {
-        page,
-        perPage,
-        search: search || undefined,
-        filter: filter || undefined,
-      },
-    }).catch(() => {});
-    const { totalDocs, resource } = { totalDocs: 20, resource: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17] };
-    this.getPaginationData({ totalDocs, page, perPage });
-    // this.loader = true;
-    // serviceApi.getServicesList({
-    //   page, perPage, filter: filterQuery, search,
-    // })
-    //   .then((resp) => {
-    //     this.loader = false;
-    //     const { totalDocs, resource } = resp.data;
-    //     this.noData = {
-    //       ...this.noData,
-    //       status: totalDocs === 0,
-    //     };
-    //     this.getPaginationData({ totalDocs, page, perPage });
-    //     this.servicesList = [];
-    //     resource.forEach((service) => {
-    //       this.servicesList.push({
-    //         ...service,
-    //         country: {
-    //           ...service.country,
-    //           image: this.getOptionImage(service.country.code),
-    //         },
-    //       });
-    //     });
-    //   }).catch((err) => {
-    //   this.loader = false;
-    //   console.error(err);
-    // });
   }
 
   beforeMount(): void {

@@ -215,7 +215,7 @@ export default class Pagination extends Vue {
     this.gotoPageNumber(this.currentPage + 1);
   }
 
-  gotoPageNumber(pageNumber) {
+  gotoPageNumber(pageNumber: number) {
     this.$emit('pagechanged', pageNumber);
   }
 
