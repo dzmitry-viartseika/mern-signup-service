@@ -90,7 +90,7 @@ export default class Notification extends Vue {
     await this.updateUser();
   }
 
-  async changeCheckBoxValue(): void {
+  async changeCheckBoxValue(): Promise<void> {
     this.isChatSounds = !this.isChatSounds;
     await this.updateUser();
   }

@@ -216,7 +216,7 @@ export default class Chat extends Vue {
     return this.openChat;
   }
 
-  set statusChat(data: string): void {
+  set statusChat(data: boolean) {
     this.$emit('update:openChat', data);
   }
 
@@ -235,17 +235,17 @@ export default class Chat extends Vue {
     });
   }
 
-  showTodayText(date) {
+  showTodayText(date: string) {
     const currentDate = moment(new Date()).format('DD MMM YY');
     return moment(currentDate).isSame(moment(date).format('DD MMM YY'));
   }
 
-  messageDate(date): any {
+  messageDate(date: string): string {
     const format = this.language === 'ru' ? 'DD MMMM' : 'MMM, DD';
     return moment(date).locale(this.language).format(format);
   }
 
-  showChatDateRow(date, i) {
+  showChatDateRow(date: string, i: number): boolean {
     if (i === 0) {
       return true;
     }
@@ -258,13 +258,15 @@ export default class Chat extends Vue {
     this.statusChat = !this.statusChat;
   }
 
-  beforeDestroy() {
-    socket.emit('leave', this.$store.getters.user.firstName);
+  beforeDestroy(): void {
+    const { firstName } = this.$store.getters.user;
+    socket.emit('leave', firstName);
   }
 
   @Watch('message')
-  newMessage(value) {
-    value ? socket.emit('typing', this.$store.getters.user.firstName) : socket.emit('stopTyping');
+  newMessage(value: string) {
+    const { firstName } = this.$store.getters.user;
+    value ? socket.emit('typing', firstName) : socket.emit('stopTyping');
   }
 
   get messageCount(): number {

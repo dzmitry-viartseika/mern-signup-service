@@ -15,13 +15,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import IChatMessage from '@/model/chat/IChatMessage';
 
 @Component({})
 export default class ChatMessage extends Vue {
-  @Prop({ required: false, type: Object })
-  item: object;
+  @Prop({ required: false, type: Object }) item: IChatMessage;
 
-  get labelText() {
+  get labelText(): string {
     const { user } = this.item;
     return user;
   }
