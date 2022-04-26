@@ -105,6 +105,12 @@
                           :item="item"
                         />
                       </transition>
+                      <transition name="fade-content">
+                        <div
+                          v-if="isTyping && i === messagesList.length - 1"
+                          class="message-item__text">{{ isTyping }} is typing
+                        </div>
+                      </transition>
                       <div class="message-item__time">
                         <span>{{ item.date }}</span>
                       </div>
@@ -145,7 +151,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import ChatMessage from '@/components/Chat/ChatMessage.vue';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
@@ -174,6 +180,8 @@ export default class Chat extends Vue {
 
   messagesList: any[] = [];
 
+  isTyping: boolean | string = '';
+
   created() {
     socket.on('message', (data) => {
       this.messagesList.push(data.message);
@@ -182,6 +190,18 @@ export default class Chat extends Vue {
         position: 'top-right',
         duration: 3000,
       });
+    });
+
+    socket.on('stopTyping', () => {
+      this.isTyping = false;
+    });
+
+    socket.on('typing', (data) => {
+      this.isTyping = data;
+    });
+
+    socket.on('leave', (data) => {
+      this.messagesList = data;
     });
   }
 
@@ -220,6 +240,15 @@ export default class Chat extends Vue {
     this.statusChat = !this.statusChat;
   }
 
+  beforeDestroy() {
+    socket.emit('leave', this.$store.getters.user.firstName);
+  }
+
+  @Watch('message')
+  newMessage(value) {
+    value ? socket.emit('typing', this.$store.getters.user.firstName) : socket.emit('stopTyping');
+  }
+
   get messageCount(): number {
     // const unreadMessages = this.messagesList.filter(
     //   (message) => message.senderId !== this.userInfo._id && !message.isRead.includes(this.userInfo._id),
@@ -229,8 +258,6 @@ export default class Chat extends Vue {
   }
 
   sendMessage() {
-    // eslint-disable-next-line no-console
-    socket.emit('connections');
     const message = {
       message: this.message,
       user: this.$store.getters.user.firstName,
@@ -250,6 +277,7 @@ export default class Chat extends Vue {
       notification: 'A new message was added',
     });
     this.message = '';
+    this.isTyping = false;
   }
 }
 </script>
@@ -257,21 +285,16 @@ export default class Chat extends Vue {
 <style scoped lang="scss">
 @import '../../assets/scss/variables';
 
-  //.app-chat {
-  //  position: fixed;
-  //  right: 25px;
-  //  bottom: 25px;
-  //  width: 60px;
-  //  height: 60px;
-  //  border-radius: 50%;
-  //  background: #0F57DD;
-  //  display: flex;
-  //  justify-content: center;
-  //  align-items: center;
-  //  color: $color-white;
-  //}
-
 .message {
+
+  &-item {
+
+    &__text {
+      margin-bottom: 10px;
+      color: $color-denim;
+      font-size: 12px;
+    }
+  }
 
   &__list {
     display: inline-flex;
@@ -341,17 +364,6 @@ export default class Chat extends Vue {
 
     &__docname {
       transition: all .15s ease-in;
-    }
-
-    &__content {
-      &_upload {
-        .message-item {
-          &__docname {
-            display: block;
-            margin-bottom: 3px;
-          }
-        }
-      }
     }
 
     &__value {

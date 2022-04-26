@@ -39,7 +39,6 @@ import Component from 'vue-class-component';
 import UsersService from '@/services/Users/UsersService';
 import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import Chat from '@/components/Chat/Chat.vue';
-import SocketioService from '@/services/Sockets/SocketService';
 
 @Component({
   components: {
@@ -56,12 +55,7 @@ export default class App extends Vue {
     return !!(this.$route.path.includes('crm') && token);
   }
 
-  beforeUnmount() {
-    SocketioService.disconnect();
-  }
-
   async created(): Promise<any> {
-    // SocketioService.setupSocketConnection();
     const lang = localStorage.getItem('language');
 
     const token = localStorage.getItem('token');

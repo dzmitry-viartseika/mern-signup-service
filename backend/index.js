@@ -147,6 +147,21 @@ io
             console.log(`User ${socket.id} left`)
         })
 
+        socket.on('leave', () => {
+            socket.emit('leave', []);
+        });
+
+        socket.on('typing', (data) => {
+            console.log('data', data);
+            io.sockets.emit('typing', data);
+            // io.sockets.broadcast.emit('typing', data);
+        })
+
+        socket.on('stopTyping', () => {
+            io.sockets.emit('stopTyping');
+            // io.sockets.broadcast.emit('stopTyping');
+        });
+
         socket.on('message', (data) => {
             io.sockets.emit('message', data);
         });
