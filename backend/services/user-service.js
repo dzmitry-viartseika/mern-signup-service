@@ -168,6 +168,7 @@ class UserService {
         user.phoneNumber = updatedUser.phoneNumber;
         user.showNotify = updatedUser.showNotify;
         user.emailNotify = updatedUser.emailNotify;
+        user.isChatSounds = updatedUser.isChatSounds;
         user.save();
         return user;
     }

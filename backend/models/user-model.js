@@ -41,6 +41,10 @@ const UserSchema = new Schema({
         type: Boolean,
         default: true
     },
+    isChatSounds: {
+        type: Boolean,
+        default: true
+    },
     emailNotify: {
         type: String,
         default: "INSTANTLY"

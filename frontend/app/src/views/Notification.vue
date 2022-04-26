@@ -8,11 +8,20 @@
     <div class="app-notification-content">
       <div class="app-notification-content__item">
         <checkbox
-          id="remember-me"
+          id="send-notify"
           v-model="isSendNotify"
           name="send-notify"
           :label="'Отключить уведомления действий в системе'"
           @changeCheckBox="changeCheckBox($event)"
+        />
+      </div>
+      <div class="app-notification-content__item">
+        <checkbox
+          id="chat-sounds"
+          v-model="isChatSounds"
+          name="send-notify"
+          :label="'Отключить звуки в чате'"
+          @changeCheckBox="changeCheckBoxValue($event)"
         />
       </div>
       <div class="app-notification-content__item">
@@ -58,6 +67,7 @@ export default class Notification extends Vue {
   selectedPeriod: null | string = null;
 
   isSendNotify: null | boolean = null;
+  isChatSounds: null | boolean = null;
 
   periods: ISelectItem[] = [
     {
@@ -69,13 +79,19 @@ export default class Notification extends Vue {
   ];
 
   created(): void {
-    const { showNotify = true, emailNotify = NotificationPeriods.INSTANTLY } = this.$store.getters.user;
+    const { showNotify = true, emailNotify = NotificationPeriods.INSTANTLY, isChatSounds } = this.$store.getters.user;
     this.isSendNotify = showNotify;
     this.selectedPeriod = emailNotify;
+    this.isChatSounds = isChatSounds;
   }
 
   async changeCheckBox(): Promise<void> {
     this.isSendNotify = !this.isSendNotify;
+    await this.updateUser();
+  }
+
+  async changeCheckBoxValue(): void {
+    this.isChatSounds = !this.isChatSounds;
     await this.updateUser();
   }
 
@@ -88,6 +104,7 @@ export default class Notification extends Vue {
     const updatedUser = {
       ...userData,
       showNotify: this.isSendNotify,
+      isChatSounds: this.isChatSounds,
       emailNotify: this.selectedPeriod,
     };
     try {

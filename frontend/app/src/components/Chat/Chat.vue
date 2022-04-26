@@ -162,6 +162,8 @@ import moment from 'moment';
 import '@/assets/icons/Chat';
 import '@/assets/icons/ChatClose';
 import io from 'socket.io-client';
+const chatNewMessageSound = require('@/assets/audio/Chat/chat-message-sound.mp3');
+
 const socket = io.connect('http://localhost:5000');
 
 @Component({
@@ -219,6 +221,17 @@ export default class Chat extends Vue {
     return this.$i18n.locale;
   }
 
+  get getNewMessageSound(): string {
+    return chatNewMessageSound;
+  }
+
+  playSoundIn() {
+    const sound = new Audio(this.getNewMessageSound);
+    sound.addEventListener('canplaythrough', () => {
+      sound.play();
+    });
+  }
+
   showTodayText(date) {
     const currentDate = moment(new Date()).format('DD MMM YY');
     return moment(currentDate).isSame(moment(date).format('DD MMM YY'));
@@ -260,6 +273,7 @@ export default class Chat extends Vue {
   }
 
   sendMessage() {
+    const { isChatSounds } = this.$store.getters.user;
     const message = {
       message: this.message,
       user: this.$store.getters.user.firstName,
@@ -278,6 +292,9 @@ export default class Chat extends Vue {
       },
       notification: 'A new message was added',
     });
+    if (isChatSounds) {
+      this.playSoundIn();
+    }
     this.message = '';
     this.isTyping = false;
   }
