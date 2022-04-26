@@ -235,7 +235,7 @@ export default class Chat extends Vue {
     });
   }
 
-  showTodayText(date: string) {
+  showTodayText(date: string): boolean {
     const currentDate = moment(new Date()).format('DD MMM YY');
     return moment(currentDate).isSame(moment(date).format('DD MMM YY'));
   }
@@ -297,9 +297,11 @@ export default class Chat extends Vue {
       },
       notification: 'A new message was added',
     });
+
     if (isChatSounds) {
       this.playSoundIn();
     }
+
     this.message = '';
     this.isTyping = false;
   }
