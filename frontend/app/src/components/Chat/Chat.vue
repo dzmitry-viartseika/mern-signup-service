@@ -277,6 +277,7 @@ export default class Chat extends Vue {
 
   sendMessage() {
     const { isChatSounds } = this.$store.getters.user;
+    // TODO date fixed mock value
     const message = {
       message: this.message,
       user: this.$store.getters.user.firstName,
