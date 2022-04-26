@@ -91,10 +91,9 @@
                   <div
                     :ref="'messageRow'"
                     class="message__row"
+                    :class="{
+                                        'message__row_end': $store.getters.user._id === item.senderId}"
                   >
-                    <!--                    :class="{-->
-                    <!--                    'message__row_end': userInfo._id === item.senderId-->
-                    <!--                    }"-->
                     <div
                       class="message-item"
                     >
@@ -157,8 +156,7 @@ import moment from 'moment';
 import '@/assets/icons/Chat';
 import '@/assets/icons/ChatClose';
 import io from 'socket.io-client';
-
-const socket = io();
+const socket = io.connect('http://localhost:5000');
 
 @Component({
   components: {
@@ -179,55 +177,13 @@ export default class Chat extends Vue {
   messagesList: any[] = [];
 
   created() {
-    /* eslint-disable */
-    /* tslint:disable */
-    // @ts-ignore
-    console.log('socket', socket);
-    /* eslint-disable */
-    /* tslint:disable */
-    // @ts-ignore
-    socket.on('chat-message', (data) => {
-      console.log('data', data);
-      this.messagesList.push({
-        message: data.message,
-        type: 1,
-        user: data.user,
+    socket.on('message', (data) => {
+      this.messagesList.push(data.message);
+      this.$toasted.show(`${data.notification}`, {
+        theme: 'bubble',
+        position: 'top-right',
+        duration: 3000,
       });
-    });
-
-    socket.on('typing', (data) => {
-      this.typing = data;
-    });
-
-
-    socket.on('stopTyping', () => {
-      this.typing = false;
-    });
-
-    socket.on('joined', (data) => {
-      this.info.push({
-        username: data,
-        type: 'joined'
-      });
-
-      setTimeout(() => {
-        this.info = [];
-      }, 5000);
-    });
-
-    socket.on('leave', (data) => {
-      this.info.push({
-        username: data,
-        type: 'left'
-      });
-
-      setTimeout(() => {
-        this.info = [];
-      }, 5000);
-    });
-
-    socket.on('connections', (data) => {
-      this.connections = data;
     });
   }
 
@@ -281,14 +237,19 @@ export default class Chat extends Vue {
       message: this.message,
       user: this.$store.getters.user.firstName,
       id: new Date().getTime(),
+      senderId: this.$store.getters.user.id,
       date: '2022-04-25',
     };
-    this.messagesList.push(message);
-    socket.emit('chat-message', {
-      message: this.message,
-      user: this.$store.getters.user.firstName,
-      id: new Date().getTime(),
-      date: '2022-04-25',
+    // this.messagesList.push(message);
+    socket.emit('message', {
+      message: {
+        message: message.message,
+        user: message.user,
+        id: message.id,
+        date: message.date,
+        senderId: message.senderId,
+      },
+      notification: 'A new message was added',
     });
     this.message = '';
   }

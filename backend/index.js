@@ -138,72 +138,20 @@ const io = require('socket.io')(server, {
     },
 });
 
-io.on('connection', (socket) => {
-    socket.on('connections', Object.keys(io.sockets.connected).length);
+io
+    .sockets
+    .on('connection', function (socket) {
+        console.log('User connected socket', socket.id);
 
-    socket.on('disconnect', () => {
-        console.log("A user disconnected");
-    });
+        socket.on('disconnect', () => {
+            console.log(`User ${socket.id} left`)
+        })
 
-    socket.on('chat-message', (data) => {
-        console.log('data', data);
-        socket.broadcast.emit('chat-message', (data));
-    });
-
-    socket.on('typing', (data) => {
-        socket.broadcast.emit('typing', (data));
-    });
-
-    socket.on('stopTyping', () => {
-        socket.broadcast.emit('stopTyping');
-    });
-
-    socket.on('joined', (data) => {
-        socket.broadcast.emit('joined', (data));
-    });
-
-    socket.on('leave', (data) => {
-        socket.broadcast.emit('leave', (data));
-    });
-});
-
-// io
-//     .sockets
-//     .on('connection', function (socket) {
-//         console.log('User connected socket', socket.id);
-//
-//         socket.on('disconnect', () => {
-//             console.log(`User ${socket.id} left`)
-//         })
-//
-//         socket.on('my message', (msg) => {
-//             console.log('message: ' + msg);
-//         });
-//         // socket.emit("hello", "world");
-//         // socket.send({
-//         //     type: 'hello',
-//         //     message: 'Hello my friend. Im Socket IO'
-//         // })
-//        // socket.on('message', message => {
-//        //     socket.send({
-//        //         type: 'message',
-//        //         message: message
-//        //     });
-//        //     socket
-//        //         .setBroadcast.send({
-//        //         type: 'message',
-//        //         message: message
-//        //     })
-//        // })
-//        // socket.on('disconnect', (data) => {
-//        //     console.log('disconnect');
-//        // });
-//
-//         // там походу схема на один ивент закидываешь с фронта объект например, записываешь его в базу,
-//         //     и потом достаешь уже обновленные объекты из базы и эмитишь другой ивент их отдаешь, и
-//         // на фронте где подписался на него там обновляешь ui новыми объектами
-//     }
-// )
+        socket.on('message', (data) => {
+            io.sockets.emit('message', data);
+        });
+    }
+)
 
 
 app.use('/api', fileRoutes.routes);
