@@ -189,11 +189,14 @@ export default class Chat extends Vue {
   created() {
     socket.on('message', (data) => {
       this.messagesList.push(data.message);
-      this.$toasted.show(`${data.notification}`, {
-        theme: 'bubble',
-        position: 'top-right',
-        duration: 3000,
-      });
+      const { showNotify } = this.$store.getters.user;
+      if (showNotify) {
+        this.$toasted.show(`${data.notification}`, {
+          theme: 'bubble',
+          position: 'top-right',
+          duration: 3000,
+        });
+      }
     });
 
     socket.on('stopTyping', () => {
