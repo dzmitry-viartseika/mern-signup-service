@@ -247,11 +247,7 @@ import queryString from 'query-string';
 import IFilterQueryClients from '@/model/filters/IFilterQueryClients';
 import paginationTemplate from '@/components/Paginations/Pagination.vue';
 import ClientRoles from '@/model/enums/ClientRoles';
-
-export enum RowSelection {
-  single = 'single',
-  multiple = 'multiple',
-}
+import RowSelectionAgTable from '@/model/enums/RowSelectionAgTable';
 
 @Component({
   metaInfo() {
