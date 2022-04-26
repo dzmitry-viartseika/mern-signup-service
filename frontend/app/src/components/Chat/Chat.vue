@@ -92,14 +92,14 @@
                     :ref="'messageRow'"
                     class="message__row"
                     :class="{
-                                        'message__row_end': $store.getters.user._id === item.senderId}"
+                      'message__row_end': $store.getters.user._id === item.senderId}"
                   >
                     <div
+                      :id="item.id"
                       class="message-item"
+                      :class="{'message-item_me': $store.getters.user._id === item.senderId}"
                     >
-                      <!--                      :id="item._id"-->
                       <!--                      :ref="!item.isRead.includes(userInfo._id) && userInfo._id !== item.senderId ? 'unread' : 'read'"-->
-                      <!--                      :class="{'message-item_me': userInfo._id === item.senderId}"-->
                       <transition name="fade-content">
                         <ChatMessage
                           :item="item"
@@ -120,11 +120,8 @@
           >
             <form
               class="app-chat-window__form"
-              @submit.prevent="sendMessage($event)"
+              @submit.prevent="message ? sendMessage($event) : false"
             >
-              <!--              <textarea-template-->
-              <!--                :value.sync="message"-->
-              <!--              />-->
               <text-input
                 :value.sync="message"
                 input-type="text"
@@ -134,7 +131,8 @@
               <button
                 type="submit"
                 class="app__btn app__btn--primary"
-                @click.prevent="sendMessage($event)"
+                :class="{'app__btn--disabled': !message}"
+                @click.prevent="message ? sendMessage($event) : false"
               >
                 Send Message
               </button>
@@ -486,7 +484,7 @@ export default class Chat extends Vue {
     &__footer {
       display: flex;
       align-items: center;
-      padding: 0 10px;
+      padding: 0 10px 10px;
       border-top: 1px solid $color-alabaster;
     }
 
@@ -520,6 +518,11 @@ export default class Chat extends Vue {
     &__form {
       display: flex;
       width: 100%;
+
+      .text-field {
+        margin-bottom: 0;
+        margin-right: 15px;
+      }
 
       button {
         margin-left: auto;

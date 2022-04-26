@@ -22,9 +22,9 @@ import VueSocketIO from 'vue-socket.io';
 Vue.config.productionTip = false;
 
 Vue.use(new VueSocketIO({
-    debug: false,
-    connection: 'http://localhost:5000',
-  })
+  debug: false,
+  connection: 'http://localhost:5000',
+}),
 );
 
 Vue.use(Toasted);
