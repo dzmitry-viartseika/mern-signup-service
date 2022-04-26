@@ -152,7 +152,6 @@ io
         });
 
         socket.on('typing', (data) => {
-            console.log('data', data);
             io.sockets.emit('typing', data);
             // io.sockets.broadcast.emit('typing', data);
         })
