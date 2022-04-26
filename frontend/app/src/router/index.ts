@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-
-const token = localStorage.getItem('token');
 import store from '../store/index';
 
 Vue.use(VueRouter);

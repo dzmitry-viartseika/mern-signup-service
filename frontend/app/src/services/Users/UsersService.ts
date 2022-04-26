@@ -2,7 +2,6 @@ import { AxiosResponse } from 'axios';
 import $api from '../../api/api';
 import { IUser } from '../../model/IUser';
 import { IUsersListResponse } from '@/model/response/IUsersListResponse';
-import $api_graphql from '@/api/api_graphql';
 
 export default class UsersService {
   static fetchUsers(): Promise<AxiosResponse<IUser[]>> {

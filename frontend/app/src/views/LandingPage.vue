@@ -59,7 +59,6 @@ import ModalTemplate from '@/components/Modals/ModalTemplate.vue';
 import DropDown from '@/components/Elements/DropDown.vue';
 import HeaderTemplate from '@/components/Landing/Header/HeaderTemplate.vue';
 import UsersService from '@/services/Users/UsersService';
-import { message } from 'ag-grid-community/dist/lib/utils/general';
 
 @Component({
   components: {
@@ -80,7 +79,7 @@ export default class LandingPage extends Vue {
     this.$i18n.locale = data;
   }
 
-  get dropdownOptions() {
+  get dropdownOptions(): any {
     return {
       list: [
         {
@@ -96,14 +95,6 @@ export default class LandingPage extends Vue {
     };
   }
 
-  // ping() {
-  //   this.$socket.emit('send-message', 'WERTEY MESSAGE');
-  // }
-  //
-  // test(message) {
-  //   console.log('message', message);
-  // }
-
   agreePolicy(): void {
     this.isAgreePolicy = !this.isAgreePolicy;
     localStorage.setItem('isAgreePolicy', 'true');
@@ -116,9 +107,6 @@ export default class LandingPage extends Vue {
   }
 
   async created(): Promise<any> {
-    this.$socket.on('receive-message', (message) => {
-      // this.test(message);
-    });
     this.language = localStorage.getItem('language') || this.$i18n.locale;
     this.isAgreePolicy = !!(localStorage.getItem('isAgreePolicy') || '');
     try {
