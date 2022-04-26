@@ -284,7 +284,6 @@ export default class Chat extends Vue {
       senderId: this.$store.getters.user.id,
       date: '2022-04-25',
     };
-    // this.messagesList.push(message);
     socket.emit('message', {
       message: {
         message: message.message,
