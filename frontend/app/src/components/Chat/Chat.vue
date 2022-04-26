@@ -108,7 +108,9 @@
                       <transition name="fade-content">
                         <div
                           v-if="isTyping && i === messagesList.length - 1"
-                          class="message-item__text">{{ isTyping }} is typing
+                          class="message-item__text"
+                        >
+                          {{ isTyping }} is typing
                         </div>
                       </transition>
                       <div class="message-item__time">
