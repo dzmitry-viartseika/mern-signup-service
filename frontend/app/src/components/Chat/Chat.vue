@@ -162,8 +162,8 @@ import moment from 'moment';
 import '@/assets/icons/Chat';
 import '@/assets/icons/ChatClose';
 import io from 'socket.io-client';
-const chatNewMessageSound = require('@/assets/audio/Chat/chat-message-sound.mp3');
 
+const chatNewMessageSound = require('@/assets/audio/Chat/chat-message-sound.mp3');
 const socket = io.connect('http://localhost:5000');
 
 @Component({
@@ -186,7 +186,13 @@ export default class Chat extends Vue {
 
   isTyping: boolean | string = '';
 
-  created() {
+  @Watch('message')
+  newMessage(value: string): void {
+    const { firstName } = this.$store.getters.user;
+    value ? socket.emit('typing', firstName) : socket.emit('stopTyping');
+  }
+
+  created(): void {
     socket.on('message', (data) => {
       this.messagesList.push(data.message);
       const { showNotify } = this.$store.getters.user;
@@ -228,7 +234,7 @@ export default class Chat extends Vue {
     return chatNewMessageSound;
   }
 
-  playSoundIn() {
+  playSoundIn(): void {
     const sound = new Audio(this.getNewMessageSound);
     sound.addEventListener('canplaythrough', () => {
       sound.play();
@@ -263,12 +269,6 @@ export default class Chat extends Vue {
     socket.emit('leave', firstName);
   }
 
-  @Watch('message')
-  newMessage(value: string) {
-    const { firstName } = this.$store.getters.user;
-    value ? socket.emit('typing', firstName) : socket.emit('stopTyping');
-  }
-
   get messageCount(): number {
     // const unreadMessages = this.messagesList.filter(
     //   (message) => message.senderId !== this.userInfo._id && !message.isRead.includes(this.userInfo._id),
@@ -277,7 +277,7 @@ export default class Chat extends Vue {
     return this.messagesList.length;
   }
 
-  sendMessage() {
+  sendMessage(): void {
     const { isChatSounds } = this.$store.getters.user;
     // TODO date fixed mock value
     const message = {
