@@ -1,7 +1,17 @@
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-const TheInputText = ({ required = false, label, type = 'text', value, onChange, focused = false, autoFocus = false, id }) => {
+const TheInputText = (
+    {
+        required = false,
+        label,
+        type = 'text',
+        value,
+        onChange,
+        focused = false,
+        autoFocus = false,
+        id
+    }) => {
     return (
         <>
             <Box
