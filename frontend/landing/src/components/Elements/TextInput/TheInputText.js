@@ -12,7 +12,6 @@ const TheInputText = ({ required = false, label, type = 'text', value, onChange,
                 noValidate
                 autoComplete="off"
             >
-                value={ value }
                 <TextField
                     label={label}
                     required={required}

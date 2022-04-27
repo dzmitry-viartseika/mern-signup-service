@@ -6,7 +6,32 @@ body {
   color: $color-secondary;
 }
 
-.landing-container {
-  max-width: 1200px;
-  margin: 0 auto;
+img {
+  max-width: 100%;
+  height: auto;
 }
+
+.landing {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    flex: 0 0 auto;
+  }
+
+  &-footer {
+    flex: 0 0 auto;
+  }
+
+  &-content {
+    flex: 1 0 auto;
+  }
+
+  &-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+

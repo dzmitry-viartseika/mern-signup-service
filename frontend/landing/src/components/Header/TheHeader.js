@@ -1,6 +1,9 @@
 import React, { useState }  from 'react';
 import { Button, Modal, Fade, Box, Typography, Backdrop } from '@mui/material';
-import TheInputText from '../Elements/TheInputText';
+import TheInputText from '../Elements/TextInput/TheInputText';
+import TheImage from '../Elements/TheImage/TheImage';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/images/logo.png';
 
 const style = {
     position: 'absolute',
@@ -54,7 +57,13 @@ const TheHeader = () => {
                 <div className="landing-container">
                     <div className="landing-header__wrapper">
                         <div className="landing-header__left">
-                            logo
+                            <Link to={'/'}>
+                                <div
+                                    className="landing-header__logo">
+                                    <img src={logo} alt=""/>
+                                </div>
+                            </Link>
+                            {/*<TheImage name={'logo.png'}/>*/}
                         </div>
                         <div className="landing-header__right">
                             <Button
