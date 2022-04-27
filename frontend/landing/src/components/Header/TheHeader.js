@@ -5,6 +5,7 @@ import TheImage from '../Elements/TheImage/TheImage';
 import Button from '../Elements/Button/TheButton';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
+import AuthService from '../../services/Auth/AuthService';
 
 const style = {
     position: 'absolute',
@@ -34,8 +35,14 @@ const TheHeader = () => {
         setOpen(false);
     }
 
-    const loginUser = () => {
-        console.log('user', user);
+    const loginUser = async () => {
+        try {
+            const response = await AuthService.login(user.email, user.password);
+            console.log('response', response);
+            setOpen(false);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     const handleChangeEmail = (e) => {
