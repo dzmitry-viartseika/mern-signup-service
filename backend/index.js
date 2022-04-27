@@ -23,6 +23,8 @@ const fileRoutes = require('./routers/file-upload-routes');
 const swaggerDocumentation = require('./helper/documentations');
 const cookieSession = require('cookie-session');
 const allowedOrigins = ['http://localhost:5000', 'http://localhost:8080'];
+const ChatModel = require('./models/chat-model');
+const uuid = require('uuid');
 require('./config/passport');
 const PORT = process.env.PORT || 5000;
 
@@ -161,7 +163,22 @@ io
             // io.sockets.broadcast.emit('stopTyping');
         });
 
-        socket.on('message', (data) => {
+        socket.on('message', async (data) => {
+            // console.log('uuid.v4()', uuid.v4());
+            // const { message } = data;
+            // console.log('message', message);
+            // let chatMessage = new ChatModel({
+            //     chatId: uuid.v4(),
+            //     senderId: message.senderId,
+            //     message: message.message,
+            //     date: message.date,
+            //     messageId: uuid.v4(),
+            //     user: message.user,
+            // })
+            // await chatMessage.save((err, result) => {
+            //     if (err) throw err;
+            //     io.sockets.emit('message', chatMessage);
+            // })
             io.sockets.emit('message', data);
         });
     }

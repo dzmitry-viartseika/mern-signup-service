@@ -114,7 +114,7 @@
                         </div>
                       </transition>
                       <div class="message-item__time">
-                        <span>{{ item.date }}</span>
+                        <span>{{ messageTime(item.date) }}</span>
                       </div>
                     </div>
                   </div>
@@ -128,7 +128,7 @@
           >
             <form
               class="app-chat-window__form"
-              @submit.prevent="message ? sendMessage($event) : false"
+              @submit.prevent="message ? sendMessage() : false"
             >
               <text-input
                 :value.sync="message"
@@ -140,7 +140,7 @@
                 type="submit"
                 class="app__btn app__btn--primary"
                 :class="{'app__btn--disabled': !message}"
-                @click.prevent="message ? sendMessage($event) : false"
+                @click.prevent="message ? sendMessage() : false"
               >
                 Send Message
               </button>
@@ -158,10 +158,11 @@ import ChatMessage from '@/components/Chat/ChatMessage.vue';
 import TextareaTemplate from '@/components/Elements/TextareaTemplate.vue';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import TextInput from '@/components/Elements/TextInput.vue';
-import moment from 'moment';
 import '@/assets/icons/Chat';
 import '@/assets/icons/ChatClose';
 import io from 'socket.io-client';
+import getUniqueId from '@/utils/uniqueId';
+import moment from 'moment';
 
 const chatNewMessageSound = require('@/assets/audio/Chat/chat-message-sound.mp3');
 const socket = io.connect('http://localhost:5000');
@@ -251,6 +252,13 @@ export default class Chat extends Vue {
     return moment(date).locale(this.language).format(format);
   }
 
+  messageTime(date: string):string {
+    const day = new Date(date);
+    const hour = day.getHours();
+    const minutes = day.getMinutes();
+    return `${hour}:${minutes}`;
+  }
+
   showChatDateRow(date: string, i: number): boolean {
     if (i === 0) {
       return true;
@@ -281,14 +289,20 @@ export default class Chat extends Vue {
     const { isChatSounds } = this.$store.getters.user;
     // TODO date fixed mock value
     const message = {
+      chatId: getUniqueId(),
+      messageId: getUniqueId(),
       message: this.message,
       user: this.$store.getters.user.firstName,
-      id: new Date().getTime(),
+      id: getUniqueId(),
       senderId: this.$store.getters.user.id,
-      date: '2022-04-25',
+      date: new Date().getTime(),
     };
+    // eslint-disable-next-line no-console
+    console.log('message', message);
     socket.emit('message', {
       message: {
+        chatId: message.chatId,
+        messageId: message.messageId,
         message: message.message,
         user: message.user,
         id: message.id,
