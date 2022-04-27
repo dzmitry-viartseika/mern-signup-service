@@ -1,8 +1,16 @@
+import React from 'react';
+import TheHeader from './components/Header/TheHeader';
+import './assets/scss/style.scss';
+import { BrowserRouter } from 'react-router-dom';
+
 export const App = () => {
   return (
-    <div>
-      <a href="http://localhost:8080/sign-in">Sign in</a>
-      <a href="http://localhost:8080/sign-up">Sign up</a>
-    </div>
+    <BrowserRouter>
+        <div>
+            <TheHeader />
+        </div>
+    </BrowserRouter>
   )
 }
+
+export default App;

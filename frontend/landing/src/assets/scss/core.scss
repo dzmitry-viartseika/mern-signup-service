@@ -1,5 +1,12 @@
+@import 'variables';
+
 body {
   font: $font-size-base $font-global;
   line-height: 1.2;
   color: $color-secondary;
+}
+
+.landing-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
