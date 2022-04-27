@@ -252,7 +252,7 @@ export default class Chat extends Vue {
     return moment(date).locale(this.language).format(format);
   }
 
-  messageTime(date: string):string {
+  messageTime(date: string): string {
     const day = new Date(date);
     const hour = day.getHours();
     const minutes = day.getMinutes();
