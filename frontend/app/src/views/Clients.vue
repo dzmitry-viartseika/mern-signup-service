@@ -85,7 +85,7 @@
             <pagination-template
               :pagination="{
                 perPage: filterQuery.page,
-                total: rowData.length,
+                total: total,
                 totalPages: totalPages
               }"
               :current-page="currentPage"
@@ -470,7 +470,11 @@ export default class Dashboard extends Vue {
         const { showNotify } = this.$store.getters.user;
         const { data } = this.isEditMode ? await this.editAction() : await this.addAction();
         if (!this.isEditMode) {
-          this.rowData.push(data.addNewClient);
+          console.log('this.totalPages', this.totalPages);
+          console.log('this.filterQuery.limit', this.filterQuery.limit);
+          if ((this.total < this.filterQuery.limit) || this.filterQuery.page !== 1) {
+            this.rowData.push(data.addNewClient);
+          }
           if (showNotify) {
             this.$toasted.show(`Новый Клиент ${this.firstName} успешно добавлен`, {
               theme: 'bubble',
