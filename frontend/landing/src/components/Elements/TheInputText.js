@@ -1,8 +1,7 @@
-import react from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-const TheInputText = ({ label, type = 'text' }) => {
+const TheInputText = ({ label, type = 'text', value, onChange, focused = false, autoFocus = false }) => {
     return (
         <>
             <Box
@@ -13,12 +12,17 @@ const TheInputText = ({ label, type = 'text' }) => {
                 noValidate
                 autoComplete="off"
             >
+                value={ value }
                 <TextField
                     label={label}
                     type={type}
+                    value={value}
                     variant="outlined"
                     fullWidth
                     id="fullWidth"
+                    onChange={onChange}
+                    focused={focused}
+                    autoFocus={autoFocus}
                 />
             </Box>
         </>

@@ -1,7 +1,6 @@
 import React, { useState }  from 'react';
 import { Button, Modal, Fade, Box, Typography, Backdrop } from '@mui/material';
 import TheInputText from '../Elements/TheInputText';
-// import { Link } from 'react-router-dom';
 
 const style = {
     position: 'absolute',
@@ -18,6 +17,10 @@ const style = {
 
 const TheHeader = () => {
     const [open, setOpen] = useState(false);
+    const [user, setUser] = useState({
+        email: '',
+        password: '',
+    })
 
     const handleOpen = () => {
         setOpen(true);
@@ -25,6 +28,24 @@ const TheHeader = () => {
 
     const handleClose = () => {
         setOpen(false);
+    }
+
+    const loginUser = () => {
+        console.log('user', user);
+    }
+
+    const handleChangeEmail = (e) => {
+        setUser({
+            ...user,
+            email: e.target.value,
+        });
+    }
+
+    const handleChangePassword = (e) => {
+        setUser({
+            ...user,
+            password: e.target.value,
+        });
     }
 
     return (
@@ -66,11 +87,23 @@ const TheHeader = () => {
                     <Box sx={style}>
                         <TheInputText
                             label={'Email'}
+                            value={user.email}
+                            onChange={handleChangeEmail}
+                            focused={true}
+                            autoFocus={true}
                         />
                         <TheInputText
                             label={'Password'}
                             type={'password'}
+                            value={user.password}
+                            onChange={handleChangePassword}
                         />
+                        <Button
+                            variant="contained"
+                            onClick={loginUser}
+                        >
+                            Send
+                        </Button>
                     </Box>
                 </Fade>
             </Modal>
