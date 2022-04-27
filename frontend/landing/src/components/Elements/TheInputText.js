@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-const TheInputText = ({ label, type = 'text', value, onChange, focused = false, autoFocus = false }) => {
+const TheInputText = ({ required = false, label, type = 'text', value, onChange, focused = false, autoFocus = false }) => {
     return (
         <>
             <Box
@@ -15,6 +15,7 @@ const TheInputText = ({ label, type = 'text', value, onChange, focused = false, 
                 value={ value }
                 <TextField
                     label={label}
+                    required={required}
                     type={type}
                     value={value}
                     variant="outlined"

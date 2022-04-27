@@ -88,6 +88,7 @@ const TheHeader = () => {
                         <TheInputText
                             label={'Email'}
                             value={user.email}
+                            required={true}
                             onChange={handleChangeEmail}
                             focused={true}
                             autoFocus={true}
@@ -95,6 +96,7 @@ const TheHeader = () => {
                         <TheInputText
                             label={'Password'}
                             type={'password'}
+                            required={true}
                             value={user.password}
                             onChange={handleChangePassword}
                         />
