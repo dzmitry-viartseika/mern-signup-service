@@ -1,7 +1,8 @@
 import React, { useState }  from 'react';
-import { Button, Modal, Fade, Box, Typography, Backdrop } from '@mui/material';
+import { Modal, Fade, Box, Typography, Backdrop } from '@mui/material';
 import TheInputText from '../Elements/TextInput/TheInputText';
 import TheImage from '../Elements/TheImage/TheImage';
+import Button from '../Elements/Button/TheButton';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 
@@ -67,16 +68,15 @@ const TheHeader = () => {
                         </div>
                         <div className="landing-header__right">
                             <Button
-                                variant="contained"
+                                variant={'contained'}
                                 onClick={handleOpen}
-                            >
-                                Sign in
-                            </Button>
+                                text={'Sign in'}
+                            />
                             <Button
-                                variant="contained"
-                            >
-                                Sign up
-                            </Button>
+                                variant={'contained'}
+                                text={'Sign up'}
+                                onClick={handleOpen}
+                            />
                         </div>
                     </div>
                 </div>
@@ -112,11 +112,10 @@ const TheHeader = () => {
                             onChange={handleChangePassword}
                         />
                         <Button
-                            variant="contained"
+                            variant={'contained'}
                             onClick={loginUser}
-                        >
-                            Send
-                        </Button>
+                            text={'Send'}
+                        />
                     </Box>
                 </Fade>
             </Modal>
