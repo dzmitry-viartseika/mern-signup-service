@@ -95,6 +95,7 @@ const TheHeader = () => {
                 <Fade in={open}>
                     <Box sx={style}>
                         <TheInputText
+                            id={'email-input'}
                             label={'Email'}
                             value={user.email}
                             required={true}
@@ -103,6 +104,7 @@ const TheHeader = () => {
                             autoFocus={true}
                         />
                         <TheInputText
+                            id={'passport-input'}
                             label={'Password'}
                             type={'password'}
                             required={true}
