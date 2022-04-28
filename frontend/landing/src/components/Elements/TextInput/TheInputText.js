@@ -8,9 +8,12 @@ const TheInputText = (
         type = 'text',
         value,
         onChange,
+        variant = 'outlined',
         focused = false,
         autoFocus = false,
-        id
+        id,
+        error,
+        name
     }) => {
     return (
         <>
@@ -24,12 +27,13 @@ const TheInputText = (
             >
                 <TextField
                     id={id}
+                    error={error}
+                    name={name}
                     label={label}
                     required={required}
                     type={type}
                     value={value}
-                    variant="outlined"
-                    fullWidth
+                    variant={variant}
                     onChange={onChange}
                     focused={focused}
                     autoFocus={autoFocus}

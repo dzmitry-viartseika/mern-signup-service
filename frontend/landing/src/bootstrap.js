@@ -1,4 +1,6 @@
-import ReactDOM from 'react-dom';
+import ReactDOM  from 'react-dom';
+import {StrictMode} from 'react';
+import { createRoot } from 'react-dom/client';
 import { createMemoryHistory, createBrowserHistory } from 'history';
 import { App } from './App';
 // import './style.scss'
@@ -12,8 +14,13 @@ const mount = (el, { onSignIn ,onNavigate, defaultHistory, initialPath }) => {
   if (onNavigate) {
     history.listen(onNavigate);
   }
-
-  ReactDOM.render(<App onSignIn={onSignIn} history={history} />, el)
+  const rootElement = document.getElementById('_auth-dev-root');
+  const root = createRoot(rootElement);
+  root.render(
+      <StrictMode>
+        <App onSignIn={onSignIn} history={history} />
+      </StrictMode>
+  )
 
   return {
     onParentNavigate({ pathname: nextPathName }) {
