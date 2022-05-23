@@ -56,6 +56,7 @@ export default class App extends Vue {
   }
 
   async created(): Promise<any> {
+
     const lang = localStorage.getItem('language');
 
     const token = localStorage.getItem('token');
