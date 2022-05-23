@@ -22,7 +22,9 @@ const swaggerDoc = require('swagger-ui-express');
 const fileRoutes = require('./routers/file-upload-routes');
 const swaggerDocumentation = require('./helper/documentations');
 const cookieSession = require('cookie-session');
-const allowedOrigins = ['http://localhost:5000', 'http://localhost:8080'];
+const allowedOrigins = ['http://localhost:5000', 'http://localhost:8080', 'http://localhost:8082'];
+const ChatModel = require('./models/chat-model');
+const uuid = require('uuid');
 require('./config/passport');
 const PORT = process.env.PORT || 5000;
 
@@ -40,18 +42,18 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // app.use(cors());
 app.use(cors({
     credentials: true,
-    origin: process.env.CLIENT_URL
-    // origin: function(origin, callback){
-    //     // allow requests with no origin
-    //     // (like mobile apps or curl requests)
-    //     if(!origin) return callback(null, true);
-    //     if(allowedOrigins.indexOf(origin) === -1){
-    //         const msg = 'The CORS policy for this site does not ' +
-    //             'allow access from the specified Origin.';
-    //         return callback(new Error(msg), false);
-    //     }
-    //     return callback(null, true);
-    // }
+    // origin: process.env.CLIENT_URL
+    origin: function(origin, callback){
+        // allow requests with no origin
+        // (like mobile apps or curl requests)
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            const msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
 }));
 app.use('/api/graphql', graphqlHTTP({
     schema: schema,
@@ -161,7 +163,22 @@ io
             // io.sockets.broadcast.emit('stopTyping');
         });
 
-        socket.on('message', (data) => {
+        socket.on('message', async (data) => {
+            // console.log('uuid.v4()', uuid.v4());
+            // const { message } = data;
+            // console.log('message', message);
+            // let chatMessage = new ChatModel({
+            //     chatId: uuid.v4(),
+            //     senderId: message.senderId,
+            //     message: message.message,
+            //     date: message.date,
+            //     messageId: uuid.v4(),
+            //     user: message.user,
+            // })
+            // await chatMessage.save((err, result) => {
+            //     if (err) throw err;
+            //     io.sockets.emit('message', chatMessage);
+            // })
             io.sockets.emit('message', data);
         });
     }

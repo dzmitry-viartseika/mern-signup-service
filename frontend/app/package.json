@@ -12,6 +12,18 @@
     "storybook-docs": "start-storybook --docs --no-manager-cache",
     "build-storybook": "build-storybook"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wertey/mern-signup-service.git"
+  },
+  "author": {
+    "name": "Dmitry Verteyko"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wertey/mern-signup-service/issues/"
+  },
+  "homepage": "https://github.com/wertey/mern-signup-service/blob/master/frontend/app/README.md",
   "dependencies": {
     "@storybook/addon-actions": "^6.4.18",
     "@storybook/addon-essentials": "^6.4.18",

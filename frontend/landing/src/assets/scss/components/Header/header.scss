@@ -1,0 +1,26 @@
+@import '../../variables';
+
+.landing-header {
+  width: 100%;
+  padding: 10px 30px;
+  background: $color-secondary;
+  color: $color-primary;
+
+  &__logo {
+    max-width: 40px;
+    height: auto;
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__right {
+
+    button + button {
+      margin-left: 15px;
+    }
+  }
+}
